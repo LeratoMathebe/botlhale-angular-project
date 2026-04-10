@@ -1,0 +1,45 @@
+<div class="min-h-screen flex items-center justify-center bg-green-50">
+
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+
+    <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">
+      Health Questionnaire 🌿
+    </h2>
+
+    <div class="flex flex-col gap-4">
+
+      <input 
+        [(ngModel)]="name"
+        placeholder="Enter your name"
+        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+
+      <input 
+        [(ngModel)]="age"
+        placeholder="Enter your age"
+        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+
+      <input 
+        [(ngModel)]="food"
+        placeholder="Favorite food"
+        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+
+      <button 
+        (click)="submit()"
+        class="bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+        Submit
+      </button>
+
+      <button 
+        routerLink="/"
+        class="bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
+        Back to Home
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
