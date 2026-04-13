@@ -1,40 +1,84 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../data';  
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questionnaire',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './questionnaire.html',
   styleUrl: './questionnaire.css',
 })
 export class Questionnaire {
 
-  constructor(private dataService: DataService, private router: Router) {}
+  form: FormGroup;
 
-  name: string = '';
-  age: string = '';
-  food: string = '';
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      //Q1 - Q2
+      hypertension: ['', Validators.required],
+      diabetes: ['', Validators.required],
 
-  responses: { name: string; age: string; food: string }[] = []; //array to store responses by the users
+      //Q3-Q4
+      medication: ['', Validators.required],
+      medicationList: [''],
 
-  submit() {
-    // Store the current response in the responses array
-    this.dataService.responses.push({
-      name: this.name,
-      age: this.age,
-      food: this.food
+      //Q5-Q6
+      symptoms: ['', Validators.required],
+      symptomDetails: [''],
+
+      //Q7-Q8
+      smoke: ['', Validators.required],
+      alcohol: ['', Validators.required],
+
+      //Q9-Q11
+      exercise:['', Validators.required],
+      allergies:['', Validators.required],
+      checkups:['', Validators.required],
+
+      //Q12
+      comments: ['']
+      
     });
 
-    // Clear the form fields after submission
-    this.name = '';
-    this.age = '';
-    this.food = '';
+    //Q3-> Q4 logic (Medication)
+    this.form.get('medication')?.valueChanges.subscribe(value => {
+      const field = this.form.get('medicationList');
 
-    //navigate to the results page 
-    this.router.navigate(['/results']);
+      if (value === 'yes') {
+        field?.setValidators(Validators.required);
+      } else {
+        field?.clearValidators();
+        field?.setValue('');
+      }
+      field?.updateValueAndValidity();
+    });
+
+    // 🔥 Q5 → Q6 logic (Symptoms)
+    this.form.get('symptoms')?.valueChanges.subscribe(value => {
+      const field = this.form.get('symptomDetails');
+
+      if (value === 'Yes') {
+        field?.setValidators([Validators.required]);
+      } else {
+        field?.clearValidators();
+        field?.setValue('');
+      }
+
+      field?.updateValueAndValidity();
+    });
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+      alert('Form submitted successfully!');
+    } else {
+      this.form.markAllAsTouched();
+    }
   }
 }
+
+
+
+

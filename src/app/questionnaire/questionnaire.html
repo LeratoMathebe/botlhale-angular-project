@@ -1,45 +1,75 @@
-<div class="min-h-screen flex items-center justify-center bg-green-50">
 
-  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">
-      Health Questionnaire 🌿
-    </h2>
+  <!-- Q1 -->
+  <h3>1. Do you have a history of hypertension?</h3>
+  <input type="radio" formControlName="hypertension" value="Yes"> Yes
+  <input type="radio" formControlName="hypertension" value="No"> No
 
-    <div class="flex flex-col gap-4">
+  <!-- Q2 -->
+  <h3>2. Do you have diabetes?</h3>
+  <input type="radio" formControlName="diabetes" value="Yes"> Yes
+  <input type="radio" formControlName="diabetes" value="No"> No
 
-      <input 
-        [(ngModel)]="name"
-        placeholder="Enter your name"
-        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-      />
+  <!-- Q3 -->
+  <h3>3. Are you currently taking any medication?</h3>
+  <input type="radio" formControlName="medication" value="Yes"> Yes
+  <input type="radio" formControlName="medication" value="No"> No
 
-      <input 
-        [(ngModel)]="age"
-        placeholder="Enter your age"
-        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-      />
-
-      <input 
-        [(ngModel)]="food"
-        placeholder="Favorite food"
-        class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-      />
-
-      <button 
-        (click)="submit()"
-        class="bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
-        Submit
-      </button>
-
-      <button 
-        routerLink="/"
-        class="bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-        Back to Home
-      </button>
-
-    </div>
-
+  <!-- Q4 (Conditional) -->
+  <div *ngIf="form.get('medication')?.value === 'Yes'">
+    <h3>4. Please list your current medications</h3>
+    <input type="text" formControlName="medicationList" placeholder="Enter medication here">
   </div>
 
-</div>
+  <!-- Q5 -->
+  <h3>5. Are you currently experiencing any unusual or concerning symptoms?</h3>
+  <input type="radio" formControlName="symptoms" value="Yes"> Yes
+  <input type="radio" formControlName="symptoms" value="No"> No
+
+  <!-- Q6 -->
+  <div *ngIf="form.get('symptoms')?.value === 'Yes'">
+    <h3>6. Please describe your symptoms</h3>
+    <input type="text" formControlName="symptomDetails"
+      placeholder="e.g. headache, dizziness, chest pain, fatigue…">
+  </div>
+
+  <!-- Q7 -->
+  <h3>7. Do you smoke?</h3>
+  <input type="radio" formControlName="smoke" value="Yes"> Yes
+  <input type="radio" formControlName="smoke" value="No"> No
+
+  <!-- Q8 -->
+  <h3>8. Do you consume alcohol?</h3>
+  <input type="radio" formControlName="alcohol" value="Yes"> Yes
+  <input type="radio" formControlName="alcohol" value="No"> No
+
+  <!-- Q9 -->
+  <h3>9. How often do you exercise?</h3>
+  <input type="radio" formControlName="exercise" value="Never"> Never
+  <input type="radio" formControlName="exercise" value="1–2 times a week"> 1–2 times a week
+  <input type="radio" formControlName="exercise" value="3–5 times a week"> 3–5 times a week
+  <input type="radio" formControlName="exercise" value="Daily"> Daily
+
+  <!-- Q10 -->
+  <h3>10. Do you have any allergies?</h3>
+  <input type="radio" formControlName="allergies" value="Yes"> Yes
+  <input type="radio" formControlName="allergies" value="No"> No
+
+  <!-- Q11 -->
+  <h3>11. How often do you go for medical check-ups?</h3>
+  <input type="radio" formControlName="checkups" value="Never"> Never
+  <input type="radio" formControlName="checkups" value="Only when I feel sick"> Only when I feel sick
+  <input type="radio" formControlName="checkups" value="Once a year"> Once a year
+  <input type="radio" formControlName="checkups" value="Twice a year"> Twice a year
+  <input type="radio" formControlName="checkups" value="More than twice a year"> More than twice a year
+
+  <!-- Q12 -->
+  <h3>12. Any additional health concerns or comments?</h3>
+  <input type="text" formControlName="comments" placeholder="Optional">
+
+  <br><br>
+
+  <button type="submit">Submit</button>
+
+</form>
