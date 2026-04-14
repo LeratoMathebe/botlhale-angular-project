@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-questionnaire',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './questionnaire.html',
   styleUrl: './questionnaire.css',
 })
@@ -13,50 +14,65 @@ export class Questionnaire {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
+
     this.form = this.fb.group({
-      //Q1 - Q2
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      idNumber: [''],
+
       hypertension: ['', Validators.required],
       diabetes: ['', Validators.required],
 
-      //Q3-Q4
       medication: ['', Validators.required],
       medicationList: [''],
 
-      //Q5-Q6
       symptoms: ['', Validators.required],
       symptomDetails: [''],
 
-      //Q7-Q8
       smoke: ['', Validators.required],
       alcohol: ['', Validators.required],
 
-      //Q9-Q11
-      exercise:['', Validators.required],
-      allergies:['', Validators.required],
-      checkups:['', Validators.required],
+      exercise: ['', Validators.required],
 
-      //Q12
+      allergies: ['', Validators.required],
+      allergyDetails: [''],
+
+      checkups: ['', Validators.required],
       comments: ['']
-      
     });
 
-    //Q3-> Q4 logic (Medication)
+    // ✅ Q3 → Q4 (FIXED)
     this.form.get('medication')?.valueChanges.subscribe(value => {
       const field = this.form.get('medicationList');
 
-      if (value === 'yes') {
-        field?.setValidators(Validators.required);
+      if (value === 'Yes') { // ✅ FIXED
+        field?.setValidators([Validators.required]);
       } else {
         field?.clearValidators();
         field?.setValue('');
       }
+
       field?.updateValueAndValidity();
     });
 
-    // 🔥 Q5 → Q6 logic (Symptoms)
+    // ✅ Q5 → Q6
     this.form.get('symptoms')?.valueChanges.subscribe(value => {
       const field = this.form.get('symptomDetails');
+
+      if (value === 'Yes') {
+        field?.setValidators([Validators.required]);
+      } else {
+        field?.clearValidators();
+        field?.setValue('');
+      }
+
+      field?.updateValueAndValidity();
+    });
+
+    // ✅ Q10 → Q11
+    this.form.get('allergies')?.valueChanges.subscribe(value => {
+      const field = this.form.get('allergyDetails');
 
       if (value === 'Yes') {
         field?.setValidators([Validators.required]);
@@ -70,12 +86,28 @@ export class Questionnaire {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
-      alert('Form submitted successfully!');
-    } else {
+
+    console.log("Submit clicked"); // 🔍 Debug
+
+    if (this.form.invalid) {
+      alert("Please fill in all required fields");
       this.form.markAllAsTouched();
+      return;
     }
+
+    const newEntry = this.form.value;
+
+    // ✅ USE SAME KEY AS RESULTS PAGE
+    const existingData = localStorage.getItem('questionnaires');
+    const dataArray = existingData ? JSON.parse(existingData) : [];
+
+    dataArray.push(newEntry);
+
+    localStorage.setItem('questionnaires', JSON.stringify(dataArray));
+
+    console.log("Saved:", newEntry); // 🔍 Debug
+
+    this.router.navigate(['/results']);
   }
 }
 
