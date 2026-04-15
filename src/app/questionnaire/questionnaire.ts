@@ -19,7 +19,7 @@ export class Questionnaire {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      idNumber: [''],
+      idNumber: ['', Validators.required],
 
       hypertension: ['', Validators.required],
       diabetes: ['', Validators.required],
