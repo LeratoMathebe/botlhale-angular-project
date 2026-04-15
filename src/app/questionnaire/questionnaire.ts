@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { RouterLink, Router } from '@angular/router';
   templateUrl: './questionnaire.html',
   styleUrl: './questionnaire.css',
 })
-export class Questionnaire {
+export class Questionnaire implements OnInit {
 
   form: FormGroup;
 
@@ -41,12 +41,46 @@ export class Questionnaire {
       checkups: ['', Validators.required],
       comments: ['']
     });
+  }
 
-    // ✅ Q3 → Q4 (FIXED)
+  // ✅ CORRECT PLACE
+  ngOnInit() {
+    const editData = localStorage.getItem('editData');
+
+    if (editData) {
+      const data = JSON.parse(editData);
+
+      this.form.patchValue({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        idNumber: data.idNumber,
+
+        hypertension: data.hypertension,
+        diabetes: data.diabetes,
+
+        medication: data.medication,
+        medicationList: data.medicationList,
+
+        symptoms: data.symptoms,
+        symptomDetails: data.symptomDetails,
+
+        smoke: data.smoke,
+        alcohol: data.alcohol,
+        exercise: data.exercise,
+
+        allergies: data.allergies,
+        allergyDetails: data.allergyDetails,
+
+        checkups: data.checkups,
+        comments: data.comments
+      });
+    }
+
+    // 🔥 MEDICATION logic
     this.form.get('medication')?.valueChanges.subscribe(value => {
       const field = this.form.get('medicationList');
 
-      if (value === 'Yes') { // ✅ FIXED
+      if (value === 'Yes') {
         field?.setValidators([Validators.required]);
       } else {
         field?.clearValidators();
@@ -56,7 +90,7 @@ export class Questionnaire {
       field?.updateValueAndValidity();
     });
 
-    // ✅ Q5 → Q6
+    // 🔥 SYMPTOMS logic
     this.form.get('symptoms')?.valueChanges.subscribe(value => {
       const field = this.form.get('symptomDetails');
 
@@ -70,7 +104,7 @@ export class Questionnaire {
       field?.updateValueAndValidity();
     });
 
-    // ✅ Q10 → Q11
+    // 🔥 ALLERGIES logic
     this.form.get('allergies')?.valueChanges.subscribe(value => {
       const field = this.form.get('allergyDetails');
 
@@ -87,30 +121,41 @@ export class Questionnaire {
 
   onSubmit() {
 
-    console.log("Submit clicked"); // 🔍 Debug
+   console.log("Submit clicked");
 
-    if (this.form.invalid) {
-      alert("Please fill in all required fields");
-      this.form.markAllAsTouched();
-      return;
-    }
+  if (this.form.invalid) {
+    alert("Please fill in all required fields");
+    this.form.markAllAsTouched();
+    return;
+  }
 
-    const newEntry = this.form.value;
+  const newEntry = this.form.value;
 
-    // ✅ USE SAME KEY AS RESULTS PAGE
-    const existingData = localStorage.getItem('questionnaires');
-    const dataArray = existingData ? JSON.parse(existingData) : [];
+  const existingData = localStorage.getItem('healthData');
+  const dataArray = existingData ? JSON.parse(existingData) : [];
 
+  // 🔥 CHECK IF WE ARE EDITING
+  const editIndex = localStorage.getItem('editIndex');
+
+  if (editIndex !== null) {
+    // UPDATE EXISTING ENTRY
+    dataArray[+editIndex] = newEntry;
+
+    localStorage.removeItem('editIndex');
+    localStorage.removeItem('editData');
+
+  } else {
+    // ADD NEW ENTRY
     dataArray.push(newEntry);
+  }
 
-    localStorage.setItem('questionnaires', JSON.stringify(dataArray));
+  localStorage.setItem('healthData', JSON.stringify(dataArray));
 
-    console.log("Saved:", newEntry); // 🔍 Debug
+  console.log("Saved:", newEntry);
 
-    this.router.navigate(['/results']);
+  this.router.navigate(['/results']);
   }
 }
-
 
 
 
