@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-bold text-green-700">Manage Questionnaire</h2>
+      <button (click)="addQuestion()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 shadow transition">
+        + Add New Question
+      </button>
+    </div>
+
+    <form [formGroup]="adminForm" (ngSubmit)="saveStructure()" class="space-y-6">
+      <div formArrayName="questions">
+        <div *ngFor="let q of questions.controls; let i=index" [formGroupName]="i" 
+             class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 mb-6 relative">
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-sm font-semibold text-gray-600">Question Text</label>
+              <input formControlName="label" placeholder="e.g. Do you smoke?" 
+                     class="w-full border p-2 rounded mt-1">
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-sm font-semibold text-gray-600">Database Key (lowercase)</label>
+              <input formControlName="key" placeholder="e.g. smoke_status" 
+                     class="w-full border p-2 rounded mt-1">
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-sm font-semibold text-gray-600">Input Type</label>
+              <select formControlName="type" class="w-full border p-2 rounded mt-1">
+                <option value="text">Open Text Field</option>
+                <option value="radio">Yes/No Selection (Radio)</option>
+                <option value="dropdown">Dropdown List</option>
+                <option value="checkbox">Multiple Choice</option>
+                <option value="page-break">Page Break / Section Header</option>
+              </select>
+            </div>
+
+            <div class="flex items-center mt-6">
+              <input type="checkbox" formControlName="is_required" class="mr-2 h-4 w-4">
+              <label class="text-sm font-semibold text-gray-600">Mark as Required</label>
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+                <label class="text-sm font-semibold text-gray-600">Page / Step Number</label>
+                <input type="number" formControlName="page_number" min="1"
+                    class="w-full border p-2 rounded mt-1 bg-gray-50" 
+                    placeholder="e.g. 1">
+            </div>
+
+            <div *ngIf="q.get('type')?.value === 'dropdown' || q.get('type')?.value === 'checkbox'" 
+                 class="col-span-2 mt-2 bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <label class="text-sm font-semibold text-blue-700">Options (Separate with commas)</label>
+              <input formControlName="options" placeholder="e.g. Daily, Weekly, Monthly" 
+                     class="w-full border-blue-300 border p-2 rounded mt-1">
+            </div>
+          </div>
+
+          <button type="button" (click)="removeQuestion(i)" 
+                  class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition">
+            <span class="text-xs uppercase font-bold">Remove</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="questions.length > 0" class="pt-6">
+        <button type="submit" class="w-full bg-green-700 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-green-800 transition">
+          Save All to Supabase
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

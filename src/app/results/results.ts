@@ -14,6 +14,7 @@ export class Results implements OnInit {
 
   data: any[] = [];
   filteredData: any[] = [];
+  questionnaires: any[] = [];
   searchText: string = '';
 
   constructor(private router: Router) {}
@@ -24,7 +25,11 @@ export class Results implements OnInit {
     this.data = storedData ? JSON.parse(storedData) : [];
     this.filteredData = this.data;
 
-    console.log("Loaded data:", this.data);
+     const storedForms = localStorage.getItem('questionnaires');
+    this.questionnaires = storedForms ? JSON.parse(storedForms) : [];
+
+  console.log("Responses:", this.data);
+  console.log("Questionnaires:", this.questionnaires);
   }
 
   // 🔍 SEARCH

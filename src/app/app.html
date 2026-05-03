@@ -1,2 +1,26 @@
+<header class="w-full top-0 sticky bg-white shadow">
+  <div class="flex justify-between items-center px-8 py-4">
+    <h1 class="text-xl font-bold text-green-700">
+      Botlhale Village: Health Tech Platform
+    </h1>
 
+    <nav class="flex gap-6">
+      <a routerLink="/home" 
+     routerLinkActive="text-green-700 font-bold" 
+     [routerLinkActiveOptions]="{exact: true}" 
+     class="text-gray-600">Home</a>
+
+  <a routerLink="/manage-questions" 
+     routerLinkActive="text-green-700 font-bold" 
+     class="text-gray-600">Questionnaire</a>
+     
+  <a routerLink="/results" 
+     routerLinkActive="text-green-700 font-bold" 
+     class="text-gray-600">Results</a>
+    </nav>
+  </div>
+</header> 
+
+<main>
 <router-outlet></router-outlet> 
+</main>

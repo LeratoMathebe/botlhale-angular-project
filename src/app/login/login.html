@@ -1,0 +1,18 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  <form (submit)="handleLogin($event)" class="p-8 bg-white shadow-md rounded-lg w-96">
+    <h2 class="text-2xl font-bold mb-6 text-center text-green-600">Staff Login</h2>
+    
+    <input type="email" name="email" placeholder="Email" class="w-full p-2 mb-4 border rounded" required>
+    <input type="password" name="password" placeholder="Password" class="w-full p-2 mb-4 border rounded" required>
+    
+    <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-lightgreen-600 transition">
+      Sign In
+    </button>
+<p class="text-sm mt-4 text-center text-gray-600">
+  Don't have a staff account? 
+  <a routerLink="/register" class="text-green-600 font-bold hover:underline cursor-pointer">
+    Register Here
+  </a>
+</p>
+  </form>
+</div>
