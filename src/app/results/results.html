@@ -1,88 +1,72 @@
+<div class="p-8 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto">
 
-  <!-- CONTENT -->
-  <main class="p-6">
-
-    <!-- 🔍 SEARCH BAR (MOVED OUTSIDE CARDS) -->
-    <div class="flex justify-center mt-6">
-      <input
-        type="text"
-        [(ngModel)]="searchText"
-        (input)="onSearch()"
-        placeholder="Search by name or ID..."
-        class="w-full max-w-md border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500"
-      />
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
+      Loading results...
     </div>
 
-    <!-- ❌ IF NO DATA -->
-    <div *ngIf="filteredData.length === 0" class="text-center text-gray-500 mt-20">
-      No submissions yet.
-    </div>
-
-    <!-- ✅ CARDS -->
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-
-      <div *ngFor="let item of filteredData; let i = index"
-           class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-
-        <!-- NAME -->
-        <h2 class="text-lg font-bold text-green-700 mb-2">
-          {{ item.firstName }} {{ item.lastName }}
-        </h2>
-
-        <p class="text-sm text-gray-500 mb-4">
-          ID: {{ item.idNumber || 'N/A' }}
-        </p>
-
-        <!-- DATA -->
-        <p><strong>Hypertension:</strong> {{ item.hypertension }}</p>
-        <p><strong>Diabetes:</strong> {{ item.diabetes }}</p>
-
-        <p><strong>Medication:</strong> {{ item.medication }}</p>
-        <p *ngIf="item.medication === 'Yes'">
-          <strong>Medications:</strong> {{ item.medicationList }}
-        </p>
-
-        <p><strong>Symptoms:</strong> {{ item.symptoms }}</p>
-        <p *ngIf="item.symptoms === 'Yes'">
-          <strong>Details:</strong> {{ item.symptomDetails }}
-        </p>
-
-        <p><strong>Smoking:</strong> {{ item.smoke }}</p>
-        <p><strong>Alcohol:</strong> {{ item.alcohol }}</p>
-        <p><strong>Exercise:</strong> {{ item.exercise }}</p>
-
-        <p><strong>Allergies:</strong> {{ item.allergies }}</p>
-        <p *ngIf="item.allergies === 'Yes'">
-          <strong>Details:</strong> {{ item.allergyDetails }}
-        </p>
-
-        <p><strong>Check-ups:</strong> {{ item.checkups }}</p>
-        <p><strong>Comments:</strong> {{ item.comments }}</p>
-
-        <!-- 🔥 ACTION BUTTONS -->
-        <div class="flex gap-2 mt-6">
-
-          <!-- ✏ EDIT -->
-          <button
-            (click)="startEdit(i)"
-            class="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-            Edit
+    <div *ngIf="!isLoading">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <button (click)="goBack()" 
+                  class="text-gray-500 hover:text-gray-700 text-sm mb-2 flex items-center gap-1">
+            ← Back to Dashboard
           </button>
-
-          <!-- 🗑 DELETE -->
-          <button
-            (click)="deleteEntry(i)"
-            class="w-1/2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
-            Delete
-          </button>
-
+          <h1 class="text-2xl font-bold text-gray-800">{{ questionnaire?.title }}</h1>
+          <p class="text-gray-500 text-sm mt-1">
+            {{ submissions.length }} submission{{ submissions.length !== 1 ? 's' : '' }} received
+          </p>
         </div>
 
+        <div class="flex gap-3">
+          <!-- Export CSV -->
+          <button (click)="exportCSV()"
+                  class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
+            Export CSV
+          </button>
+
+          <!-- Clear Results -->
+          <button (click)="clearResults()"
+                  class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600">
+            Clear Results
+          </button>
+        </div>
       </div>
 
+      <!-- No Submissions State -->
+      <div *ngIf="submissions.length === 0" 
+           class="bg-white rounded-xl shadow p-10 text-center text-gray-500">
+        No submissions yet for this questionnaire.
+      </div>
+
+      <!-- Results Grid -->
+      <div *ngIf="submissions.length > 0" 
+           class="bg-white shadow rounded-xl overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+            <tr>
+              <th class="px-4 py-3 whitespace-nowrap">Submitted At</th>
+              <th *ngFor="let q of questions" 
+                  class="px-4 py-3 whitespace-nowrap">
+                {{ q.label }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let sub of submissions" class="hover:bg-gray-50">
+              <td class="px-4 py-3 text-gray-500 whitespace-nowrap">
+                {{ sub.submitted_at | date:'dd MMM yyyy, HH:mm':'UTC+2' }}
+              </td>
+              <td *ngFor="let q of questions" 
+                  class="px-4 py-3 text-gray-700">
+                {{ sub.answers[q.id] || '—' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-  </main>
-
-
-   
+  </div>
+</div>

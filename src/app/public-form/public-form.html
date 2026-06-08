@@ -1,0 +1,87 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-2xl mx-auto">
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
+      Loading form...
+    </div>
+
+    <!-- Not Found State -->
+    <div *ngIf="!isLoading && notFound" class="text-center py-20">
+      <h2 class="text-2xl font-bold text-red-500 mb-2">Form Not Found</h2>
+      <p class="text-gray-500">This form may have been unpublished or the link is invalid.</p>
+    </div>
+
+    <!-- Success State -->
+    <div *ngIf="isSubmitted" class="text-center py-20">
+      <div class="text-green-500 text-6xl mb-4">✓</div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Thank you!</h2>
+      <p class="text-gray-500">Your responses have been submitted successfully.</p>
+    </div>
+    
+    <!-- Form -->
+    <div *ngIf="!isLoading && !notFound && !isSubmitted">
+      <div class="bg-white rounded-xl shadow p-8 mb-6">
+        <h1 class="text-2xl font-bold text-green-700 mb-2">{{ questionnaire?.title }}</h1>
+        <p *ngIf="questionnaire?.description" class="text-gray-500">
+          {{ questionnaire?.description }}
+        </p>
+      </div>
+
+      <form [formGroup]="patientForm" (ngSubmit)="submitForm()" class="space-y-4">
+        <div *ngFor="let q of questions"
+             class="bg-white rounded-xl shadow p-6">
+
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            {{ q.label }}
+            <span *ngIf="q.is_required" class="text-red-500 ml-1">*</span>
+          </label>
+
+          <!-- Open Text Field -->
+          <input *ngIf="q.type === 'text'"
+                 [formControlName]="q.key"
+                 type="text"
+                 class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                 [placeholder]="q.label">
+
+          <!-- Radio / Yes-No -->
+          <div *ngIf="q.type === 'radio'" class="space-y-2">
+            <label *ngFor="let option of q.options"
+                   class="flex items-center gap-3 cursor-pointer">
+              <input type="radio"
+                     [formControlName]="q.key"
+                     [value]="option"
+                     class="h-4 w-4 text-green-600">
+              <span class="text-gray-700">{{ option }}</span>
+            </label>
+          </div>
+
+          <!-- Dropdown -->
+          <select *ngIf="q.type === 'dropdown'"
+                  [formControlName]="q.key"
+                  class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <option value="">Select an option</option>
+            <option *ngFor="let option of q.options" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+
+          <!-- Validation Error -->
+      <div *ngIf="patientForm.get(q.key)?.invalid && patientForm.get(q.key)?.touched"
+                class="text-red-500 text-xs mt-1">
+          <span *ngIf="patientForm.get(q.key)?.errors?.['required']">This field is required.</span>
+          <span *ngIf="patientForm.get(q.key)?.errors?.['invalidSAID']"> Invalid 13-digit SA ID format.</span>
+          <span *ngIf="patientForm.get(q.key)?.errors?.['invalidSAPhone']"> Invalid SA Mobile format (0XX... or +27...).</span>
+      </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                [disabled]="patientForm.invalid"
+                class="w-full bg-green-700 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-green-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          Submit Form
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

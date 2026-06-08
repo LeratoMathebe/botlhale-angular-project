@@ -1,0 +1,263 @@
+<!-- <div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-2xl mx-auto">
+
+    <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
+      Loading profile...
+    </div>
+
+    <div *ngIf="!isLoading">
+   
+      <div class="mb-8">
+        <button routerLink="/home" 
+                class="text-gray-500 hover:text-gray-700 text-sm mb-2 flex items-center gap-1">
+          ← Back
+        </button>
+        <h1 class="text-2xl font-bold text-gray-800">My Profile</h1>
+        <p class="text-gray-500 text-sm mt-1">Update your personal details below.</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-8">
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-5">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1">Full Name</label>
+            <input formControlName="full_name"
+                   type="text"
+                   class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div *ngIf="profileForm.get('full_name')?.invalid && profileForm.get('full_name')?.touched"
+                 class="text-red-500 text-xs mt-1">Full name is required.</div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1">Email</label>
+            <input formControlName="email"
+                   type="email"
+                   class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                 class="text-red-500 text-xs mt-1">Please enter a valid email.</div>
+          </div>
+  
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1">SA ID Number</label>
+            <input formControlName="sa_id_number"
+                   type="text"
+                   class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div *ngIf="profileForm.get('sa_id_number')?.errors?.['invalidSAID'] && profileForm.get('sa_id_number')?.touched"
+                 class="text-red-500 text-xs mt-1"> Invalid 13-digit SA ID format.</div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1">Phone Number</label>
+            <input formControlName="phone_number"
+                   type="text"
+                   class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div *ngIf="profileForm.get('phone_number')?.errors?.['invalidSAPhone'] && profileForm.get('phone_number')?.touched"
+                 class="text-red-500 text-xs mt-1"> Invalid SA Mobile format (0XX... or +27...).</div>
+          </div>
+
+          <div *ngIf="successMessage" class="text-green-600 text-sm text-center">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="text-red-500 text-sm text-center">
+            {{ errorMessage }}
+          </div>
+
+          <button type="submit"
+                  [disabled]="isSaving"
+                  class="w-full bg-green-700 text-white py-3 rounded-xl font-bold hover:bg-green-800 transition disabled:opacity-50">
+            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<div class="relative w-full min-h-screen bg-[#FAF7F2] overflow-hidden flex flex-col justify-between" style="font-family: 'Instrument Sans', sans-serif;">
+  
+  <div class="absolute inset-0 z-0 opacity-85 mix-blend-multiply pointer-events-none blur-[6px] md:blur-[2px]"
+       style="background-image: url('images/neutral-botanicals.jpg'); background-size: cover; background-position: center;">
+  </div>
+
+  <div class="absolute inset-0 z-0 pointer-events-none"
+       style="background: radial-gradient(circle at center, #FAF7F2 35%, rgba(250, 247, 242, 0.75) 70%, rgba(250, 247, 242, 0) 100%);">
+  </div>
+
+  <div *ngIf="isLoading" class="flex-1 flex flex-col items-center justify-center min-h-screen relative z-10">
+    <div class="w-10 h-10 border-4 border-[#8B6A4F] border-t-transparent rounded-full animate-spin mb-4"></div>
+    <p class="text-[#8A7966] text-sm font-medium">Loading your profile...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="relative z-10 w-full max-w-[1360px] mx-auto px-6 sm:px-8 py-12 my-auto flex-1 flex items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
+
+      <aside class="lg:col-span-4 w-full sticky top-10 z-10">
+        <div class="bg-white/90 backdrop-blur-md rounded-[32px] border border-[#EDE5D8] p-6 shadow-[0_15px_40px_rgba(139,106,79,0.04)]">
+          
+          <h3 class="text-xl font-normal text-[#3D2F20] mb-6 tracking-tight" style="font-family: 'DM Serif Display', serif;">
+            Quick Stats
+          </h3>
+
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[#EDE5D8]/60 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-[#FAF7F2] border border-[#EDE5D8] flex items-center justify-center text-lg">📅</div>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">Current Date</span>
+                <span class="text-sm font-semibold text-[#5C3D1E] mt-0.5">07 Jun, 2026</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[#EDE5D8]/60 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-[#FAF7F2] border border-[#EDE5D8] flex items-center justify-center text-lg">🕒</div>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">Last Login</span>
+                <span class="text-sm font-semibold text-[#5C3D1E] mt-0.5">06 Jun, 18:58 (SAST)</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[#EDE5D8]/60 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-[#FAF7F2] border border-[#EDE5D8] flex items-center justify-center text-lg">💻</div>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">System Access</span>
+                <span class="text-sm font-semibold text-[#5C3D1E] mt-0.5">Administrator</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[#EDE5D8]/60 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-[#FAF7F2] border border-[#EDE5D8] flex items-center justify-center text-lg">📊</div>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">Activity Status</span>
+                <span class="text-sm font-semibold text-[#5C3D1E] mt-0.5">Form Configuration</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-px bg-[#EDE5D8] my-5 mx-2"></div>
+
+        </div>
+      </aside>
+
+      <div class="lg:col-span-8 flex-1 min-w-0 relative z-10">
+        
+        <div class="relative mb-6">
+          <button routerLink="/home"
+                  class="flex items-center gap-1.5 text-[#8B6A4F] hover:text-[#4F3F2E] text-xs font-bold uppercase tracking-widest mb-3 transition-colors bg-transparent border-none cursor-pointer">
+            ← Back to Home
+          </button>
+
+          <h1 class="text-4xl md:text-5xl font-normal text-[#3D2F20] tracking-tight mb-1"
+              style="font-family: 'DM Serif Display', serif;">My Profile</h1>
+          <p class="text-[#A39280] text-sm">Update your personal details and account information.</p>
+        </div>
+
+        <div class="bg-white/95 rounded-[28px] border border-[#EDE5D8] p-6 mb-5 grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-[0_10px_30px_rgba(79,63,46,0.01)] relative overflow-hidden">
+          
+          <div class="md:col-span-7 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center font-bold text-3xl text-white flex-shrink-0 shadow-sm"
+                 style="background: linear-gradient(135deg, #8B6A4F, #A8825B);">
+              {{ profileForm.get('full_name')?.value?.charAt(0)?.toUpperCase() || 'U' }}
+            </div>
+            <div>
+              <h2 class="text-2xl font-normal text-[#3D2F20] mb-0.5" style="font-family: 'DM Serif Display', serif;">
+                {{ profileForm.get('full_name')?.value || 'System User' }}
+              </h2>
+              <div class="text-[#A8825B] text-xs font-bold uppercase tracking-wider mb-3">Administrator</div>
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-[13px] text-[#6E5C49]">
+                  <span class="text-[#C4A882]">✉️</span>
+                  {{ profileForm.get('email')?.value || 'Not configured' }}
+                </div>
+                <div *ngIf="profileForm.get('phone_number')?.value"
+                     class="flex items-center justify-center sm:justify-start gap-2 text-[13px] text-[#6E5C49]">
+                  <span class="text-[#C4A882]">📞</span>
+                  {{ profileForm.get('phone_number')?.value }}
+                </div>
+              </div>
+              
+              <button type="button"
+                      class="mt-4 flex items-center gap-2 px-4 py-2 rounded-xl border border-[#E5D9CB] bg-white text-[#7A5C3E] text-xs font-semibold hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all shadow-sm cursor-pointer">
+                ✏️ Change Photo
+              </button>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 flex justify-center md:justify-end relative h-full min-h-[140px] md:min-h-[160px]">
+            <div class="absolute -bottom-6 right-0 w-full max-w-[220px] aspect-[4/3] md:aspect-square">
+              <img src="images/leaves_and_stuff.png" alt="Workspace Aesthetic" 
+                   class="w-full h-full object-contain drop-shadow-[0_8px_20px_rgba(139,106,79,0.08)]"/>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bg-white/95 rounded-[28px] border border-[#EDE5D8] p-6 sm:p-8 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+            <h3 class="text-xl font-normal text-[#3D2F20] mb-6" style="font-family: 'DM Serif Display', serif;">
+              Personal Information
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider">Full Name</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#C4A882]">👤</span>
+                  <input formControlName="full_name" type="text"
+                         class="w-full border border-[#E5D9CB] rounded-xl pl-11 pr-4 py-3.5 text-[13px] text-[#3D2F20] bg-white focus:outline-none focus:border-[#8B6A4F] focus:ring-2 focus:ring-[#8B6A4F]/10 transition-all"/>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider">Email Address</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#C4A882]">✉️</span>
+                  <input formControlName="email" type="email"
+                         class="w-full border border-[#E5D9CB] rounded-xl pl-11 pr-4 py-3.5 text-[13px] text-[#3D2F20] bg-white focus:outline-none focus:border-[#8B6A4F] focus:ring-2 focus:ring-[#8B6A4F]/10 transition-all"/>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider">SA ID Number</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#C4A882]">🪪</span>
+                  <input formControlName="sa_id_number" type="text"
+                         class="w-full border border-[#E5D9CB] rounded-xl pl-11 pr-4 py-3.5 text-[13px] text-[#3D2F20] bg-white focus:outline-none focus:border-[#8B6A4F] focus:ring-2 focus:ring-[#8B6A4F]/10 transition-all"/>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider">Phone Number</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#C4A882]">📞</span>
+                  <input formControlName="phone_number" type="text"
+                         class="w-full border border-[#E5D9CB] rounded-xl pl-11 pr-4 py-3.5 text-[13px] text-[#3D2F20] bg-white focus:outline-none focus:border-[#8B6A4F] focus:ring-2 focus:ring-[#8B6A4F]/10 transition-all"/>
+                </div>
+              </div>
+
+            </div>
+
+            <div *ngIf="successMessage" class="bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-xl p-3 text-center mb-4">
+              ✓ {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-xl p-3 text-center mb-4">
+              ✕ {{ errorMessage }}
+            </div>
+
+            <button type="submit"
+                    [disabled]="isSaving || profileForm.invalid"
+                    class="w-full py-4 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none cursor-pointer hover:brightness-105"
+                    style="background: #8B6A4F; box-shadow: 0 4px 14px rgba(139,106,79,0.25);">
+              💾 {{ isSaving ? 'Saving Changes...' : 'Save Changes' }}
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

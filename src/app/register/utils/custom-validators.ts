@@ -5,7 +5,8 @@ export class CustomValidators {
    * Validates a South African ID number (13 digits)
    */
   static saID(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
+    return (control: AbstractControl): ValidationErrors | null => //the actual validator that Angular will run => "Angular gives me a field, I decide if it's valid or not"
+      { 
       const value = control.value;
       if (!value) return null; // Don't validate if the field is empty
 
@@ -36,3 +37,11 @@ export class CustomValidators {
     };
   }
 }
+
+/* 
+1. Receives input field
+2. Reads its value
+3. If empty → ignore
+4. If not empty → validate format
+5. Return null (valid) OR error (invalid)
+*/

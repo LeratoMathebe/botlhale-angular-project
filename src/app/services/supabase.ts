@@ -1,47 +1,43 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../environments/environment'; //It holds your unique Supabase URL and Key
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
-//It is responsible for establishing the live link between your Angular application and the Supabase cloud.
+// Responsible for establishing the live link between Angular and Supabase.
 export class SupabaseService {
   public supabase: SupabaseClient;
 
   constructor() {
-    // Initialize the connection to Supabase using the URL and Key from the environment configuration
-    //Think of this like a Phone Call: The createClient line dials the number (supabaseUrl) 
-    // and provides the passcode (supabaseKey). Once this runs, the phone line to the cloud is Open.
-
+    // Initialize the connection using the URL and Key from environment config.
+    // Think of this like a phone call: createClient dials the number (supabaseUrl)
+    // and provides the passcode (supabaseKey). Once this runs, the line is open.
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
-  // Register a new staff user
- async signUp(email: string, pass: string, name: string, idNumber: string, phoneNumber: string) {
+  /**
+   * Registers a new staff user via Supabase Auth.
+   * The profiles table is populated automatically via a database trigger
+   * (on_auth_user_created) that fires when a new auth user is created.
+   */
+  async signUp(email: string, pass: string, name: string, idNumber: string, phoneNumber: string) {
     return await this.supabase.auth.signUp({
       email,
       password: pass,
-      options: 
-      { data: 
-        { full_name: name, 
-          id_number: idNumber, 
-          phone_number: phoneNumber 
-        } 
+      options: {
+        data: {
+          full_name: name,
+          id_number: idNumber,
+          phone_number: phoneNumber
+        }
       }
-    })
+    });
   }
-
-      //This sends the email and password to Supabase. Supabase checks its list:
-    //if you are registered, it gives an error to say "already signed in", but if not, then Supabase adds you to the list
 
   // Login for healthcare staff
   async signIn(email: string, pass: string) {
-    
-    //if Supabse finds you on the list, it lets you in
-    //if not, then it gives an error to say "invalid login"
-
     return await this.supabase.auth.signInWithPassword({ email, password: pass });
   }
 

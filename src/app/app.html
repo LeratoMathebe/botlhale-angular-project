@@ -1,26 +1,138 @@
-<header class="w-full top-0 sticky bg-white shadow">
+ <!-- <header *ngIf="!isAuthPage" class="w-full top-0 sticky bg-white shadow z-50">
   <div class="flex justify-between items-center px-8 py-4">
     <h1 class="text-xl font-bold text-green-700">
       Botlhale Village: Health Tech Platform
     </h1>
 
-    <nav class="flex gap-6">
+    <nav class="flex gap-6 items-center">
       <a routerLink="/home" 
-     routerLinkActive="text-green-700 font-bold" 
-     [routerLinkActiveOptions]="{exact: true}" 
-     class="text-gray-600">Home</a>
+         routerLinkActive="text-green-700 font-bold" 
+         [routerLinkActiveOptions]="{exact: true}" 
+         class="text-gray-600">Home</a>
 
-  <a routerLink="/manage-questions" 
-     routerLinkActive="text-green-700 font-bold" 
-     class="text-gray-600">Questionnaire</a>
-     
-  <a routerLink="/results" 
-     routerLinkActive="text-green-700 font-bold" 
-     class="text-gray-600">Results</a>
+      <a routerLink="/manage-questions" 
+         routerLinkActive="text-green-700 font-bold" 
+         class="text-gray-600">Questionnaire</a>
+         
+      <a routerLink="/dashboard" 
+         routerLinkActive="text-green-700 font-bold" 
+         class="text-gray-600">Dashboard</a>
+
+      
+      <div class="relative">
+        <button (click)="toggleDropdown()" 
+                class="flex items-center gap-2 text-gray-600 hover:text-green-700 font-medium">
+          <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-sm">
+            {{ userInitial }}
+          </div>
+          <span>{{ userName }}</span>
+          <span class="text-xs">▾</span>
+        </button>
+
+       
+        <div *ngIf="dropdownOpen" 
+             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-50">
+          <a routerLink="/profile" 
+             (click)="dropdownOpen = false"
+             class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-green-700">
+            My Profile
+          </a>
+          <a *ngIf="isAdmin" 
+             routerLink="/admin" 
+             (click)="dropdownOpen = false"
+             class="block px-4 py-3 text-purple-600 hover:bg-gray-50 hover:text-purple-800">
+            Admin Panel
+          </a>
+          <hr class="border-gray-100">
+          <button (click)="signOut()" 
+                  class="w-full text-left px-4 py-3 text-red-500 hover:bg-gray-50">
+            Sign Out
+          </button>
+        </div>
+      </div>
     </nav>
   </div>
-</header> 
+</header>
 
 <main>
-<router-outlet></router-outlet> 
+  <router-outlet></router-outlet>
+</main> -->
+
+
+<header *ngIf="!isAuthPage" class="w-full top-0 sticky bg-white/80 backdrop-blur-md border-b border-[#F5EFE8] z-50">
+  <div class="max-w-[1440px] mx-auto flex justify-between items-center px-12 py-4">
+    
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-[#FDFBF9] border border-[#E5D9CB] shadow-sm">
+        <span class="text-lg text-[#A8825B]">✣</span>
+      </div>
+      <div class="flex flex-col">
+        <h1 class="text-xl font-normal text-[#4F3F2E] tracking-tight leading-none" style="font-family: 'DM Serif Display', serif;">
+          PulseFlow
+        </h1>
+        <span class="text-[9px] uppercase tracking-widest font-bold text-[#A39280] mt-0.5" style="font-family: 'Inter', sans-serif;">
+          Health Tech Platform
+        </span>
+      </div>
+    </div>
+
+    <nav class="flex gap-8 items-center" style="font-family: 'Inter', sans-serif;">
+      <a routerLink="/home" 
+         routerLinkActive="text-[#8B6A4F] font-semibold border-b-2 border-[#8B6A4F]" 
+         [routerLinkActiveOptions]="{exact: true}" 
+         class="text-[#8A7966] text-sm font-medium hover:text-[#4F3F2E] pb-1 transition-colors">Home</a>
+
+      <a routerLink="/manage-questions" 
+         routerLinkActive="text-[#8B6A4F] font-semibold border-b-2 border-[#8B6A4F]" 
+         class="text-[#8A7966] text-sm font-medium hover:text-[#4F3F2E] pb-1 transition-colors">Questionnaire</a>
+         
+      <a routerLink="/dashboard" 
+         routerLinkActive="text-[#8B6A4F] font-semibold border-b-2 border-[#8B6A4F]" 
+         class="text-[#8A7966] text-sm font-medium hover:text-[#4F3F2E] pb-1 transition-colors">Dashboard</a>
+
+      <div class="relative ml-4">
+        <button (click)="toggleDropdown()" 
+                class="flex items-center gap-3 text-[#4F3F2E] hover:opacity-80 transition-opacity font-medium text-sm">
+          <div class="w-9 h-9 rounded-full bg-[#8B6A4F] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            {{ userInitial }}
+          </div>
+          <div class="hidden md:flex flex-col text-left">
+            <span class="text-xs font-bold text-[#4F3F2E] leading-tight">{{ userName }}</span>
+            <!-- <span class="text-[10px] text-[#A39280] font-medium leading-none">Administrator</span> -->
+          </div>
+          <span class="text-[#A39280] text-[10px]">▼</span>
+        </button>
+
+        <div *ngIf="dropdownOpen" 
+              class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_40px_-5px_rgba(79,63,46,0.15)] border border-[#F0E6DB] py-2 z-50 overflow-hidden transform origin-top-right">
+          
+          <div class="px-4 py-3 bg-[#FDFBF9] border-b border-[#F5EFE8] flex items-center gap-3 md:hidden">
+            <div class="w-8 h-8 rounded-full bg-[#8B6A4F] text-white flex items-center justify-center font-bold text-xs">
+              {{ userInitial }}
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-xs font-bold text-[#4F3F2E]">{{ userName }}</span>
+            </div>
+          </div>
+
+          <a routerLink="/profile" 
+             (click)="dropdownOpen = false"
+             class="flex items-center gap-3 px-4 py-3 text-sm text-[#6E5C49] hover:bg-[#FDFBF9] hover:text-[#4F3F2E] transition-colors">
+            <span>👤</span> My Profile
+          </a>
+          <a *ngIf="isAdmin" 
+             routerLink="/admin" 
+             (click)="dropdownOpen = false"
+             class="flex items-center gap-3 px-4 py-3 text-sm text-[#8B6A4F] font-medium hover:bg-[#FDFBF9] transition-colors">
+            <span>⚙️</span> Admin Panel
+          </a>
+          <div class="border-t border-[#F5EFE8] my-1"></div>
+          <button (click)="signOut()" 
+                  class="w-full flex items-center gap-3 text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50/50 transition-colors">
+            <span>🚪</span> Sign Out
+          </button>
+        </div> </div> </nav> </div> </header>
+
+<main class="min-h-[calc(min-h-screen-76px)] bg-[#FAF7F2]">
+  <router-outlet></router-outlet>
 </main>

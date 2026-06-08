@@ -7,7 +7,7 @@ import { CustomValidators } from './utils/custom-validators';
 
 @Component({
   selector: 'app-register',
-  standalone: true, // Ensuring it is standalone
+  standalone: true, 
   imports: [CommonModule, RouterLink, RouterModule, ReactiveFormsModule], // Added ReactiveFormsModule
   templateUrl: './register.html',
   styleUrl: './register.css',
