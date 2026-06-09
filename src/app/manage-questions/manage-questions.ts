@@ -45,6 +45,7 @@ export class ManageQuestions implements OnInit {
     //creates a form (adminForm) that contains a list (array) of questions
     //  and right now that list starts empty.
     this.adminForm = this.fb.group({
+      questionnaire_description: [''], //this is where you can add a description field for the questionnaire if you want
       questions: this.fb.array([])
     });
   }
@@ -72,12 +73,17 @@ export class ManageQuestions implements OnInit {
       // 1. Fetch the questionnaire title using its ID from the database
       const { data: qData, error: qError } = await this.supabase.supabase 
         .from('questionnaires') 
-        .select('title')
+        .select('title, description')
         .eq('id', id)
         .single(); //only want one result
 
       if (qError) throw qError; //if you can't find it, throw an error
       this.editingTitle = qData.title; //if you've found it, save and display the title
+      
+      //Patch the existing description text directly into the main questionnaire
+      this.adminForm.patchValue({
+        questionnaire_description: qData.description || '' //if there's a description, show it. If not, show empty string
+      });
 
       // 2. Fetch its questions ordered by order_index
     const { data: qsData, error: qsError } = await this.supabase.supabase
@@ -161,6 +167,8 @@ export class ManageQuestions implements OnInit {
       questionnaireTitle = prompted;
     }
 
+    const questionnaireDescription = this.adminForm.get('questionnaire_description')?.value  || ''; //get the description from the form, or use empty string if it's not there
+
     try {
       let questionnaireId = this.editingId;
 
@@ -171,7 +179,10 @@ export class ManageQuestions implements OnInit {
         update its title and updated_at date in the database using its ID */
         const { error: updateError } = await this.supabase.supabase
         .from('questionnaires')
-          .update({ title: questionnaireTitle, updated_at: new Date().toISOString() })
+          .update({ 
+            title: questionnaireTitle,
+            description: questionnaireDescription,
+             updated_at: new Date().toISOString() })
         .eq('id', this.editingId);
 
         if (updateError) throw updateError;
@@ -190,6 +201,7 @@ export class ManageQuestions implements OnInit {
           .from('questionnaires')
           .insert([{
             title: questionnaireTitle,
+            description: questionnaireDescription,
             owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id //this gets the logged-in user's ID from Supabase Auth ("Who created this questionnaire?")
           }])
           .select()
@@ -228,12 +240,12 @@ export class ManageQuestions implements OnInit {
       if (insertError) throw insertError;
 
       //Success pop-up
-      alert(`✅ "${questionnaireTitle}" successfully saved!`);
+      alert(` "${questionnaireTitle}" successfully saved!`);
       this.router.navigate(['/dashboard']);
 
     } catch (error: any) {
       console.error("Critical Save Error:", error);
-      alert("❌ Failed to save: " + error.message);
+      alert(" Failed to save: " + error.message);
     }
   }
   /**
