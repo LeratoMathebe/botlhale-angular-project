@@ -34,14 +34,14 @@ export class PublicForm implements OnInit {
     if (idOrSlug) {
       this.currentSlug = idOrSlug;
 
-      if(typeof window !== 'undefined' && window.localStorage) {
-       if (localStorage.getItem(`submitted_${idOrSlug}`) === 'true') {
-        this.isDuplicate = true;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-        return;
-      }
-    }
+    //   if(typeof window !== 'undefined' && window.localStorage) {
+    //    if (localStorage.getItem(`submitted_${idOrSlug}`) === 'true') {
+    //     this.isDuplicate = true;
+    //     this.isLoading = false;
+    //     this.cdr.detectChanges();
+    //     return;
+    //   }
+    // }
 
       this.loadForm(idOrSlug); //if URL contains a slug, load the form from database
     } else {
@@ -119,10 +119,10 @@ export class PublicForm implements OnInit {
   async submitForm() {
 
     //Safety Net: Guard against forced submissions
-    if (this.isDuplicate) {
-      alert("You have already submitted responses for this questionnaire.");
-      return;
-    }
+    // if (this.isDuplicate) {
+    //   alert("You have already submitted responses for this questionnaire.");
+    //   return;
+    // }
 
 
     if (this.patientForm.invalid) {
@@ -178,6 +178,3 @@ export class PublicForm implements OnInit {
   }
 }
 
-/**
- * 
- */

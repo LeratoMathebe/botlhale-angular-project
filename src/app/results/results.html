@@ -1,13 +1,11 @@
-<div class="p-8 bg-gray-50 min-h-screen">
+<!-- <div class="p-8 bg-gray-50 min-h-screen">
   <div class="max-w-7xl mx-auto">
 
-    <!-- Loading State -->
     <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
       Loading results...
     </div>
 
     <div *ngIf="!isLoading">
-      <!-- Header -->
       <div class="flex justify-between items-center mb-6">
         <div>
           <button (click)="goBack()" 
@@ -21,13 +19,13 @@
         </div>
 
         <div class="flex gap-3">
-          <!-- Export CSV -->
+    
           <button (click)="exportCSV()"
                   class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
             Export CSV
           </button>
 
-          <!-- Clear Results -->
+      
           <button (click)="clearResults()"
                   class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600">
             Clear Results
@@ -35,13 +33,11 @@
         </div>
       </div>
 
-      <!-- No Submissions State -->
       <div *ngIf="submissions.length === 0" 
            class="bg-white rounded-xl shadow p-10 text-center text-gray-500">
         No submissions yet for this questionnaire.
       </div>
 
-      <!-- Results Grid -->
       <div *ngIf="submissions.length > 0" 
            class="bg-white shadow rounded-xl overflow-x-auto">
         <table class="w-full text-left text-sm">
@@ -69,4 +65,118 @@
       </div>
     </div>
   </div>
+</div> -->
+
+
+<div class="p-8 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto">
+
+    <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
+      Loading results...
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <button (click)="goBack()" 
+                  class="text-gray-500 hover:text-gray-700 text-sm mb-2 flex items-center gap-1">
+            ← Back to Dashboard
+          </button>
+          <h1 class="text-2xl font-bold text-gray-800">{{ questionnaire?.title }}</h1>
+          <p class="text-gray-500 text-sm mt-1">
+            {{ submissions.length }} submission{{ submissions.length !== 1 ? 's' : '' }} received
+          </p>
+        </div>
+
+        <div class="flex gap-3">
+          <button (click)="exportCSV()"
+                  class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
+            Export CSV
+          </button>
+
+          <button (click)="clearResults()"
+                  class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600">
+            Clear Results
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+        
+        <div class="md:col-span-1 bg-[#18181b] border border-gray-800 rounded-xl p-6 text-gray-200 shadow-xl font-mono">
+          <h3 class="text-lg font-bold tracking-wide mb-1 text-white">Quick Stats</h3>
+          <hr class="border-gray-700 w-16 mb-4">
+
+          <div class="space-y-3 text-xs">
+            <div class="flex items-center gap-2">
+              <span>📊</span>
+              <span class="text-gray-400">Total Submissions:</span>
+              <span class="text-white font-bold ml-auto">{{ totalSubmissions }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span>•</span>
+              <span class="text-gray-400">Radio questions:</span>
+              <span class="text-white font-bold ml-auto">{{ radioCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span>▼</span>
+              <span class="text-gray-400">Dropdown questions:</span>
+              <span class="text-white font-bold ml-auto">{{ dropdownCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span>📝</span>
+              <span class="text-gray-400">Open text questions:</span>
+              <span class="text-white font-bold ml-auto">{{ textCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2 pt-1 border-t border-gray-800">
+              <span>🗓️</span>
+              <span class="text-gray-400">Latest:</span>
+              <span class="text-emerald-400 font-bold ml-auto">{{ latestSubmissionDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-3">
+          <div *ngIf="submissions.length === 0" 
+               class="bg-white rounded-xl shadow p-10 text-center text-gray-500">
+            No submissions yet for this questionnaire.
+          </div>
+
+          <div *ngIf="submissions.length > 0" 
+               class="bg-white shadow rounded-xl overflow-x-auto border border-gray-100">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                <tr>
+                  <th class="px-4 py-3 whitespace-nowrap">Submitted At</th>
+                  <th *ngFor="let q of questions" 
+                      class="px-4 py-3 whitespace-nowrap">
+                    {{ q.label }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr *ngFor="let sub of submissions" class="hover:bg-gray-50">
+                  <td class="px-4 py-3 text-gray-500 whitespace-nowrap">
+                    {{ sub.submitted_at | date:'dd MMM yyyy, HH:mm':'UTC+2' }}
+                  </td>
+                  <td *ngFor="let q of questions" 
+                      class="px-4 py-3 text-gray-700">
+                    {{ sub.answers[q.id] || '—' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
+
+

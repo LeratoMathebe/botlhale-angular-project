@@ -46,7 +46,9 @@ export class ManageQuestions implements OnInit {
     //  and right now that list starts empty.
     this.adminForm = this.fb.group({
       questionnaire_description: [''], //this is where you can add a description field for the questionnaire if you want
-      questions: this.fb.array([])
+      questions: this.fb.array([]),
+      primary_colour: ['#15803d'],
+      logo_url: ['']
     });
   }
 
@@ -73,7 +75,7 @@ export class ManageQuestions implements OnInit {
       // 1. Fetch the questionnaire title using its ID from the database
       const { data: qData, error: qError } = await this.supabase.supabase 
         .from('questionnaires') 
-        .select('title, description')
+        .select('title, description, primary_colour, logo_url')
         .eq('id', id)
         .single(); //only want one result
 
@@ -82,7 +84,10 @@ export class ManageQuestions implements OnInit {
       
       //Patch the existing description text directly into the main questionnaire
       this.adminForm.patchValue({
-        questionnaire_description: qData.description || '' //if there's a description, show it. If not, show empty string
+        questionnaire_description: qData.description || '', //if there's a description, show it. If not, show empty string
+        primary_colour: qData.primary_colour || '#15803d',
+        logo_url: qData.logo_url || ''
+
       });
 
       // 2. Fetch its questions ordered by order_index
@@ -167,7 +172,11 @@ export class ManageQuestions implements OnInit {
       questionnaireTitle = prompted;
     }
 
+
+
     const questionnaireDescription = this.adminForm.get('questionnaire_description')?.value  || ''; //get the description from the form, or use empty string if it's not there
+    const chosenColour = this.adminForm.get('primary_colour')?.value || '#15803d';
+    const chosenLogo = this.adminForm.get('logo_url')?.value || '';
 
     try {
       let questionnaireId = this.editingId;
@@ -182,7 +191,10 @@ export class ManageQuestions implements OnInit {
           .update({ 
             title: questionnaireTitle,
             description: questionnaireDescription,
-             updated_at: new Date().toISOString() })
+            primary_colour: chosenColour,
+            logo_url: chosenLogo,
+             updated_at: new Date().toISOString() 
+            })
         .eq('id', this.editingId);
 
         if (updateError) throw updateError;
@@ -202,6 +214,8 @@ export class ManageQuestions implements OnInit {
           .insert([{
             title: questionnaireTitle,
             description: questionnaireDescription,
+            primary_colour: chosenColour,
+            logo_url: chosenLogo,
             owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id //this gets the logged-in user's ID from Supabase Auth ("Who created this questionnaire?")
           }])
           .select()

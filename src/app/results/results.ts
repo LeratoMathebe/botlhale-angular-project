@@ -15,6 +15,12 @@ export class Results implements OnInit {
   submissions: any[] = []; //stores user submissions
   isLoading = true; //tracks loading state
 
+  totalSubmissions = 0;
+  radioCount = 0;
+  dropdownCount = 0;
+  textCount = 0;
+  latestSubmissionDate = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -96,6 +102,9 @@ export class Results implements OnInit {
       this.submissions = submissionsWithAnswers.filter(sub =>
         this.questions.every(q => sub.answers[q.id] !== undefined)
       );
+
+      //NEW: Run calculation process for the sidebar quick stats
+      this.calculateQuickStats();
       
       this.isLoading = false;
       this.cdr.detectChanges();
@@ -105,6 +114,31 @@ export class Results implements OnInit {
       // so it converts the error object into readable text for debugging
       this.isLoading = false;
       this.cdr.detectChanges();
+    }
+  }
+
+  // NEW: Helper logic method to loop metrics values
+  calculateQuickStats() {
+    this.totalSubmissions = this.submissions.length;
+    this.radioCount = this.questions.filter(q => q.type === 'radio').length;
+    this.dropdownCount = this.questions.filter(q => q.type === 'dropdown').length;
+    this.textCount = this.questions.filter(q => q.type === 'text').length;
+
+    if (this.submissions.length > 0) {
+      // Find the absolute newest timestamp out of all complete submissions
+      const sorted = [...this.submissions].sort((a, b) => {
+        return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
+      });
+      
+      // Format cleanly using South African localized defaults (DD MMM YYYY)
+      const latestDate = new Date(sorted[0].submitted_at);
+      this.latestSubmissionDate = latestDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+    } else {
+      this.latestSubmissionDate = '—';
     }
   }
 
