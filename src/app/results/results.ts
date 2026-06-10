@@ -1,7 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ElementRef, ViewChildrenDecorator, QueryList } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../services/supabase';
+import {Chart, registerables} from 'chart.js';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-results',
@@ -14,12 +17,12 @@ export class Results implements OnInit {
   questions: any[] = []; //store questions
   submissions: any[] = []; //stores user submissions
   isLoading = true; //tracks loading state
-
   totalSubmissions = 0;
   radioCount = 0;
   dropdownCount = 0;
   textCount = 0;
   latestSubmissionDate = '';
+  chartQuestions: any[] = []; //stores radio and dropdown questions with their statistics
 
   constructor(
     private route: ActivatedRoute,
@@ -109,6 +112,9 @@ export class Results implements OnInit {
       this.isLoading = false;
       this.cdr.detectChanges();
 
+      //Initialize charts after view updates
+      setTimeout(() => this.initCharts(), 100);
+
     } catch (error: any) {
       console.error("Results Load Error:", JSON.stringify(error)); //JSON turns a JavaScript object into a text/string format.
       // so it converts the error object into readable text for debugging
@@ -140,7 +146,82 @@ export class Results implements OnInit {
     } else {
       this.latestSubmissionDate = '—';
     }
+
+    //Build chart data for radio and dropdown questions only
+    this.chartQuestions = this.questions
+    .filter(q => q.type === 'radio' || q.type === 'dropdown')
+    .map(q => 
+    {
+       const allAnswers = this.submissions.map(sub => sub.answers[q.id] || '');
+       const counts: { [key: string]: number } = {};
+       allAnswers.forEach(answer => 
+       {
+         if (answer) counts[answer] = (counts[answer] || 0) + 1;
+       });
+
+       return {
+       id: q.id,
+       label: q.label,
+       type: q.type,
+       labels: Object.keys(counts),
+       data: Object.values(counts),
+       total: allAnswers.filter(a => a !== '').length
+       };
+    });
   }
+     initCharts() 
+      {
+     this.chartQuestions.forEach(q => {
+     const canvas = document.getElementById(`chart-${q.id}`) as HTMLCanvasElement;
+     if (!canvas) return;
+
+     //Destro existing chart if any
+     const existing = Chart.getChart(canvas);
+     if (existing) existing.destroy();
+
+     const colors = q.type === 'radio'
+     ? ['#8b5cf6', '#c4b5fd', '#ddd6fe', '#ede9fe']
+        : ['#3b82f6', '#93c5fd', '#bfdbfe', '#dbeafe', '#eff6ff'];
+
+        new Chart(canvas, {
+           type: q.type === 'radio' ? 'doughnut' : 'bar',
+           data: {
+           labels: q.labels,
+           datasets: [{
+               data: q.data,
+               backgroundColor: colors.slice(0, q.labels.length),
+               borderWidth: 0,
+               borderRadius: q.type === 'dropdown' ? 4 : 0
+               }]
+     },
+     options: {
+         responsive: true,
+         plugins: {
+         legend: {
+         position: q.type === 'radio' ? 'bottom' : 'none' as any,
+         labels: { font: {size: 11}, padding: 8}
+         },
+         tooltip: {
+         callbacks: {
+         label: (context) => {
+         const value = context.raw as number;
+         const percentage = Math.round((value / q.total) * 100);
+         return ` ${value} responses (${percentage}%) `;
+      }
+    }
+  }
+},
+  scales: q.type === 'bar' ? {
+  y: {
+  beginAtZero: true,
+  ticks: {stepSize: 1}
+  }
+  } : {}
+  }
+  });
+  });
+  }
+
 
   async clearResults() {
     const confirmed = confirm(`Are you sure you want to delete ALL submissions for "${this.questionnaire.title}"? This cannot be undone.`);
