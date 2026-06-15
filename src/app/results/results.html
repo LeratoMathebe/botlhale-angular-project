@@ -90,19 +90,18 @@
 
         <div class="flex gap-3">
           <button (click)="exportCSV()"
-                  class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
+                  class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">
             Export CSV
           </button>
           <button (click)="clearResults()"
-                  class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600">
-            Clear Results
+                  class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition">
+            Clear All Results
           </button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
 
-        <!-- LEFT: Quick Stats Panel -->
         <div class="md:col-span-1 bg-[#18181b] border border-gray-800 rounded-xl p-6 text-gray-200 shadow-xl font-mono">
           <h3 class="text-lg font-bold tracking-wide mb-1 text-white">Quick Stats</h3>
           <hr class="border-gray-700 w-16 mb-4">
@@ -139,7 +138,6 @@
             </div>
           </div>
 
-          <!-- Charts for radio and dropdown questions -->
           <div *ngFor="let q of chartQuestions" class="mt-4 pt-4 border-t border-gray-700">
             <p class="text-xs text-gray-400 mb-2">
               <span *ngIf="q.type === 'radio'">● </span>
@@ -151,7 +149,6 @@
 
         </div>
 
-        <!-- RIGHT: Results Grid -->
         <div class="md:col-span-3">
           <div *ngIf="submissions.length === 0" 
                class="bg-white rounded-xl shadow p-10 text-center text-gray-500">
@@ -168,16 +165,23 @@
                       class="px-4 py-3 whitespace-nowrap">
                     {{ q.label }}
                   </th>
+                  <th class="px-4 py-3 text-right text-red-600 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200">
-                <tr *ngFor="let sub of submissions" class="hover:bg-gray-50">
+                <tr *ngFor="let sub of submissions" class="hover:bg-gray-50 group">
                   <td class="px-4 py-3 text-gray-500 whitespace-nowrap">
                     {{ sub.submitted_at | date:'dd MMM yyyy, HH:mm':'UTC+2' }}
                   </td>
                   <td *ngFor="let q of questions" 
                       class="px-4 py-3 text-gray-700">
                     {{ sub.answers[q.id] || '—' }}
+                  </td>
+                  <td class="px-4 py-3 text-right whitespace-nowrap">
+                    <button (click)="deleteSubmission(sub.id)" 
+                            class="text-red-400 hover:text-red-600 font-medium text-xs bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded transition">
+                      🗑️ Delete
+                    </button>
                   </td>
                 </tr>
               </tbody>

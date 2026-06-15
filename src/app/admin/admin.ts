@@ -94,6 +94,12 @@ export class Admin implements OnInit {
   closeViewModal() {
     this.selectedMember = null;
   }
+
+  get adminCount(): number {
+  return this.staffMembers.filter(m => m.role === 'admin').length;
+}
+
+
   /**
    * ADD ACTION: Signs up a new user via Supabase Auth and hooks their profile configuration 
    */

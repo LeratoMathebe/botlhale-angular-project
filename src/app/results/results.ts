@@ -175,7 +175,6 @@ export class Results implements OnInit {
      const canvas = document.getElementById(`chart-${q.id}`) as HTMLCanvasElement;
      if (!canvas) return;
 
-     //Destro existing chart if any
      const existing = Chart.getChart(canvas);
      if (existing) existing.destroy();
 
@@ -222,7 +221,6 @@ export class Results implements OnInit {
   });
   }
 
-
   async clearResults() {
     const confirmed = confirm(`Are you sure you want to delete ALL submissions for "${this.questionnaire.title}"? This cannot be undone.`);
     if (!confirmed) return;
@@ -240,6 +238,37 @@ export class Results implements OnInit {
     alert("All results cleared successfully.");
     this.submissions = [];
     this.cdr.detectChanges();
+  }
+
+  async deleteSubmission(submissionId: string) {
+    const confirmed = confirm("Are you sure you want to delete this specific patient submission record? This action cannot be undone.");
+    if (!confirmed) return;
+
+    try {
+      // 1. Delete row matching submissionId from Supabase
+      const { error } = await this.supabase.supabase
+        .from('submissions')
+        .delete()
+        .eq('id', submissionId);
+
+      if (error) throw error;
+
+      // 2. Instantly update the local UI array state without making a heavy network recall
+      this.submissions = this.submissions.filter(sub => sub.id !== submissionId);
+
+      // 3. Re-calculate the quick stats metrics dynamically based on remaining entries
+      this.calculateQuickStats();
+
+      // 4. Force angular layout detection cycle and refresh the charts canvas instances
+      this.cdr.detectChanges();
+      this.initCharts();
+
+      alert("Submission removed successfully.");
+
+    } catch (error: any) {
+      console.error("Single Delete Error:", error);
+      alert("Failed to remove record: " + error.message);
+    }
   }
 
   exportCSV() {

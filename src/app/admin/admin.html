@@ -1,4 +1,4 @@
-<div class="p-8 bg-gray-50 min-h-screen">
+ <!-- <div class="p-8 bg-gray-50 min-h-screen">
   <div class="max-w-5xl mx-auto">
 
     <div class="flex justify-between items-center mb-8">
@@ -48,8 +48,7 @@
               <button (click)="viewMemberDetails(member)" class="text-blue-600 hover:underline font-medium">
                 View
               </button>
-
-              <!-- 2. EDIT/TOGGLE ROLE ACTION (Hidden for your own account) -->
+            
   <button *ngIf="member.id !== currentUserId"
           (click)="toggleRole(member)"
           [class]="member.role === 'admin' ? 
@@ -58,7 +57,6 @@
     {{ member.role === 'admin' ? 'Demote' : 'Promote' }}
   </button>
 
-  <!-- 3. DELETE ACTION (Hidden for your own account) -->
   <button *ngIf="member.id !== currentUserId"
           (click)="deleteStaff(member)"
           class="text-red-500 hover:underline font-medium">
@@ -151,4 +149,279 @@
       </button>
     </div>
   </div>
+</div>  -->
+
+
+<div class="relative w-full min-h-screen bg-[#FAF7F2] overflow-hidden pb-16" style="font-family: 'Instrument Sans', sans-serif;">
+
+  <div class="absolute inset-0 w-full h-full pointer-events-none z-0">
+    <img src="images/gold-brown-beige-leaves.avif"
+         alt="PulseFlow Editorial Wallpaper Background"
+         class="w-full h-full object-cover opacity-100" />
+    <div class="absolute inset-0 bg-[#FAF7F2]/85 mix-blend-normal"></div>
+  </div>
+
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center min-h-screen relative z-10">
+    <div class="w-10 h-10 border-4 border-[#8B6A4F] border-t-transparent rounded-full animate-spin mb-4"></div>
+    <p class="text-[#8A7966] text-sm font-medium">Loading staff members...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="relative z-10 max-w-[1300px] mx-auto px-8 lg:px-12 pt-12">
+
+    <div class="flex items-start justify-between mb-10">
+      <div>
+        <button routerLink="/home"
+                class="flex items-center gap-1.5 text-[#A8825B] hover:text-[#4F3F2E] text-[11px] font-bold uppercase tracking-widest mb-4 transition-colors bg-transparent border-none cursor-pointer">
+          ← Back to Home
+        </button>
+        <h1 class="text-[44px] font-normal text-[#2D1F10] tracking-tight leading-tight mb-2"
+            style="font-family: 'DM Serif Display', serif;">Staff Management</h1>
+        <p class="text-[14px] text-[#8C7A6B] max-w-xl leading-relaxed">
+          Manage healthcare staff accounts, assign granular permissions, and supervise real-time platform system access levels.
+        </p>
+      </div>
+
+      <button (click)="showAddModal = true"
+              class="flex items-center gap-2 px-6 py-3.5 rounded-xl text-white text-[13px] font-bold bg-[#B68C5A] hover:bg-[#A0784C] transition-all shadow-[0_4px_20px_rgba(182,140,90,0.3)] cursor-pointer border-none whitespace-nowrap">
+        <span class="text-base leading-none">➕</span> Invite Staff Member
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+      <div class="bg-white/90 backdrop-blur-md border border-[#F2EAE0] rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden shadow-[0_4px_20px_rgba(139,106,79,0.03)]">
+        <div class="w-12 h-12 rounded-2xl bg-[#FBF7F0] flex items-center justify-center text-xl flex-shrink-0 text-[#B68C5A]">
+          <span>👥</span>
+        </div>
+        <div class="z-10">
+          <div class="text-[11px] font-bold uppercase tracking-widest text-[#A3917F] mb-1">Total Staff</div>
+          <div class="text-[34px] font-normal text-[#2D1F10] leading-none mb-1" style="font-family: 'DM Serif Display', serif;">
+            {{ staffMembers.length }}
+          </div>
+          <div class="text-[11px] text-[#A3917F]">All team members</div>
+        </div>
+        <svg class="absolute bottom-2 right-0 opacity-40 pointer-events-none" width="100" height="40" viewBox="0 0 100 40" fill="none">
+          <path d="M0 35 C 20 30, 40 38, 60 20 C 80 5, 90 15, 100 2" stroke="#B68C5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="bg-white/90 backdrop-blur-md border border-[#F2EAE0] rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden shadow-[0_4px_20px_rgba(139,106,79,0.03)]">
+        <div class="w-12 h-12 rounded-2xl bg-[#FBF7F0] flex items-center justify-center text-xl flex-shrink-0 text-[#B68C5A]">
+          <span>🛡️</span>
+        </div>
+        <div class="z-10">
+          <div class="text-[11px] font-bold uppercase tracking-widest text-[#A3917F] mb-1">Administrators</div>
+          <div class="text-[34px] font-normal text-[#2D1F10] leading-none mb-1" style="font-family: 'DM Serif Display', serif;">
+            {{ adminCount }}
+          </div>
+          <div class="text-[11px] text-[#A3917F]">Full access clearance</div>
+        </div>
+        <svg class="absolute bottom-2 right-0 opacity-40 pointer-events-none" width="100" height="40" viewBox="0 0 100 40" fill="none">
+          <path d="M0 30 C 25 35, 45 20, 65 25 C 80 30, 90 12, 100 8" stroke="#B68C5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="bg-white/90 backdrop-blur-md border border-[#F2EAE0] rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden shadow-[0_4px_20px_rgba(139,106,79,0.03)]">
+        <div class="w-12 h-12 rounded-2xl bg-[#FBF7F0] flex items-center justify-center text-xl flex-shrink-0 text-[#B68C5A]">
+          <span>👀</span>
+        </div>
+        <div class="z-10">
+          <div class="text-[11px] font-bold uppercase tracking-widest text-[#A3917F] mb-1">Active Accounts</div>
+          <div class="text-[34px] font-normal text-[#2D1F10] leading-none mb-1" style="font-family: 'DM Serif Display', serif;">
+            {{ staffMembers.length }}
+          </div>
+          <div class="text-[11px] text-[#A3917F]">Currently active</div>
+        </div>
+        <svg class="absolute bottom-2 right-0 opacity-40 pointer-events-none" width="100" height="40" viewBox="0 0 100 40" fill="none">
+          <path d="M0 25 C 20 20, 40 30, 60 15 C 75 5, 85 22, 100 18" stroke="#B68C5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="bg-white/90 backdrop-blur-md border border-[#F2EAE0] rounded-2xl p-6 flex items-center gap-4 relative overflow-hidden shadow-[0_4px_20px_rgba(139,106,79,0.03)]">
+        <div class="w-12 h-12 rounded-2xl bg-[#FBF7F0] flex items-center justify-center text-xl flex-shrink-0 text-[#B68C5A]">
+          <span>✉️</span>
+        </div>
+        <div class="z-10">
+          <div class="text-[11px] font-bold uppercase tracking-widest text-[#A3917F] mb-1">Pending Invites</div>
+          <div class="text-[34px] font-normal text-[#2D1F10] leading-none mb-1" style="font-family: 'DM Serif Display', serif;">0</div>
+          <div class="text-[11px] text-[#A3917F]">Awaiting response</div>
+        </div>
+        <svg class="absolute bottom-2 right-0 opacity-40 pointer-events-none" width="100" height="40" viewBox="0 0 100 40" fill="none">
+          <path d="M0 35 C 15 20, 35 30, 55 15 C 75 2, 85 10, 100 5" stroke="#B68C5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <div class="bg-white border border-[#EDE5D8] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(168,130,91,0.04)]">
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-8 py-6 border-b border-[#F5EFE8] gap-4">
+        <h2 class="text-2xl font-normal text-[#2D1F10]" style="font-family: 'DM Serif Display', serif;">Staff Directory</h2>
+        
+        <div class="flex items-center gap-3 self-end sm:self-auto w-full sm:w-auto">
+          <div class="flex items-center gap-2 px-4 py-2.5 border border-[#EDE5D8] rounded-xl bg-[#FAF8F5] w-full sm:w-[320px] transition-all focus-within:border-[#B68C5A]">
+            <span class="text-[#B68C5A] text-sm">🔍</span>
+            <input type="text" placeholder="Search staff by name, email or role..."
+                   class="text-[13px] text-[#5C4D3E] bg-transparent border-none outline-none w-full placeholder-[#C4B3A2]"/>
+          </div>
+          <button class="flex items-center gap-2 px-4 py-2.5 border border-[#EDE5D8] rounded-xl bg-white text-[13px] font-semibold text-[#5C4D3E] cursor-pointer hover:border-[#B68C5A] hover:bg-[#FAF8F5] transition-colors whitespace-nowrap">
+            <span>⏳</span> Filter <span class="text-[10px] text-[#A3917F]">▼</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[900px] border-collapse">
+          <thead>
+            <tr class="bg-[#FCFAF7] border-b border-[#F5EFE8]">
+              <th class="px-8 py-4 text-left text-[11px] font-bold uppercase tracking-wider text-[#A3917F]">Staff Member</th>
+              <th class="px-8 py-4 text-left text-[11px] font-bold uppercase tracking-wider text-[#A3917F]">Email Address</th>
+              <th class="px-8 py-4 text-left text-[11px] font-bold uppercase tracking-wider text-[#A3917F]">Role</th>
+              <th class="px-8 py-4 text-left text-[11px] font-bold uppercase tracking-wider text-[#A3917F]">Status</th>
+              <th class="px-8 py-4 text-center text-[11px] font-bold uppercase tracking-wider text-[#A3917F]">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#F5EFE8]">
+            <tr *ngFor="let member of staffMembers" class="hover:bg-[#FCFAF7]/60 transition-colors">
+
+              <td class="px-8 py-5">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#7A5A3D] text-[14px] font-bold flex-shrink-0 bg-[#F2EAE0]">
+                    {{ member.full_name?.charAt(0)?.toUpperCase() }}
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-[14px] font-bold text-[#2D1F10]">{{ member.full_name }}</span>
+                      <span *ngIf="member.id === currentUserId"
+                            class="text-[10px] font-bold text-[#3D7A59] bg-[#EAF5EE] px-2 py-0.5 rounded-md">(You)</span>
+                    </div>
+                    <div class="text-[12px] text-[#A3917F] mt-0.5">
+                      {{ member.role === 'admin' ? 'Platform Administrator' : 'Standard Staff' }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-8 py-5 text-[13px] font-medium text-[#5C4D3E]">{{ member.email }}</td>
+
+              <td class="px-8 py-5">
+                <span [class]="member.role === 'admin'
+                  ? 'inline-block px-3 py-1 rounded-lg text-[11px] font-bold bg-[#FBF2E6] text-[#A8743B] border border-[#F5E4D0]'
+                  : 'inline-block px-3 py-1 rounded-lg text-[11px] font-bold bg-[#F0F2F5] text-[#4A5568] border border-[#E2E8F0]'">
+                  {{ member.role === 'admin' ? 'Administrator' : 'Staff Member' }}
+                </span>
+              </td>
+
+              <td class="px-8 py-5">
+                <span class="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#2E6B4A]">
+                  <span class="w-2 h-2 rounded-full bg-[#3CD070]"></span> Active
+                </span>
+              </td>
+
+              <td class="px-8 py-5">
+                <div class="flex items-center justify-center gap-2">
+                  <button (click)="viewMemberDetails(member)"
+                          class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#EDE5D8] bg-white text-[12px] font-bold text-[#5C4D3E] hover:border-[#B68C5A] hover:bg-[#FCFAF7] transition-all cursor-pointer">
+                    👁️ View
+                  </button>
+                  <button *ngIf="member.id !== currentUserId"
+                          (click)="toggleRole(member)"
+                          class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#EDE5D8] bg-white text-[12px] font-bold text-[#B68C5A] hover:bg-[#FCFAF7] transition-all cursor-pointer">
+                    👑 {{ member.role === 'admin' ? 'Demote' : 'Promote' }}
+                  </button>
+                  <button *ngIf="member.id !== currentUserId"
+                          (click)="deleteStaff(member)"
+                          class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#FCD2D4] bg-white text-[12px] font-bold text-[#C94A53] hover:bg-[#FFF5F5] transition-all cursor-pointer">
+                    🗑️ Delete
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="staffMembers.length === 0" class="py-20 text-center text-[#A3917F] text-sm font-medium bg-white">
+        No records found matching directories.
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50" *ngIf="showAddModal">
+    <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-[0_20px_60px_rgba(79,63,46,0.15)] border border-[#EDE5D8]">
+      <h2 class="text-2xl font-normal text-[#2D1F10] mb-1" style="font-family: 'DM Serif Display', serif;">Add New Staff Account</h2>
+      <p class="text-[13px] text-[#A3917F] mb-6">Fill in the details to create a new staff profile.</p>
+
+      <form [formGroup]="staffForm" (ngSubmit)="handleStaff()" class="space-y-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F]">Full Name</label>
+          <input type="text" formControlName="full_name" class="w-full border border-[#EDE5D8] rounded-xl px-4 py-3 text-[13px] text-[#2D1F10] bg-[#FAF8F5] focus:outline-none focus:border-[#B68C5A]" placeholder="e.g. Sipho Dlamini"/>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F]">Email Address</label>
+          <input type="email" formControlName="email" class="w-full border border-[#EDE5D8] rounded-xl px-4 py-3 text-[13px] text-[#2D1F10] bg-[#FAF8F5] focus:outline-none focus:border-[#B68C5A]" placeholder="email@example.com"/>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F]">SA ID Number</label>
+            <input type="text" formControlName="sa_id_number" class="w-full border border-[#EDE5D8] rounded-xl px-4 py-3 text-[13px] text-[#2D1F10] bg-[#FAF8F5] focus:outline-none focus:border-[#B68C5A]" placeholder="13-digit ID"/>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F]">Phone Number</label>
+            <input type="text" formControlName="phone_number" class="w-full border border-[#EDE5D8] rounded-xl px-4 py-3 text-[13px] text-[#2D1F10] bg-[#FAF8F5] focus:outline-none focus:border-[#B68C5A]" placeholder="0XX XXX XXXX"/>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F]">Initial System Role</label>
+          <select formControlName="role" class="w-full border border-[#EDE5D8] rounded-xl px-4 py-3 text-[13px] text-[#2D1F10] bg-[#FAF8F5] focus:outline-none focus:border-[#B68C5A] cursor-pointer">
+            <option value="staff">Staff Member</option>
+            <option value="admin">Platform Administrator</option>
+          </select>
+        </div>
+        <p class="text-[11px] text-[#A3917F] italic">Note: The temporary password defaults to 'Welcome&#64;Staff2026'.</p>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="showAddModal = false" class="flex-1 py-3 rounded-xl border border-[#EDE5D8] bg-white text-[13px] font-semibold text-[#5C4D3E] hover:bg-[#FAF8F5] transition-colors cursor-pointer">Cancel</button>
+          <button type="submit" class="flex-1 py-3 rounded-xl bg-[#B68C5A] text-white text-[13px] font-bold border-none cursor-pointer hover:bg-[#A0784C] transition-colors">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50" *ngIf="selectedMember">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-8 shadow-[0_20px_60px_rgba(79,63,46,0.15)] border border-[#EDE5D8]">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-normal text-[#2D1F10]" style="font-family: 'DM Serif Display', serif;">Staff Details</h2>
+        <span [class]="selectedMember.role === 'admin' ? 'text-[11px] font-bold px-3 py-1 rounded-full bg-[#FBF2E6] text-[#A8743B]' : 'text-[11px] font-bold px-3 py-1 rounded-full bg-[#F0F2F5] text-[#4A5568]'">
+          {{ selectedMember.role === 'admin' ? 'Administrator' : 'Staff Member' }}
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 pb-5 mb-5 border-b border-[#F5EFE8]">
+        <div class="w-14 h-14 rounded-full bg-[#B68C5A] text-white flex items-center justify-center font-bold text-xl flex-shrink-0">
+          {{ selectedMember.full_name?.charAt(0)?.toUpperCase() }}
+        </div>
+        <div>
+          <div class="text-[15px] font-bold text-[#2D1F10]">{{ selectedMember.full_name }}</div>
+          <div class="text-[12px] text-[#A3917F] mt-0.5">{{ selectedMember.email }}</div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F] block mb-1">SA ID Number</span>
+          <p class="text-[13px] font-semibold text-[#2D1F10] tracking-wider">{{ selectedMember.sa_id_number || 'Not Registered' }}</p>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-[#A3917F] block mb-1">Phone Number</span>
+          <p class="text-[13px] font-semibold text-[#2D1F10]">{{ selectedMember.phone_number || 'Not Registered' }}</p>
+        </div>
+      </div>
+
+      <button type="button" (click)="closeViewModal()" class="w-full mt-6 py-3 rounded-xl bg-[#2D1F10] text-white text-[13px] font-bold border-none cursor-pointer">Done</button>
+    </div>
+  </div>
+
 </div>

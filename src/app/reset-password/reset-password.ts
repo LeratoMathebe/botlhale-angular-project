@@ -42,7 +42,8 @@ export class ResetPassword implements OnInit {
     this.mode = 'reset';
     
     // Extract the access token from the URL hash and set the session
-    const hash = window.location.hash;
+    /** 
+       const hash = window.location.hash;
     if (hash) {
       const params = new URLSearchParams(hash.substring(1));
       const accessToken = params.get('access_token');
@@ -53,15 +54,53 @@ export class ResetPassword implements OnInit {
           access_token: accessToken,
           refresh_token: refreshToken
         });
+        */
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tokenHash = urlParams.get('token_hash');
+        const type =  urlParams.get('type');
+
+        if(tokenHash && type == 'recovery') 
+          {
+            this.mode = 'reset';
+            const {error} = await this.supabase.supabase.auth.verifyOtp({
+              token_hash: tokenHash,
+              type: 'recovery'
+            });
         
         if (error) {
           this.errorMessage = 'Invalid or expired reset link. Please request a new one.';
           this.mode = 'forgot';
         }
+        return;
       }
+
+      const hash = window.location.hash;
+      if (hash) 
+        {
+          const params = new URLSearchParams(hash.substring(1));
+          const accessToken = params.get('acess_token');
+          const refreshToken = params.get('refresh_token');
+          const hashType = params.get('type');
+
+          if(accessToken && refreshToken && hashType === 'recovery')
+            {
+              this.mode = 'reset';
+              const {error} = await this.supabase.supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken
+              });
+
+              if (error) 
+                {
+                  this.errorMessage = 'Invalid or expired reset link. Please request a new one.';
+                  this.mode = 'forgot';
+                }
+            }
+        }
     }
   }
-}
+
 
   /**
    * Sends a password reset email to the staff member.
@@ -72,6 +111,7 @@ export class ResetPassword implements OnInit {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
     const { error } = await this.supabase.supabase.auth.resetPasswordForEmail(
       this.forgotForm.value.email,
@@ -105,6 +145,7 @@ export class ResetPassword implements OnInit {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
     const { error } = await this.supabase.supabase.auth.updateUser({
       password: password

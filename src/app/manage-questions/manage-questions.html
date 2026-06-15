@@ -1,199 +1,6 @@
 <!-- 
 <div class="min-h-screen bg-gray-50 p-8">
   <div class="max-w-4xl mx-auto">
-    <div class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-bold text-green-700">Manage Questionnaire</h2>
-      <div class ="flex gap-4">
-         <button *ngIf="questions.length > 0" 
-                (click)="togglePreview()" 
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow transition">
-          Preview Form
-        </button>
-
-      <button (click)="addQuestion()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 shadow transition">
-        + Add New Question
-      </button>
-      </div>
-    </div>
-
-    <form [formGroup]="adminForm" (ngSubmit)="saveStructure()" class="space-y-6">
-      
-      <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-green-700 mb-6">
-        <label class="text-sm font-bold text-gray-700 block mb-1">Questionnaire Context Description</label>
-        <p class="text-xs text-gray-400 mb-3">Provide a summary or instructions for patients filling out this layout.</p>
-        <textarea 
-          formControlName="questionnaire_description" 
-          rows="3" 
-          placeholder="e.g. Please complete this intake form honestly to help our medical professionals assess your health baseline profile."
-          class="w-full border p-3 rounded-lg text-sm bg-gray-50 focus:bg-white transition border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none">
-        </textarea>
-      </div>
-
-      <div formArrayName="questions">
-        <div *ngFor="let q of questions.controls; let i=index" [formGroupName]="i" 
-             class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 mb-6 relative">
-          
-          <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-2 sm:col-span-1">
-              <label class="text-sm font-semibold text-gray-600">Question Text</label>
-              <input formControlName="label" placeholder="e.g. Do you smoke?" 
-                     class="w-full border p-2 rounded mt-1">
-              
-              <div *ngIf="q.get('label')?.errors?.['invalidSAID']" class="text-red-500 text-xs mt-1 italic">
-                 Invalid 13-digit SA ID format.
-              </div>
-              <div *ngIf="q.get('label')?.errors?.['invalidSAPhone']" class="text-red-500 text-xs mt-1 italic">
-                 Invalid SA Mobile format (0XX... or +27...).
-              </div>
-            </div>
-
-            <div class="col-span-2 sm:col-span-1">
-              <label class="text-sm font-semibold text-gray-600">Database Key (lowercase)</label>
-              <input formControlName="key" placeholder="e.g. smoke_status" 
-                     class="w-full border p-2 rounded mt-1">
-            </div>
-
-            <div class="col-span-2 sm:col-span-1">
-              <label class="text-sm font-semibold text-gray-600">Input Type</label>
-              <select formControlName="type" class="w-full border p-2 rounded mt-1">
-                <option value="text">Open Text Field</option>
-                <option value="radio">Yes/No Selection </option>
-                <option value="dropdown">Dropdown List</option>
-                <option value="page-break">Page Break</option>
-              </select>
-            </div>
-
-            <div class="col-span-2 sm:col-span-1">
-              <label class="text-sm font-semibold text-blue-600">South African Format Validation</label>
-              <select formControlName="validation_type" class="w-full border-blue-200 border p-2 rounded mt-1 bg-blue-50 text-blue-800 font-medium focus:ring-2 focus:ring-blue-400">
-                <option value="none">No Special Format</option>
-                <option value="sa_id">Enforce SA ID (13 Digits)</option>
-                <option value="sa_phone">Enforce SA Mobile</option>
-              </select>
-            </div>
-
-            <div class="flex items-center mt-6">
-              <input type="checkbox" formControlName="is_required" class="mr-2 h-4 w-4">
-              <label class="text-sm font-semibold text-gray-600">Mark as Required</label>
-            </div>
-
-            <div class="col-span-2 sm:col-span-1">
-                <label class="text-sm font-semibold text-gray-600">Page / Step Number</label>
-                <input type="number" formControlName="page_number" min="1"
-                    class="w-full border p-2 rounded mt-1 bg-gray-50" 
-                    placeholder="e.g. 1">
-            </div>
-
-            <div *ngIf="q.get('type')?.value === 'dropdown' || q.get('type')?.value === 'checkbox'" 
-                 class="col-span-2 mt-2 bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <label class="text-sm font-semibold text-blue-700">Options (Separate with commas)</label>
-              <input formControlName="options" placeholder="e.g. Daily, Weekly, Monthly" 
-                     class="w-full border-blue-300 border p-2 rounded mt-1">
-            </div>
-          </div>
-
-          <button type="button" (click)="removeQuestion(i)" 
-                  class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition">
-            <span class="text-xs uppercase font-bold">Remove</span>
-          </button>
-        </div>
-      </div>
-
-      <div *ngIf="questions.length > 0" class="pt-6">
-        <button type="submit" class="w-full bg-green-700 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-green-800 transition">
-          Save All to Supabase
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div *ngIf="showPreview" 
-     class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-screen overflow-y-auto">
-    
-    <div class="flex justify-between items-center p-6 border-b sticky top-0 bg-white z-10">
-      <div>
-        <h2 class="text-xl font-bold text-green-700">Form Preview</h2>
-        <p class="text-xs text-gray-400 mt-1">This is how patients will see your form</p>
-      </div>
-      <button (click)="togglePreview()" 
-              class="text-gray-400 hover:text-gray-600 text-2xl font-bold">
-        ✕
-      </button>
-    </div>
-
-    <div class="p-6 space-y-4">
-      
-      <div *ngIf="adminForm.get('questionnaire_description')?.value" class="bg-green-50 rounded-xl p-5 border border-green-100 mb-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-green-800 mb-1">Survey Information</h3>
-        <p class="text-sm text-gray-600 leading-relaxed">
-          {{ adminForm.get('questionnaire_description')?.value }}
-        </p>
-      </div>
-
-      <div *ngFor="let q of questions.controls" class="bg-gray-50 rounded-xl p-5">
-        
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          {{ q.get('label')?.value || 'Untitled Question' }}
-          <span *ngIf="q.get('is_required')?.value" class="text-red-500 ml-1">*</span>
-        </label>
-
-        <input *ngIf="q.get('type')?.value === 'text'"
-               type="text" disabled
-               [placeholder]="q.get('label')?.value"
-               class="w-full border rounded-lg p-3 bg-white text-gray-400 cursor-not-allowed">
-
-        <div *ngIf="q.get('type')?.value === 'radio'" class="flex gap-6">
-          <label class="flex items-center gap-2 text-gray-600">
-            <input type="radio" disabled class="h-4 w-4"> Yes
-          </label>
-          <label class="flex items-center gap-2 text-gray-600">
-            <input type="radio" disabled class="h-4 w-4"> No
-          </label>
-        </div>
-
-        <select *ngIf="q.get('type')?.value === 'dropdown'" 
-                disabled
-                class="w-full border rounded-lg p-3 bg-white text-gray-400 cursor-not-allowed">
-          <option>Select an option</option>
-          <ng-container *ngIf="q.get('options')?.value">
-            <option *ngFor="let opt of q.get('options')?.value?.split(',')">
-              {{ opt.trim() }}
-            </option>
-          </ng-container>
-        </select>
-
-        <div *ngIf="q.get('type')?.value === 'checkbox'" class="space-y-2">
-          <ng-container *ngIf="q.get('options')?.value">
-            <label *ngFor="let opt of q.get('options')?.value?.split(',')"
-                   class="flex items-center gap-2 text-gray-600">
-              <input type="checkbox" disabled class="h-4 w-4">
-              {{ opt.trim() }}
-            </label>
-          </ng-container>
-        </div>
-
-        <div *ngIf="q.get('type')?.value === 'page-break'" 
-             class="border-t-2 border-dashed border-gray-300 pt-2 text-xs text-gray-400 text-center">
-          — Page Break —
-        </div>
-
-      </div>
-    </div>
-
-    <div class="p-6 border-t sticky bottom-0 bg-white">
-      <button (click)="togglePreview()" 
-              class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition">
-        Close Preview
-      </button>
-    </div>
-  </div>
-</div> -->
-
-
-<div class="min-h-screen bg-gray-50 p-8">
-  <div class="max-w-4xl mx-auto">
     
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-3xl font-bold text-green-700">Manage Questionnaire</h2>
@@ -410,6 +217,296 @@
       <button (click)="togglePreview()" 
               class="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition">
         Close Preview
+      </button>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="relative w-full min-h-screen bg-[#FAF7F2] pb-16 overflow-hidden">
+  
+  <div class="absolute top-0 left-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 opacity-90 hidden sm:block"
+       style="mask-image: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
+    <img 
+      src="images/wallpaper-with-leaves-brown-background.avif" 
+      alt="Left decorative foliage" 
+      class="w-full h-full object-cover object-center opacity-250 mix-blend-multiply"
+    />
+  </div>
+
+  <div class="absolute top-0 right-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 opacity-90 hidden sm:block"
+       style="mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
+    <img 
+      src="images/wallpaper-with-leaves-brown-background.avif" 
+      alt="Right decorative foliage" 
+      class="w-full h-full object-cover object-center opacity-250 mix-blend-multiply"
+    />
+  </div>
+
+  <div class="absolute top-[10%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-[#EADCC9]/20 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
+  <div class="absolute bottom-[5%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#8B6A4F]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
+
+  <div class="relative z-10 max-w-[1440px] mx-auto px-12 pt-14">
+    
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+      <div>
+        <h2 class="text-[44px] font-normal text-[#4F3F2E] tracking-tight leading-tight mb-2" style="font-family: 'DM Serif Display', serif;">
+          Manage Questionnaire
+        </h2>
+        <div class="w-12 h-0.5 bg-[#EADCC9] rounded-full mt-1"></div>
+        <p class="text-[14px] text-[#8A7966] max-w-xl leading-relaxed mt-2" style="font-family: 'Inter', sans-serif;">
+          Create and customise questionnaires to collect accurate patient insights.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 self-end sm:self-center" style="font-family: 'Inter', sans-serif;">
+        <button *ngIf="questions.length > 0" 
+                type="button"
+                (click)="togglePreview()" 
+                class="h-12 px-6 rounded-2xl text-[#8B6A4F] font-semibold text-xs bg-white border border-[#EBE3D9] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all duration-200 flex items-center gap-2 shadow-sm cursor-pointer">
+          👁️ Preview Form
+        </button>
+
+        <button type="button" 
+                (click)="addQuestion()" 
+                class="h-12 px-6 rounded-2xl text-white font-semibold text-xs bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 cursor-pointer border-none">
+          ➕ Add New Question
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="adminForm" (ngSubmit)="saveStructure()" class="space-y-8">
+      
+      <div class="bg-white/80 backdrop-blur-md p-8 rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] space-y-6">
+        
+        <div class="flex gap-4">
+          <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">📑</div>
+          <div class="w-full">
+            <label class="text-sm font-bold text-[#4F3F2E] block mb-1" style="font-family: 'Inter', sans-serif;">Questionnaire Context Description</label>
+            <p class="text-xs text-[#A39280] mb-3" style="font-family: 'Inter', sans-serif;">Provide a summary or instructions for patients filling out this layout.</p>
+            <textarea 
+              formControlName="questionnaire_description" 
+              rows="3" 
+              placeholder="e.g. Please complete this intake form honestly to help our medical professionals assess your health baseline profile."
+              class="w-full border p-4 rounded-2xl text-sm bg-[#FDFBF9] text-[#4F3F2E] placeholder-[#CBB59A] transition border-[#EADCC9] focus:bg-white focus:ring-2 focus:ring-[#8B6A4F]/20 focus:border-[#8B6A4F] outline-none resize-none leading-relaxed" style="font-family: 'Inter', sans-serif;">
+            </textarea>
+          </div>
+        </div>
+
+        <hr class="border-[#FDFBF9]" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2" style="font-family: 'Inter', sans-serif;">
+          
+          <div class="flex gap-4">
+            <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">🎨</div>
+            <div class="flex-1">
+              <label class="text-sm font-bold text-[#4F3F2E] block mb-1">Primary Brand Theme Colour</label>
+              <p class="text-xs text-[#A39280] mb-3">Pick a palette color accents to update form actions, inputs, and layouts cleanly.</p>
+              <div class="flex items-center gap-3">
+                <div class="relative w-14 h-11 rounded-xl overflow-hidden border border-[#EADCC9] bg-[#FDFBF9] flex items-center justify-center cursor-pointer">
+                  <input type="color" 
+                         formControlName="primary_colour" 
+                         class="absolute inset-0 w-full h-full p-0 border-none scale-150 cursor-pointer bg-transparent">
+                </div>
+                <input type="text" 
+                       formControlName="primary_colour" 
+                       class="flex-1 h-11 border border-[#EADCC9] px-4 text-sm rounded-xl outline-none font-mono tracking-wider uppercase bg-[#FDFBF9] focus:bg-white text-[#4F3F2E] focus:border-[#8B6A4F]" 
+                       placeholder="#8B956A">
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">🌐</div>
+            <div class="flex-1">
+              <label class="text-sm font-bold text-[#4F3F2E] block mb-1">Clinic Logo Web Link (Image URL)</label>
+              <p class="text-xs text-[#A39280] mb-3">Provide a link address path pointing directly to a public web image repository.</p>
+              <input type="text" 
+                     formControlName="logo_url" 
+                     class="w-full h-11 border px-4 text-sm rounded-xl outline-none bg-[#FDFBF9] text-[#4F3F2E] placeholder-[#CBB59A] focus:bg-white border-[#EADCC9] focus:ring-2 focus:ring-[#8B6A4F]/20 focus:border-[#8B6A4F]" 
+                     placeholder="https://example.com/clinic-logo.png">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div formArrayName="questions" class="space-y-6" style="font-family: 'Inter', sans-serif;">
+        <div *ngFor="let q of questions.controls; let i=index" [formGroupName]="i" 
+             class="bg-white/80 backdrop-blur-md p-8 rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] relative group hover:bg-white transition-all duration-300">
+          
+          <div class="absolute -left-3 top-8 w-8 h-8 rounded-full bg-gradient-to-br from-[#EADCC9] to-[#C8A37D]/40 text-[#4F3F2E] text-xs font-bold flex items-center justify-center shadow-sm border border-white">
+            {{ i + 1 | number:'2.0-0' }}
+          </div>
+
+          <div class="grid grid-cols-2 gap-x-6 gap-y-5">
+            
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-xs font-bold text-[#A39280] uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">💬 Question Text</label>
+              <input formControlName="label" placeholder="e.g. Do you smoke?" 
+                     class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all">
+              
+              <div *ngIf="q.get('label')?.errors?.['invalidSAID']" class="text-rose-500 text-xs mt-1.5 italic font-medium flex items-center gap-1">
+                ⚠️ Invalid 13-digit SA ID format.
+              </div>
+              <div *ngIf="q.get('label')?.errors?.['invalidSAPhone']" class="text-rose-500 text-xs mt-1.5 italic font-medium flex items-center gap-1">
+                ⚠️ Invalid SA Mobile format (0XX... or +27...).
+              </div>
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-xs font-bold text-[#A39280] uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">🔑 Database Key (lowercase)</label>
+              <input formControlName="key" placeholder="e.g. smoke_status" 
+                     class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm font-mono text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all">
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-xs font-bold text-[#A39280] uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">🎛️ Input Type</label>
+              <div class="relative">
+                <select formControlName="type" class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
+                  <option value="text">Open Text Field</option>
+                  <option value="radio">Yes/No Selection </option>
+                  <option value="dropdown">Dropdown List</option>
+                  <option value="page-break">Page Break</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#8A7966] text-xs">▼</div>
+              </div>
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-xs font-bold text-[#A39280] uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">🇿🇦 South African Format Validation</label>
+              <div class="relative">
+                <select formControlName="validation_type" class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
+                  <option value="none">No Special Format</option>
+                  <option value="sa_id">Enforce SA ID (13 Digits)</option>
+                  <option value="sa_phone">Enforce SA Mobile</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#8A7966] text-xs">▼</div>
+              </div>
+            </div>
+
+            <div class="flex items-center mt-3">
+              <label class="relative flex items-center gap-2.5 cursor-pointer select-none">
+                <input type="checkbox" formControlName="is_required" class="sr-only peer">
+                <div class="w-5 h-5 rounded-md border border-[#EADCC9] bg-[#FDFBF9] peer-checked:bg-[#8B6A4F] peer-checked:border-[#8B6A4F] transition-all flex items-center justify-center text-white text-xs font-bold">
+                  <span class="scale-0 peer-checked:scale-100 transition-transform">✓</span>
+                </div>
+                <span class="text-sm font-semibold text-[#4F3F2E]">Mark as Required</span>
+              </label>
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+              <label class="text-xs font-bold text-[#A39280] uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">📄 Page / Step Number</label>
+              <input type="number" formControlName="page_number" min="1"
+                     class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all" 
+                     placeholder="e.g. 1">
+            </div>
+
+            <div *ngIf="q.get('type')?.value === 'dropdown' || q.get('type')?.value === 'checkbox'" 
+                 class="col-span-2 mt-2 bg-[#FDFBF9] p-5 rounded-2xl border border-[#EADCC9] space-y-1.5">
+              <label class="text-xs font-bold text-[#8B6A4F] uppercase tracking-wider block">🎨 Options (Separate with commas)</label>
+              <input formControlName="options" placeholder="e.g. Daily, Weekly, Monthly" 
+                     class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-white focus:border-[#8B6A4F] outline-none transition-all">
+            </div>
+          </div>
+
+          <button type="button" (click)="removeQuestion(i)" 
+                  class="absolute top-6 right-6 text-[#CBB59A] hover:text-rose-600 font-bold transition-colors cursor-pointer p-1.5 rounded-lg hover:bg-rose-50/50 flex items-center justify-center border-none bg-transparent">
+            🗑️ <span class="text-[10px] uppercase tracking-wider font-bold ml-1 hidden sm:inline">Remove</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="questions.length > 0" class="pt-4 flex justify-center">
+        <button type="submit" 
+                class="w-full max-w-md h-14 rounded-2xl text-white font-bold text-sm bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_12px_30px_rgba(139,106,79,0.25)] hover:-translate-y-0.5 hover:shadow-[0_18px_35px_rgba(139,106,79,0.35)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border-none">
+          💾 Save All to Supabase
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="showPreview" 
+     class="fixed inset-0 bg-[#4F3F2E]/30 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
+  <div class="bg-[#FAF7F2] rounded-[32px] border border-[#F2EAE0] shadow-[0_25px_60px_rgba(79,63,46,0.15)] w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+       [style.--preview-colour]="adminForm.get('primary_colour')?.value || '#8B6A4F'">
+    
+    <div class="flex justify-between items-center px-8 py-6 border-b border-[#F2EAE0] bg-white sticky top-0 z-10">
+      <div>
+        <h2 class="text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Form Preview</h2>
+        <p class="text-xs text-[#A39280] mt-0.5 font-medium" style="font-family: 'Inter', sans-serif;">This is how patients will see your form live</p>
+      </div>
+      <button (click)="togglePreview()" 
+              class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-[#8A7966] font-bold text-sm transition-colors hover:bg-rose-50 hover:text-rose-600 shadow-sm cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <div class="p-8 space-y-5 overflow-y-auto flex-1">
+      
+      <div class="bg-white border border-[#F2EAE0] rounded-3xl p-6 flex items-start gap-4 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
+        <div *ngIf="adminForm.get('logo_url')?.value" class="flex-shrink-0 bg-[#FDFBF9] p-1.5 rounded-xl border border-[#F0E6DB] w-12 h-12 flex items-center justify-center">
+          <img [src]="adminForm.get('logo_url')?.value" alt="Clinic Logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <h3 class="font-normal text-xl text-[#4F3F2E] mb-1" style="font-family: 'DM Serif Display', serif;">
+            {{ editingTitle || 'New Questionnaire Title' }}
+          </h3>
+          <p *ngIf="adminForm.get('questionnaire_description')?.value" class="text-xs text-[#8A7966] leading-relaxed" style="font-family: 'Inter', sans-serif;">
+            {{ adminForm.get('questionnaire_description')?.value }}
+          </p>
+        </div>
+      </div>
+
+      <div *ngFor="let q of questions.controls" class="bg-white border border-[#F2EAE0] rounded-2xl p-6 shadow-[0_10px_30px_rgba(79,63,46,0.01)]" style="font-family: 'Inter', sans-serif;">
+        
+        <label class="block text-xs font-bold text-[#A39280] uppercase tracking-wider mb-2.5">
+          {{ q.get('label')?.value || 'Untitled Question' }}
+          <span *ngIf="q.get('is_required')?.value" class="text-rose-500 ml-0.5">*</span>
+        </label>
+
+        <input *ngIf="q.get('type')?.value === 'text'"
+               type="text" disabled
+               [placeholder]="q.get('label')?.value || 'Type response here...'"
+               class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-xs bg-[#FDFBF9] text-[#A39280] cursor-not-allowed outline-none font-medium">
+
+        <div *ngIf="q.get('type')?.value === 'radio'" class="flex gap-6 py-1">
+          <label class="flex items-center gap-2 text-xs font-semibold text-[#4F3F2E] cursor-not-allowed">
+            <input type="radio" disabled class="h-4 w-4 accent-[#8B6A4F]"> Yes
+          </label>
+          <label class="flex items-center gap-2 text-xs font-semibold text-[#4F3F2E] cursor-not-allowed">
+            <input type="radio" disabled class="h-4 w-4 accent-[#8B6A4F]"> No
+          </label>
+        </div>
+
+        <div *ngIf="q.get('type')?.value === 'dropdown'" class="relative">
+          <select disabled class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-xs bg-[#FDFBF9] text-[#A39280] cursor-not-allowed appearance-none outline-none font-medium">
+            <option>Select options template placeholder...</option>
+            <ng-container *ngIf="q.get('options')?.value">
+              <option *ngFor="let opt of q.get('options')?.value?.split(',')">
+                {{ opt.trim() }}
+              </option>
+            </ng-container>
+          </select>
+          <div class="absolute inset-y-0 right-4 flex items-center text-[#A39280] text-[10px]">▼</div>
+        </div>
+
+        <div *ngIf="q.get('type')?.value === 'page-break'" 
+             class="border-t border-dashed border-[#EADCC9] pt-3 text-[10px] uppercase font-bold tracking-widest text-[#C8A37D] text-center">
+          ✨ Next Page Break Partition ✨
+        </div>
+
+      </div>
+    </div>
+
+    <div class="p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
+      <button (click)="togglePreview()" 
+              class="w-full h-12 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm">
+        Close Preview Canvas
       </button>
     </div>
   </div>
