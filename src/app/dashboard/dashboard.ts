@@ -68,6 +68,16 @@ export class Dashboard implements OnInit {
      this.router.navigate(['/results', id]);
 }
 
+/**
+ * Builds the public form link using the cucrrent domain
+ * Works on localhost during development and on the live Cloudfare URL once deployed
+ */
+
+  getPublicLink(slug: string): string 
+  {
+    return `${window.location.origin}/form/${slug}`;
+  }
+
   /**
    * Publishes a questionnaire by setting is_published to true.
    * The slug is already generated in the DB so we just activate it.
@@ -93,7 +103,7 @@ export class Dashboard implements OnInit {
     const published = this.questionnaires.find(q => q.id === id); //finds the questionnaire that has been requested using their ID
     if (published) {
       const link = `${window.location.origin}/form/${published.slug}`; //Base URL = the part of a website address that stays the same for every page
-      alert(`✅ "${title}" is now published!\n\nPublic link:\n${link}`);
+      alert(`"${title}" is now published!\n\nPublic link:\n${link}`);
     }
   }
 

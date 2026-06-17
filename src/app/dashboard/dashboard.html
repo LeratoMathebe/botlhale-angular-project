@@ -218,10 +218,10 @@
             🔗 Public Access Link
           </span>
           <a *ngIf="q.is_published"
-             [href]="'http://localhost:4200/form/' + q.slug"
+             [href]="getPublicLink(q.slug)"
              target="_blank"
              class="text-xs text-[#8B6A4F] hover:text-[#4F3F2E] hover:underline font-mono break-all line-clamp-2 leading-normal transition-colors">
-            localhost:4200/form/{{ q.slug }}
+            {{ getPublicLink(q.slug) }}
           </a>
           <span *ngIf="!q.is_published" class="text-xs text-[#A39280] italic">
             Link inactive (Draft mode)
