@@ -80,23 +80,23 @@
 
 <div class="relative w-full min-h-screen bg-[#FAF7F2] pb-16 overflow-hidden" style="font-family: 'Instrument Sans', sans-serif;">
   
-  <div class="absolute top-0 left-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 opacity-90 hidden sm:block"
-       style="mask-image: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-              -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
+  <div class="absolute top-0 left-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 hidden sm:block"
+       style="mask-image: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);">
     <img 
       src="images/wallpaper-with-leaves-brown-background.avif" 
       alt="Left decorative foliage" 
-      class="w-full h-full object-cover object-center opacity-250 mix-blend-multiply"
+      class="w-full h-full object-cover object-center opacity-85"
     />
   </div>
 
-  <div class="absolute top-0 right-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 opacity-90 hidden sm:block"
-       style="mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-              -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);">
+  <div class="absolute top-0 right-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 hidden sm:block"
+       style="mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);">
     <img 
       src="images/wallpaper-with-leaves-brown-background.avif" 
       alt="Right decorative foliage" 
-      class="w-full h-full object-cover object-center opacity-250 mix-blend-multiply"
+      class="w-full h-full object-cover object-center opacity-85"
     />
   </div>
 
@@ -200,8 +200,8 @@
             
             <div class="flex flex-wrap items-center gap-4 text-xs text-[#A39280]" style="font-family: 'Inter', sans-serif;">
               <span [class]="q.is_published 
-                      ? 'inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200' 
-                      : 'inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-gray-50 text-gray-600 border border-gray-200'">
+                    ? 'inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                    : 'inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-bold bg-gray-50 text-gray-600 border border-gray-200'">
                 <span [class]="q.is_published ? 'w-1.5 h-1.5 rounded-full bg-emerald-500' : 'w-1.5 h-1.5 rounded-full bg-gray-400'"></span>
                 {{ q.is_published ? 'Published' : 'Draft' }}
               </span>
@@ -261,20 +261,21 @@
       </div>
     </div>
 
-    <div *ngIf="questionnaires.length === 0" 
-         class="bg-white/80 backdrop-blur-md border border-dashed border-[#EADCC9] rounded-3xl p-16 text-center max-w-xl mx-auto mt-12 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
-      <div class="w-12 h-12 rounded-2xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-xl mx-auto mb-4">
-        📋
+    <div class="space-y-6" *ngIf="questionnaires.length === 0">
+      <div class="bg-white/80 backdrop-blur-md border border-dashed border-[#EADCC9] rounded-3xl p-16 text-center max-w-xl mx-auto mt-12 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
+        <div class="w-12 h-12 rounded-2xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-xl mx-auto mb-4">
+          📋
+        </div>
+        <h3 class="text-xl font-normal text-[#4F3F2E] mb-2" style="font-family: 'DM Serif Display', serif;">No questionnaires created yet.</h3>
+        <p class="text-sm text-[#8A7966] max-w-sm mx-auto mb-6 leading-relaxed" style="font-family: 'Inter', sans-serif;">
+          Create your first structured healthcare form questionnaire template deployment to start collecting patient clinical insights safely.
+        </p>
+        <button routerLink="/manage-questions"
+                class="h-11 px-6 rounded-xl text-white font-semibold text-xs bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-md hover:-translate-y-0.5 transition-transform border-none cursor-pointer"
+                style="font-family: 'Inter', sans-serif;">
+          ➕ Create Questionnaire
+        </button>
       </div>
-      <h3 class="text-xl font-normal text-[#4F3F2E] mb-2" style="font-family: 'DM Serif Display', serif;">No questionnaires created yet.</h3>
-      <p class="text-sm text-[#8A7966] max-w-sm mx-auto mb-6 leading-relaxed" style="font-family: 'Inter', sans-serif;">
-        Create your first structured healthcare form questionnaire template deployment to start collecting patient clinical insights safely.
-      </p>
-      <button routerLink="/manage-questions"
-              class="h-11 px-6 rounded-xl text-white font-semibold text-xs bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-md hover:-translate-y-0.5 transition-transform border-none cursor-pointer"
-              style="font-family: 'Inter', sans-serif;">
-        ➕ Create Questionnaire
-      </button>
     </div>
 
   </div>
