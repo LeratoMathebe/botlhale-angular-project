@@ -68,7 +68,7 @@
 </div> -->
 
 
-<div class="p-8 bg-gray-50 min-h-screen">
+<!-- <div class="p-8 bg-gray-50 min-h-screen">
   <div class="max-w-7xl mx-auto">
 
     <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
@@ -191,6 +191,163 @@
 
       </div>
     </div>
+  </div>
+</div> -->
+
+<div class="relative w-full min-h-screen bg-[#FAF7F2] overflow-hidden pb-16" style="font-family: 'Instrument Sans', sans-serif;">
+
+  <div class="absolute top-0 left-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 hidden sm:block"
+       style="mask-image: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);">
+    <img src="images/wallpaper-with-leaves-brown-background.avif"
+         alt="Left decorative foliage"
+         class="w-full h-full object-cover object-center opacity-85" />
+  </div>
+
+  <div class="absolute top-0 right-0 h-full w-[350px] md:w-[450px] lg:w-[500px] pointer-events-none z-0 hidden sm:block"
+       style="mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 65%, transparent 100%);">
+    <img src="images/wallpaper-with-leaves-brown-background.avif"
+         alt="Right decorative foliage"
+         class="w-full h-full object-cover object-center opacity-85" />
+  </div>
+
+  <div class="absolute top-[10%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-[#EADCC9]/20 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
+  <div class="absolute bottom-[5%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#8B6A4F]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
+
+  <div class="relative z-10 max-w-[1300px] mx-auto px-8 lg:px-12 pt-12">
+
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center min-h-[50vh] relative z-10">
+      <div class="w-10 h-10 border-4 border-[#8B6A4F] border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="text-[#8A7966] text-sm font-medium">Loading results...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 gap-4">
+        <div>
+          <button (click)="goBack()" 
+                  class="flex items-center gap-1.5 text-[#A8825B] hover:text-[#4F3F2E] text-[11px] font-bold uppercase tracking-widest mb-4 transition-colors bg-transparent border-none cursor-pointer">
+            ← Back to Dashboard
+          </button>
+          <h1 class="text-[44px] font-normal text-[#2D1F10] tracking-tight leading-tight mb-2" 
+              style="font-family: 'DM Serif Display', serif;">{{ questionnaire?.title }}</h1>
+          <p class="text-[14px] text-[#8C7A6B] max-w-xl leading-relaxed">
+            {{ submissions.length }} submission{{ submissions.length !== 1 ? 's' : '' }} received
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 self-end sm:self-auto">
+          <button (click)="exportCSV()"
+                  class="flex items-center gap-2 px-5 py-3 rounded-xl text-white text-[13px] font-bold bg-[#B68C5A] hover:bg-[#A0784C] transition-all shadow-[0_4px_20px_rgba(182,140,90,0.25)] cursor-pointer border-none whitespace-nowrap">
+            Export CSV
+          </button>
+          <button (click)="clearResults()"
+                  class="flex items-center gap-2 px-5 py-3 rounded-xl text-[13px] font-bold border border-[#FCD2D4] bg-white text-[#C94A53] hover:bg-[#FFF5F5] transition-all cursor-pointer whitespace-nowrap">
+            Clear All Results
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+        <div class="lg:col-span-1 bg-white/90 backdrop-blur-md border border-[#F2EAE0] rounded-2xl p-6 shadow-[0_4px_20px_rgba(139,106,79,0.03)] relative overflow-hidden">
+          <h3 class="text-[16px] font-bold tracking-wider text-[#2D1F10] mb-1" style="font-family: 'DM Serif Display', serif;">Quick Stats</h3>
+          <div class="w-10 h-[2px] bg-[#B68C5A] rounded mb-5"></div>
+
+          <div class="space-y-4 text-[13px]">
+            <div class="flex items-center gap-2.5 py-1 text-[#5C4D3E]">
+              <span class="text-base text-[#B68C5A]">📊</span>
+              <span class="font-medium">Total Submissions:</span>
+              <span class="text-[#2D1F10] font-bold ml-auto">{{ totalSubmissions }}</span>
+            </div>
+
+            <div class="flex items-center gap-2.5 py-1 text-[#5C4D3E]">
+              <span class="text-[10px] text-[#B68C5A]">●</span>
+              <span class="font-medium">Radio questions:</span>
+              <span class="text-[#2D1F10] font-bold ml-auto">{{ radioCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2.5 py-1 text-[#5C4D3E]">
+              <span class="text-[11px] text-[#B68C5A]">▼</span>
+              <span class="font-medium">Dropdown questions:</span>
+              <span class="text-[#2D1F10] font-bold ml-auto">{{ dropdownCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2.5 py-1 text-[#5C4D3E]">
+              <span class="text-base text-[#B68C5A]">📝</span>
+              <span class="font-medium">Open text questions:</span>
+              <span class="text-[#2D1F10] font-bold ml-auto">{{ textCount }}</span>
+            </div>
+
+            <div class="flex items-center gap-2.5 pt-3 border-t border-[#F5EFE8] text-[#5C4D3E]">
+              <span class="text-base text-[#B68C5A]">🗓️</span>
+              <span class="font-medium">Latest:</span>
+              <span class="text-[#2E6B4A] font-bold ml-auto bg-[#EAF5EE] px-2 py-0.5 rounded-md text-[11px]">{{ latestSubmissionDate }}</span>
+            </div>
+          </div>
+
+          <div *ngFor="let q of chartQuestions" class="mt-5 pt-5 border-t border-[#F5EFE8]">
+            <p class="text-[12px] font-semibold text-[#5C4D3E] mb-3 leading-snug">
+              <span *ngIf="q.type === 'radio'" class="text-[#B68C5A] text-[9px] inline-block translate-y-[-1px]">● </span>
+              <span *ngIf="q.type === 'dropdown'" class="text-[#B68C5A] text-[10px] inline-block translate-y-[-1px]">▼ </span>
+              {{ q.label }}
+            </p>
+            <div class="bg-[#FAF8F5] rounded-xl p-3 border border-[#F5EFE8]">
+              <canvas [id]="'chart-' + q.id" class="w-full"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-3">
+          
+          <div *ngIf="submissions.length === 0" 
+               class="bg-white border border-[#EDE5D8] rounded-2xl py-20 text-center text-[#A3917F] text-sm font-medium shadow-[0_10px_30px_rgba(168,130,91,0.04)]">
+            No submissions yet for this questionnaire.
+          </div>
+
+          <div *ngIf="submissions.length > 0" 
+               class="bg-white border border-[#EDE5D8] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(168,130,91,0.04)]">
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[700px] border-collapse text-left">
+                <thead>
+                  <tr class="bg-[#FCFAF7] border-b border-[#F5EFE8]">
+                    <th class="px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-[#A3917F] whitespace-nowrap">Submitted At</th>
+                    <th *ngFor="let q of questions" 
+                        class="px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-[#A3917F] whitespace-nowrap">
+                      {{ q.label }}
+                    </th>
+                    <th class="px-6 py-4.5 text-center text-[11px] font-bold uppercase tracking-wider text-[#C94A53] whitespace-nowrap">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[#F5EFE8]">
+                  <tr *ngFor="let sub of submissions" class="hover:bg-[#FCFAF7]/50 transition-colors group">
+                    
+                    <td class="px-6 py-4 text-[13px] font-medium text-[#8C7A6B] whitespace-nowrap">
+                      {{ sub.submitted_at | date:'dd MMM yyyy, HH:mm':'UTC+2' }}
+                    </td>
+
+                    <td *ngFor="let q of questions" class="px-6 py-4 text-[13px] text-[#2D1F10]">
+                      {{ sub.answers[q.id] || '—' }}
+                    </td>
+
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                      <button (click)="deleteSubmission(sub.id)" 
+                              class="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-[#FCD2D4] bg-white text-[12px] font-bold text-[#C94A53] hover:bg-[#FFF5F5] transition-all cursor-pointer">
+                        🗑️ Delete
+                      </button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 

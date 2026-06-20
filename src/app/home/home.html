@@ -66,19 +66,30 @@
         </p>
 
         <div class="mt-8 flex flex-wrap gap-4" style="font-family: 'Inter', sans-serif;">
-          <button 
-            routerLink="/manage-questions"
-            class="h-13 px-7 rounded-2xl text-white font-semibold text-sm bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_15px_30px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center gap-2 cursor-pointer"
-          >
-            📋 Create Questionnaire &rarr;
-          </button>
+         <button 
+  routerLink="/manage-questions"
+  class="h-11 px-6 rounded-xl text-white font-semibold text-sm bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_8px_18px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center gap-2 cursor-pointer"
+>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="3" width="12" height="18" rx="2"/>
+    <path d="M9 1.5h6v3H9z"/>
+    <path d="M9 11h6"/>
+    <path d="M9 15h4"/>
+  </svg>
+  Create Questionnaire &rarr;
+</button>
 
-          <button 
-            routerLink="/dashboard"
-            class="h-13 px-7 rounded-2xl text-[#8B6A4F] font-semibold text-sm bg-white border border-[#EBE3D9] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all duration-200 flex items-center gap-2 shadow-sm cursor-pointer"
-          >
-            📊 View Dashboard
-          </button>
+<button 
+  routerLink="/dashboard"
+  class="h-11 px-6 rounded-xl text-[#8B6A4F] font-semibold text-sm bg-white border border-[#EBE3D9] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all duration-200 flex items-center gap-2 shadow-sm cursor-pointer"
+>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 20V14"/>
+    <path d="M12 20V8"/>
+    <path d="M18 20V4"/>
+  </svg>
+  View Dashboard
+</button>
         </div>
       </div>
 
@@ -100,7 +111,13 @@
 
     <div class="mt-20">
       <div class="flex items-center gap-2 mb-6">
-        <span class="text-xl">📊</span>
+        <span class="text-[#8B6A4F] flex items-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 20V14"/>
+            <path d="M12 20V8"/>
+            <path d="M18 20V4"/>
+          </svg>
+        </span>
         <h3 class="text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Health Overview</h3>
       </div>
 
@@ -109,12 +126,22 @@
         <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] flex flex-col justify-between relative overflow-hidden group hover:bg-white transition-all duration-300">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-[#A39280] uppercase tracking-wider">Total Patients</span>
-            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg">👥</div>
+            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 20C6 17.2386 9.13401 15 13 15C14.2241 15 15.3725 15.2251 16.3558 15.6191" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 10C19.1046 10 20 9.10457 20 8C20 6.89543 19.1046 6 18 6" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 17.5186C20.4285 16.5746 19.4678 15.8974 18.3242 15.6172" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
           </div>
           <div class="mt-4">
             <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">1,248</span>
             <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
-              <span>↗ +12 this week</span>
+              <span class="flex items-center gap-1">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                +12 this week
+              </span>
             </div>
           </div>
         </div>
@@ -122,12 +149,21 @@
         <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] flex flex-col justify-between relative overflow-hidden group hover:bg-white transition-all duration-300">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-[#A39280] uppercase tracking-wider">Questionnaires</span>
-            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg">📝</div>
+            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="4" width="14" height="16" rx="2" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 9H15" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 13H15" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div class="mt-4">
             <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">342</span>
             <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
-              <span>↗ +8 this week</span>
+              <span class="flex items-center gap-1">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                +8 this week
+              </span>
             </div>
           </div>
         </div>
@@ -135,12 +171,20 @@
         <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] flex flex-col justify-between relative overflow-hidden group hover:bg-white transition-all duration-300">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-[#A39280] uppercase tracking-wider">Pending Reviews</span>
-            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg">⏳</div>
+            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="8" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 8V12L14.5 14.5" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
           <div class="mt-4">
             <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">28</span>
             <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-[#C8A37D]">
-              <span>➔ +5 this week</span>
+              <span class="flex items-center gap-1">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+                +5 this week
+              </span>
             </div>
           </div>
         </div>
@@ -148,12 +192,22 @@
         <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] flex flex-col justify-between relative overflow-hidden group hover:bg-white transition-all duration-300">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-[#A39280] uppercase tracking-wider">Health Reports</span>
-            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg">📄</div>
+            <div class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V9L13 3Z" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M13 3V9H19" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 13H15" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 17H13" stroke="#8B6A4F" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
           </div>
           <div class="mt-4">
             <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">156</span>
             <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
-              <span>↗ +10 this week</span>
+              <span class="flex items-center gap-1">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                +10 this week
+              </span>
             </div>
           </div>
         </div>
@@ -165,35 +219,58 @@
       
       <div class="lg:col-span-5 flex flex-col">
         <div class="flex items-center gap-2 mb-6">
-          <span class="text-lg">⚡</span>
+          <span class="text-[#8B6A4F] flex items-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+            </svg>
+          </span>
           <h3 class="text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Quick Actions</h3>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full" style="font-family: 'Inter', sans-serif;">
           
           <div routerLink="/manage-questions" class="bg-[#FDFBF9] border border-[#EADCC9] rounded-3xl p-5 flex flex-col justify-between hover:shadow-md transition-all duration-200 cursor-pointer group">
-            <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center text-base">📋</div>
+            <div class="w-14 h-14 rounded-full bg-[#F3E4D4] text-[#A8703F] flex items-center justify-center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="3" width="12" height="18" rx="2"/>
+                <path d="M9 1.5h6v3H9z"/>
+                <path d="M9 11h6"/>
+                <path d="M9 15h4"/>
+              </svg>
+            </div>
             <div class="mt-8">
               <h4 class="text-sm font-bold text-[#4F3F2E]">Questionnaires</h4>
-              <p class="text-[11px] text-[#A39280] mt-1 leading-tight">Create and manage healthcare questionnaires.</p>
+              <p class="text-[11px] text-[#6E5C49] mt-1 leading-tight">Create and manage healthcare questionnaires.</p>
             </div>
             <span class="text-[#8B6A4F] text-xs font-bold mt-4 block group-hover:translate-x-1 transition-transform">&rarr;</span>
           </div>
 
           <div routerLink="/dashboard" class="bg-[#FDFBF9] border border-[#EADCC9] rounded-3xl p-5 flex flex-col justify-between hover:shadow-md transition-all duration-200 cursor-pointer group">
-            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-base">📊</div>
+            <div class="w-14 h-14 rounded-full bg-[#F3E4D4] text-[#A8703F] flex items-center justify-center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 20V14"/>
+                <path d="M12 20V8"/>
+                <path d="M18 20V4"/>
+              </svg>
+            </div>
             <div class="mt-8">
               <h4 class="text-sm font-bold text-[#4F3F2E]">Dashboard</h4>
-              <p class="text-[11px] text-[#A39280] mt-1 leading-tight">Monitor healthcare insights and statistics.</p>
+              <p class="text-[11px] text-[#6E5C49] mt-1 leading-tight">Monitor healthcare insights and statistics.</p>
             </div>
             <span class="text-[#8B6A4F] text-xs font-bold mt-4 block group-hover:translate-x-1 transition-transform">&rarr;</span>
           </div>
 
           <div routerLink="/results/:id" class="bg-[#FDFBF9] border border-[#EADCC9] rounded-3xl p-5 flex flex-col justify-between hover:shadow-md transition-all duration-200 cursor-pointer group">
-            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-base">🩺</div>
+            <div class="w-14 h-14 rounded-full bg-[#F3E4D4] text-[#A8703F] flex items-center justify-center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="6" r="3"/>
+                <path d="M9 9v4l3 3"/>
+                <circle cx="17" cy="16" r="1.2" fill="currentColor" stroke="none"/>
+              </svg>
+            </div>
             <div class="mt-8">
               <h4 class="text-sm font-bold text-[#4F3F2E]">Records</h4>
-              <p class="text-[11px] text-[#A39280] mt-1 leading-tight">Access patient records securely.</p>
+              <p class="text-[11px] text-[#6E5C49] mt-1 leading-tight">Access patient records securely.</p>
             </div>
             <span class="text-[#8B6A4F] text-xs font-bold mt-4 block group-hover:translate-x-1 transition-transform">&rarr;</span>
           </div>
@@ -204,45 +281,72 @@
       <div class="lg:col-span-7 flex flex-col">
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center gap-2">
-            <span class="text-lg">🕒</span>
+            <span class="text-[#8B6A4F] flex items-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </span>
             <h3 class="text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Recent Activity</h3>
           </div>
-          <a routerLink="/logs" class="text-xs font-bold text-[#A8825B] hover:underline" style="font-family: 'Inter', sans-serif;">View All &rsaquo;</a>
+          <a routerLink="/logs" class="text-xs font-bold text-[#A8825B] hover:underline" style="font-family: 'Inter', sans-serif;">
+            View All 
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="inline ml-0.5"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
         </div>
 
         <div class="bg-white/80 backdrop-blur-md rounded-3xl border border-[#F2EAE0] p-6 space-y-4 flex-1 shadow-[0_10px_30px_rgba(79,63,46,0.02)]" style="font-family: 'Inter', sans-serif;">
           
           <div class="flex items-center justify-between py-2 border-b border-[#FDFBF9]">
             <div class="flex items-center gap-3.5">
-              <div class="w-9 h-9 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-sm">📋</div>
+              <div class="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#8B6A4F] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="4" width="14" height="16" rx="2"/>
+                  <path d="M9 9H15"/>
+                  <path d="M9 13H15"/>
+                </svg>
+              </div>
               <div class="flex flex-col">
                 <span class="text-xs font-bold text-[#4F3F2E]">Health questionnaire submitted</span>
-                <span class="text-[11px] text-[#A39280]">General Health Assessment</span>
+                <span class="text-[11px] text-[#6E5C49]">General Health Assessment</span>
               </div>
             </div>
-            <span class="text-[11px] text-[#A39280] font-medium flex items-center gap-1.5">2 mins ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
+            <span class="text-[11px] text-[#6E5C49] font-medium flex items-center gap-1.5">2 mins ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
           </div>
 
           <div class="flex items-center justify-between py-2 border-b border-[#FDFBF9]">
             <div class="flex items-center gap-3.5">
-              <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm">👤</div>
+              <div class="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#8B6A4F] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
               <div class="flex flex-col">
                 <span class="text-xs font-bold text-[#4F3F2E]">Patient profile updated</span>
-                <span class="text-[11px] text-[#A39280]">Sipho Dlamini</span>
+                <span class="text-[11px] text-[#6E5C49]">Sipho Dlamini</span>
               </div>
             </div>
-            <span class="text-[11px] text-[#A39280] font-medium flex items-center gap-1.5">15 mins ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
+            <span class="text-[11px] text-[#6E5C49] font-medium flex items-center gap-1.5">15 mins ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
           </div>
 
           <div class="flex items-center justify-between py-2">
             <div class="flex items-center gap-3.5">
-              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm">📊</div>
+              <div class="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#8B6A4F] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
               <div class="flex flex-col">
                 <span class="text-xs font-bold text-[#4F3F2E]">Dashboard report generated</span>
-                <span class="text-[11px] text-[#A39280]">Monthly Summary Report</span>
+                <span class="text-[11px] text-[#6E5C49]">Monthly Summary Report</span>
               </div>
             </div>
-            <span class="text-[11px] text-[#A39280] font-medium flex items-center gap-1.5">1 hour ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
+            <span class="text-[11px] text-[#6E5C49] font-medium flex items-center gap-1.5">1 hour ago <span class="w-1.5 h-1.5 rounded-full bg-[#C8A37D]"></span></span>
           </div>
 
         </div>
