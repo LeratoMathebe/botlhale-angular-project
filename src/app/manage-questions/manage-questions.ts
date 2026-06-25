@@ -47,7 +47,7 @@ export class ManageQuestions implements OnInit {
     this.adminForm = this.fb.group({
       questionnaire_description: [''], //this is where you can add a description field for the questionnaire if you want
       questions: this.fb.array([]),
-      primary_colour: ['#15803d'],
+      primary_colour: ['#967010'],
       logo_url: ['']
     });
   }
