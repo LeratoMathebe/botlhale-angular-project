@@ -203,9 +203,9 @@
           </div>
           <div>
             <h3 class="text-lg font-bold text-[#4F3F2E] mb-1.5 tracking-tight leading-snug">{{ q.title }}</h3>
-            <p class="text-sm text-[#4F3F2E] leading-relaxed mb-3" style="font-family: 'Inter', sans-serif;">
-              Track and monitor healthcare intake fields, operational clinical processes, data security checkpoints, and active progress over time.
-            </p>
+           <p *ngIf="q.description" class="text-sm text-[#4F3F2E] leading-relaxed mb-3" style="font-family: 'Inter', sans-serif;">
+             {{ q.description }}
+          </p>
             
             <div class="flex flex-wrap items-center gap-4 text-xs text-[#A39280]" style="font-family: 'Inter', sans-serif;">
               <span [class]="q.is_published 
@@ -239,32 +239,37 @@
 
         <div class="flex flex-wrap items-center gap-2.5 lg:self-center" style="font-family: 'Inter', sans-serif;">
           
-          <button (click)="viewResults(q.id)"
-                  class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm whitespace-nowrap">
-            👁️ View Results
-          </button>
+         <button (click)="viewResults(q.id)"
+          class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3.717 8 10 8 10-8 10-8-3.717-8-10-8-10 8-10 8Z"/><circle cx="12" cy="12" r="3"/></svg>
+    View Results
+  </button>
 
-          <button (click)="editQuestionnaire(q.id)"
-                  class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm whitespace-nowrap">
-            ✏️ Edit Form
-          </button>
+        <button (click)="editQuestionnaire(q.id)"
+          class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+    Edit Form
+  </button>
 
-          <button *ngIf="!q.is_published"
-                  (click)="publishQuestionnaire(q.id, q.title)"
-                  class="h-10 px-4 rounded-xl border border-[#EADCC9] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] text-xs font-semibold text-white transition-all cursor-pointer shadow-sm whitespace-nowrap">
-            📢 Publish
-          </button>
+  <button *ngIf="!q.is_published"
+          (click)="publishQuestionnaire(q.id, q.title)"
+          class="h-10 px-4 rounded-xl border border-[#EADCC9] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] text-xs font-semibold text-white transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+    Publish
+  </button>
 
-          <button *ngIf="q.is_published"
-                  (click)="unpublishQuestionnaire(q.id, q.title)"
-                  class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#8B6A4F] hover:border-[#CBB59A] hover:bg-[#FDFBF9] transition-all cursor-pointer shadow-sm whitespace-nowrap">
-            🔏 Unpublish
-          </button>
+  <button *ngIf="q.is_published"
+          (click)="unpublishQuestionnaire(q.id, q.title)"
+          class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#8B6A4F] hover:border-[#CBB59A] hover:bg-[#FDFBF9] transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-keyhole"><circle cx="12" cy="16" r="1"/><rect width="18" height="12" x="3" y="10" rx="2"/><path d="M12 10V7"/></svg>
+    Unpublish
+  </button>
 
-          <button (click)="deleteQuestionnaire(q.id, q.title)"
-                  class="h-10 px-4 rounded-xl border border-rose-200 bg-white text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-all cursor-pointer shadow-sm whitespace-nowrap">
-            🗑️ Delete
-          </button>
+         <button (click)="deleteQuestionnaire(q.id, q.title)"
+          class="h-10 px-4 rounded-xl border border-rose-200 bg-white text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/><path d="M5 6h14l-1 14H6Z"/></svg>
+    Delete
+  </button>
         </div>
 
       </div>
