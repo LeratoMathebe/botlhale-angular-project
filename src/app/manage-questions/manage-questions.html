@@ -412,6 +412,8 @@
                   <option value="text">Open Text Field</option>
                   <option value="radio">Yes/No Selection </option>
                   <option value="dropdown">Dropdown List</option>
+                  <option value="date">Date Picker</option>
+                  <option value="number">Numeric</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#8A7966] text-xs">▼</div>
               </div>
@@ -541,6 +543,15 @@
                type="text" disabled
                [placeholder]="q.get('label')?.value || 'Type response here...'"
                class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-xs bg-[#FDFBF9] text-[#A39280] cursor-not-allowed outline-none font-medium">
+
+          <input *ngIf="q.get('type')?.value === 'date'"
+       type="date" disabled
+       class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-xs bg-[#FDFBF9] text-[#A39280] cursor-not-allowed outline-none font-medium">
+
+         <input *ngIf="q.get('type')?.value === 'number'"
+       type="number" disabled
+           [placeholder]="q.get('label')?.value || 'Enter a number...'"
+       class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-xs bg-[#FDFBF9] text-[#A39280] cursor-not-allowed outline-none font-medium">     
 
         <div *ngIf="q.get('type')?.value === 'radio'" class="flex gap-6 py-1">
           <label class="flex items-center gap-2 text-xs font-semibold text-[#4F3F2E] cursor-not-allowed">

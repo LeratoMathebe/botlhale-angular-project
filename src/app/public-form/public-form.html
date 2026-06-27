@@ -141,6 +141,19 @@
                  [style.--tw-ring-color]="'var(--theme-colour)'"
                  [placeholder]="q.label">
 
+           <input *ngIf="q.type === 'date'"
+       [formControlName]="q.key"
+       type="date"
+       class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 transition"
+       [style.--tw-ring-color]="'var(--theme-colour)'">
+
+       <input *ngIf="q.type === 'number'"
+       [formControlName]="q.key"
+       type="number"
+       class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 transition"
+       [style.--tw-ring-color]="'var(--theme-colour)'"
+       [placeholder]="q.label">      
+
           <div *ngIf="q.type === 'radio'" class="space-y-2 pt-1">
             <label *ngFor="let option of q.options"
                    class="flex items-center gap-3 cursor-pointer group text-sm">
