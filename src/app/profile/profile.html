@@ -121,7 +121,7 @@
               <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">📅</div>
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">Current Date</span>
-                <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">07 Jun, 2026</span>
+             <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">{{ currentDate }}</span>
               </div>
             </div>
 
@@ -129,7 +129,7 @@
               <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">🕒</div>
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">Last Login</span>
-                <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">06 Jun, 18:58 (SAST)</span>
+              <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">{{ lastLogin }}</span>
               </div>
             </div>
 
@@ -137,7 +137,7 @@
               <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-lg flex-shrink-0">💻</div>
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold text-[#A39280] uppercase tracking-wider">System Access</span>
-                <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">Administrator</span>
+          <span class="text-sm font-semibold text-[#4F3F2E] mt-0.5">{{ userRole }}</span>
               </div>
             </div>
 
@@ -180,7 +180,7 @@
               <h2 class="text-2xl font-normal text-[#4F3F2E] mb-0.5" style="font-family: 'DM Serif Display', serif;">
                 {{ profileForm.get('full_name')?.value || 'System User' }}
               </h2>
-              <div class="text-[#C8A37D] text-xs font-bold uppercase tracking-wider mb-3">Administrator</div>
+              <div class="text-[#C8A37D] text-xs font-bold uppercase tracking-wider mb-3">{{ userRole }}</div>
               <div class="flex flex-col gap-2">
                 <div class="flex items-center justify-center sm:justify-start gap-2.5 text-[13px] text-[#8A7966]">
                   <span class="text-sm">✉️</span>

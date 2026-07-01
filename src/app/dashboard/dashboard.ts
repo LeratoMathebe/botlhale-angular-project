@@ -78,6 +78,16 @@ export class Dashboard implements OnInit {
     return `${window.location.origin}/form/${slug}`;
   }
 
+  get publishedCount(): number 
+  {
+    return this.questionnaires.filter(q => q.is_published).length;
+  }
+
+  get draftCount(): number 
+  {
+    return this.questionnaires.filter(q => !q.is_published).length;
+  }
+
   /**
    * Publishes a questionnaire by setting is_published to true.
    * The slug is already generated in the DB so we just activate it.

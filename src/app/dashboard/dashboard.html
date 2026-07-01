@@ -115,7 +115,7 @@
       </div>
 
       <button routerLink="/manage-questions"
-              class="h-13 px-7 rounded-2xl text-white font-semibold text-sm bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_15px_30px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center gap-2 cursor-pointer border-none whitespace-nowrap"
+              class="h-13 px-7 rounded-2xl text-white font-semibold text-sm bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_15px_30px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center gap-2 cursor-pointer border-none whitespace-nowrap"
               style="font-family: 'Inter', sans-serif;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -164,7 +164,7 @@
         </div>
         <div class="mt-4">
           <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">
-            {{ questionnaires.length > 0 ? (questionnaires.length - 1) : 0 }}
+            {{ publishedCount }}
           </span>
           <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
             <span>Currently live</span>
@@ -203,7 +203,7 @@
         </div>
         <div class="mt-4">
           <span class="text-3xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">
-            {{ questionnaires.length > 0 ? 1 : 0 }}
+           {{ draftCount }}
           </span>
           <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-[#C8A37D]">
             <span>Unpublished forms</span>
@@ -286,14 +286,14 @@
 
           <button *ngIf="!q.is_published"
                   (click)="publishQuestionnaire(q.id, q.title)"
-                  class="h-10 px-4 rounded-xl border border-[#EADCC9] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] text-xs font-semibold text-white transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
+                  class="h-10 px-4 rounded-xl border border-[#EADCC9] bg-[#B08060] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] text-xs font-semibold text-white transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
               <path d="M2 12h20"/>
             </svg>
             Publish
-          </button>
+          </button>       
 
           <button *ngIf="q.is_published"
                   (click)="unpublishQuestionnaire(q.id, q.title)"
@@ -338,7 +338,7 @@
           Create your first structured healthcare form questionnaire template deployment to start collecting patient clinical insights safely.
         </p>
         <button routerLink="/manage-questions"
-                class="h-11 px-6 rounded-xl text-white font-semibold text-xs bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-md hover:-translate-y-0.5 transition-transform border-none cursor-pointer"
+                class="h-11 px-6 rounded-xl text-white font-semibold text-xs bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-md hover:-translate-y-0.5 transition-transform border-none cursor-pointer"
                 style="font-family: 'Inter', sans-serif;">
           ➕ Create Questionnaire
         </button>

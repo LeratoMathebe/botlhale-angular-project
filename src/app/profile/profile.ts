@@ -19,6 +19,8 @@ export class Profile implements OnInit {
   errorMessage = '';
   memberSince = '';
   lastLogin = '';
+  userRole = '';
+  currentDate = '';
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +61,22 @@ export class Profile implements OnInit {
         .single();
 
       if (error) throw error;
+
+      //Get role from user_roles
+      const { data: roleData} = await this.supabase.supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', session.user.id)
+      .single();
+
+      if (roleData) {
+        this.userRole = roleData.role === 'admin' ? 'Administrator' : 'Staff Member';
+      }
+
+      //Current date
+      this.currentDate = new Date().toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
 
       // Populate the form with existing profile data
       this.profileForm.patchValue({
