@@ -3,6 +3,7 @@ import { SupabaseService } from '../services/supabase';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, RouterLink],
@@ -41,14 +42,21 @@ export class Dashboard implements OnInit {
   async deleteQuestionnaire(id: string, title: string) {
     const confirmed = confirm(`Are you sure you want to delete "${title}"?`);
     if (confirmed) {
-      const { error } = await this.supabase.supabase
+
+      const { data, error } = await this.supabase.supabase
         .from('questionnaires')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .select();
 
       if (error) {
         console.error("Delete Error:", error);
         alert(" Failed to delete: " + error.message);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        alert("Only the creator of this questionnaire can delete it.");
         return;
       }
 
