@@ -103,6 +103,7 @@ export class ManageQuestions implements OnInit {
       this.questions.clear();
       qsData.forEach(q => {
          this.questions.push(this.fb.group({
+          id: [q.id],
            label: [q.label, Validators.required],
          key: [q.key, Validators.required],
           type: [q.type],
@@ -148,128 +149,82 @@ export class ManageQuestions implements OnInit {
    * SAVE LOGIC
    * Creates a new questionnaire OR updates an existing one depending on mode
    */
+
   async saveStructure() {
-    // 1. Validation
-    if (this.adminForm.invalid) {
-      alert("Please fill in all question fields before saving.");
-      return;
-    }
+if (this.adminForm.invalid || this.questions.length === 0) {
+    alert("Please fill in all fields and add at least one question.");
+    return;
+  }
 
-    if (this.questions.length === 0) {
-      alert("Please add at least one question.");
-      return;
-    }
+  let questionnaireTitle = this.editingTitle;
+  if (!this.editingId) {
+    const prompted = prompt("Enter a name for this questionnaire:");
+    if (!prompted?.trim()) return;
+    questionnaireTitle = prompted;
+  }
 
-    // 2. Get the title — use existing if editing, prompt if creating new
-        let questionnaireTitle = this.editingTitle;
+  try {
+    let questionnaireId = this.editingId;
 
-    if (!this.editingId) /*if thereis no editingID, it means you are creating a new questionnaire, so you need to ask the user for a title*/ {
-    const prompted = prompt("Enter a name for this questionnaire (e.g., Patient Intake Form)");
-      if (!prompted || prompted.trim() === "") /* Did the user leave the input empty or invalid*/ {
-           alert("A name is required to save the questionnaire.");
-        return;
-      }
-      questionnaireTitle = prompted;
-    }
-
-
-
-    const questionnaireDescription = this.adminForm.get('questionnaire_description')?.value  || ''; //get the description from the form, or use empty string if it's not there
-    const chosenColour = this.adminForm.get('primary_colour')?.value || '#15803d';
-    const chosenLogo = this.adminForm.get('logo_url')?.value || '';
-
-    try {
-      let questionnaireId = this.editingId;
-
-      if (this.editingId) {
-        // 3a. UPDATE MODE: update the title in questionnaires
-
-        /*If an existing questionnaire is being edited, 
-        update its title and updated_at date in the database using its ID */
-        const { error: updateError } = await this.supabase.supabase
+    if (this.editingId) {
+      // 1. Update Header
+      const { error: updateError } = await this.supabase.supabase
         .from('questionnaires')
-          .update({ 
-            title: questionnaireTitle,
-            description: questionnaireDescription,
-            primary_colour: chosenColour,
-            logo_url: chosenLogo,
-             updated_at: new Date().toISOString() 
-            })
+        .update({ 
+          title: questionnaireTitle,
+          description: this.adminForm.get('questionnaire_description')?.value,
+          updated_at: new Date().toISOString() 
+        })
         .eq('id', this.editingId);
+      if (updateError) throw updateError;
 
-        if (updateError) throw updateError;
-
-        // Delete old questions from the database so we can re-insert the updated ones
-        const { error: deleteError } = await this.supabase.supabase
+      // 2. Delete OLD questions FIRST
+      const { error: deleteError } = await this.supabase.supabase
         .from('questions')
-           .delete()
+        .delete()
         .eq('questionnaire_id', this.editingId);
 
-        if (deleteError) throw deleteError;
+      if (deleteError) throw deleteError;
 
-      } else {
-        // 3b. CREATE MODE: insert new questionnaire
-        const { data: newQ, error: qError } = await this.supabase.supabase
-          .from('questionnaires')
-          .insert([{
-            title: questionnaireTitle,
-            description: questionnaireDescription,
-            primary_colour: chosenColour,
-            logo_url: chosenLogo,
-            owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id //this gets the logged-in user's ID from Supabase Auth ("Who created this questionnaire?")
-          }])
-          .select()
-          .single(); //pulls only one row from Supabase
-
-        if (qError) throw qError;
-        questionnaireId = newQ.id; //generates a new questionnaire ID that we will use to link the questions to this questionnaire in the database
-      }
-
-      // 4. Map and insert questions
-
-      /* Takes all questions from your Angular form and converts them into a format 
-         that can be saved in the database.*/
-      const questionsToInsert = this.questions.controls.map((control, index) => {
-          const val = control.value;
-      return {
-          questionnaire_id: questionnaireId,
-          label: val.label,
-          key: val.key,
-          type: val.type,
-          options: val.type === 'radio' && (!val.options || val.options.trim() === '') //If question type is radio AND no options were provided, default answers will be Yes/No. Otherwise, if options were provided, split them by comma and trim whitespace. If it's not a radio button, options will be null.
-  ?            ['Yes', 'No']  // Default Yes/No for radio buttons
-               : val.options ? val.options.split(',').map((o: string) => o.trim()) : null, //this one is for dropdowns. if the options were entered, split them into an array
-       is_required: val.is_required,
-        order_index: index,
-          page_number: val.page_number || 1,
-        validation_type: val.validation_type
-        };
-      });
-
-      //Insert questions into database
-      const { error: insertError } = await this.supabase.supabase
-        .from('questions')
-        .insert(questionsToInsert);
-
-      if (insertError) throw insertError;
-
-      //Success pop-up
-      alert(` "${questionnaireTitle}" successfully saved!`);
-      this.router.navigate(['/dashboard']);
-
-    } catch (error: any) {
-      console.error("Critical Save Error:", error);
-      alert(" Failed to save: " + error.message);
+    } else {
+      // Create mode
+      const { data: newQ, error: qError } = await this.supabase.supabase
+        .from('questionnaires')
+        .insert([{ title: questionnaireTitle, owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id }])
+        .select()
+        .single();
+      if (qError) throw qError;
+      questionnaireId = newQ.id;
     }
+
+    // 3. Insert NEW questions
+    const questionsToInsert = this.questions.controls.map((control, index) => ({
+      questionnaire_id: questionnaireId,
+      label: control.value.label,
+      key: control.value.key,
+      type: control.value.type,
+      options: control.value.type === 'radio' ? ['Yes', 'No'] : null, // Simplified for brevity
+      order_index: index,
+      is_required: control.value.is_required
+    }));
+
+    const { error: insertError } = await this.supabase.supabase
+      .from('questions')
+      .insert(questionsToInsert);
+
+    if (insertError) throw insertError;
+
+    alert("Saved successfully!");
+    this.router.navigate(['/dashboard']);
+
+  } catch (error: any) {
+    console.error("Save Error:", error);
+    alert("Critical failure: " + error.message);
   }
-  /**
- * Toggles the preview modal on and off.
- */
+}
+  // Toggles the preview modal on and off.
+
 togglePreview() {
   this.showPreview = !this.showPreview;
 }
 }
-
-
-
-
