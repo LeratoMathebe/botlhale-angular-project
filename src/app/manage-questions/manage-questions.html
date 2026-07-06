@@ -249,6 +249,24 @@
   <div class="absolute bottom-[5%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#8B6A4F]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
 
   <div class="relative z-10 max-w-[1440px] mx-auto px-12 pt-14">
+
+    <div
+  *ngIf="isLocked"
+  class="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-6 py-4 shadow-sm">
+  <div class="flex items-start gap-3">
+    <span class="text-xl">🔒</span>
+    <div>
+      <h3 class="font-semibold text-amber-900">
+        Questionnaire Locked
+      </h3>
+
+      <p class="text-sm text-amber-800 mt-1">
+        This questionnaire already contains patient submissions.
+        The questions can no longer be edited in order to protect historical data.
+      </p>
+    </div>
+  </div>
+</div>
     
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
       <div>
@@ -275,6 +293,8 @@
 
         <button type="button" 
                 (click)="addQuestion()" 
+                [disabled]="isLocked"
+                [class.opacity-50]="isLocked"
                 class="h-12 px-6 rounded-2xl text-white font-semibold text-xs bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 cursor-pointer border-none">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -304,6 +324,7 @@
             <p class="text-xs text-[#6E5C49] mb-3" style="font-family: 'Inter', sans-serif;">Provide a summary or instructions for patients filling out this layout.</p>
             <textarea 
               formControlName="questionnaire_description" 
+              [readonly]="isLocked"
               rows="3" 
               placeholder="e.g. Please complete this intake form honestly to help our medical professionals assess your health baseline profile."
               class="w-full border p-4 rounded-2xl text-sm bg-[#FDFBF9] text-[#6E5C49] placeholder-[#CBB59A] transition border-[#EADCC9] focus:bg-white focus:ring-2 focus:ring-[#8B6A4F]/20 focus:border-[#8B6A4F] outline-none resize-none leading-relaxed" style="font-family: 'Inter', sans-serif;">
@@ -328,10 +349,12 @@
                 <div class="relative w-14 h-11 rounded-xl overflow-hidden border border-[#EADCC9] bg-[#FDFBF9] flex items-center justify-center cursor-pointer">
                   <input type="color" 
                          formControlName="primary_colour" 
+                         [disabled]="isLocked"
                          class="absolute inset-0 w-full h-full p-0 border-none scale-150 cursor-pointer bg-transparent">
                 </div>
                 <input type="text" 
-                       formControlName="primary_colour" 
+                       formControlName="primary_colour"
+                       [disabled]="isLocked" 
                        class="flex-1 h-11 border border-[#EADCC9] px-4 text-sm rounded-xl outline-none font-mono tracking-wider uppercase bg-[#FDFBF9] focus:bg-white text-[#4F3F2E] focus:border-[#8B6A4F]" 
                        placeholder="#8B6A4F">
               </div>
@@ -351,6 +374,7 @@
               <p class="text-xs text-[#6E5C49] mb-3">Provide a link address path pointing directly to a public web image repository.</p>
               <input type="text" 
                      formControlName="logo_url" 
+                     [readonly]="isLocked"
                      class="w-full h-11 border px-4 text-sm rounded-xl outline-none bg-[#FDFBF9] text-[#4F3F2E] placeholder-[#CBB59A] focus:bg-white border-[#EADCC9] focus:ring-2 focus:ring-[#8B6A4F]/20 focus:border-[#8B6A4F]" 
                      placeholder="https://example.com/clinic-logo.png">
             </div>
@@ -377,7 +401,7 @@
                 </svg>
                 Question Text
               </label>
-              <input formControlName="label" placeholder="e.g. Do you have diabetes?" 
+              <input formControlName="label" [readonly]="isLocked" placeholder="e.g. Do you have diabetes?" 
                      class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all">
               
               <div *ngIf="q.get('label')?.errors?.['invalidSAID']" class="text-rose-500 text-xs mt-1.5 italic font-medium flex items-center gap-1">
@@ -396,7 +420,7 @@
                 </svg>
                 Database Key (lowercase)
               </label>
-              <input formControlName="key" placeholder="e.g. smoke_status" 
+              <input formControlName="key" [readonly]="isLocked" placeholder="e.g. smoke_status" 
                      class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm font-mono text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all">
             </div>
 
@@ -408,7 +432,7 @@
                 Input Type
               </label>
               <div class="relative">
-                <select formControlName="type" class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
+                <select formControlName="type"[disabled]="isLocked"class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
                   <option value="text">Open Text Field</option>
                   <option value="radio">Yes/No Selection </option>
                   <option value="dropdown">Dropdown List</option>
@@ -429,7 +453,7 @@
                 South African Format Validation
               </label>
               <div class="relative">
-                <select formControlName="validation_type" class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
+                <select formControlName="validation_type"[disabled]="isLocked" class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none appearance-none transition-all cursor-pointer">
                   <option value="none">No Special Format</option>
                   <option value="sa_id">Enforce SA ID (13 Digits)</option>
                   <option value="sa_phone">Enforce SA Mobile</option>
@@ -440,7 +464,7 @@
 
             <div class="flex items-center mt-3">
               <label class="relative flex items-center gap-2.5 cursor-pointer select-none">
-                <input type="checkbox" formControlName="is_required" class="sr-only peer">
+                <input type="checkbox" formControlName="is_required" [disabled]="isLocked" class="sr-only peer">
                 <div class="w-5 h-5 rounded-md border border-[#EADCC9] bg-[#FDFBF9] peer-checked:bg-[#8B6A4F] peer-checked:border-[#8B6A4F] transition-all flex items-center justify-center text-white text-xs font-bold">
                   <span class="scale-0 peer-checked:scale-100 transition-transform">✓</span>
                 </div>
@@ -459,7 +483,7 @@
                 </svg>
                 Page / Step Number
               </label>
-              <input type="number" formControlName="page_number" min="1"
+              <input type="number" formControlName="page_number" min="1" [readonly]="isLocked"
                      class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all" 
                      placeholder="e.g. 1">
             </div>
@@ -467,12 +491,15 @@
             <div *ngIf="q.get('type')?.value === 'dropdown' || q.get('type')?.value === 'checkbox'" 
                  class="col-span-2 mt-2 bg-[#FDFBF9] p-5 rounded-2xl border border-[#EADCC9] space-y-1.5">
               <label class="text-xs font-bold text-[#8B6A4F] uppercase tracking-wider block">Options (Separate with commas)</label>
-              <input formControlName="options" placeholder="e.g. Daily, Weekly, Monthly" 
+              <input formControlName="options"  placeholder="e.g. Daily, Weekly, Monthly" 
                      class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-white focus:border-[#8B6A4F] outline-none transition-all">
             </div>
           </div>
 
-          <button type="button" (click)="removeQuestion(i)" 
+          <button type="button" 
+                 (click)="removeQuestion(i)" 
+                 [disabled]="isLocked"
+                 [class.opacity-50]="isLocked"
                   class="absolute top-6 right-6 text-[#CBB59A] hover:text-rose-600 font-bold transition-colors cursor-pointer p-1.5 rounded-lg hover:bg-rose-50/50 flex items-center justify-center border-none bg-transparent gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"></polyline>
@@ -487,6 +514,8 @@
 
       <div *ngIf="questions.length > 0" class="pt-4 flex justify-center">
         <button type="submit" 
+        [disabled]="isLocked"
+        [class.opacity-50]="isLocked"
                 class="w-full max-w-md h-14 rounded-2xl text-white font-bold text-sm bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_12px_30px_rgba(139,106,79,0.25)] hover:-translate-y-0.5 hover:shadow-[0_18px_35px_rgba(139,106,79,0.35)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border-none">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>

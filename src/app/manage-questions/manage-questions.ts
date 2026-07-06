@@ -34,6 +34,7 @@ export class ManageQuestions implements OnInit {
   editingId: string | null = null; // Holds the ID if we are in edit mode
   editingTitle: string = '';  //Holds the existing title if we are in edit mode
   showPreview = false;   //false ="the preview window is currently closed" => true "open"
+  isLocked = false; //Questionnaire cannot be edited once it has submissions
 
   constructor(
     private fb: FormBuilder, //used to create form easily
@@ -81,6 +82,16 @@ export class ManageQuestions implements OnInit {
 
       if (qError) throw qError; //if you can't find it, throw an error
       this.editingTitle = qData.title; //if you've found it, save and display the title
+
+      //Check whether this questionnaire already has submissions
+      const { count, error: countError } = await this.supabase.supabase
+      .from('submissions')
+      .select('*', { count: 'exact', head: true})
+      .eq('questionnaire_id', id);
+
+      if (countError) throw countError;
+
+      this.isLocked = (count ?? 0) > 0; 
       
       //Patch the existing description text directly into the main questionnaire
       this.adminForm.patchValue({
@@ -127,6 +138,11 @@ export class ManageQuestions implements OnInit {
 
   //Creates a new empty question form and adds it to the questions list
   addQuestion() {
+
+    if (this.isLocked) {
+      return;
+    }
+    
     const qGroup = this.fb.group({
       label: ['', Validators.required],
       key: ['', Validators.required],
@@ -142,6 +158,11 @@ export class ManageQuestions implements OnInit {
   //removes a question from the FormArray based on its position (index) in the list 
   //e.g 0 = first question, 1 = second question, etc
   removeQuestion(index: number) {
+
+    if (this.isLocked) {
+      return;
+    }
+    
     this.questions.removeAt(index);
   }
 
@@ -151,6 +172,13 @@ export class ManageQuestions implements OnInit {
    */
 
   async saveStructure() {
+   
+    if (this.isLocked) 
+      {
+        alert("This questionnaire already has submissions and its questions are locked to protect historical data");
+        return;
+      }
+
 if (this.adminForm.invalid || this.questions.length === 0) {
     alert("Please fill in all fields and add at least one question.");
     return;
@@ -165,6 +193,23 @@ if (this.adminForm.invalid || this.questions.length === 0) {
 
   try {
     let questionnaireId = this.editingId;
+
+    // if (this.editingId) 
+    //   {
+    //     const {count, error: countError} = await this.supabase.supabase
+    //     .from('submissions')
+    //     .select('*', { count: 'exact', head: true })
+    //     .eq('questionnaire_id', this.editingId);
+
+    //     if (countError) throw countError;
+
+    //     if (count && count > 0) {
+    //       alert(
+    //         "This questionnaire already has submissions. To protect historical data, its questions can no longer be edited "
+    //       );
+    //       return;
+    //     }
+    //   }
 
     if (this.editingId) {
       // 1. Update Header
@@ -203,7 +248,12 @@ if (this.adminForm.invalid || this.questions.length === 0) {
       label: control.value.label,
       key: control.value.key,
       type: control.value.type,
-      options: control.value.type === 'radio' ? ['Yes', 'No'] : null, // Simplified for brevity
+     options:
+  control.value.type === 'radio'
+    ? ['Yes', 'No']
+    : control.value.type === 'dropdown'
+      ? control.value.options.split(',').map((o: string) => o.trim())
+      : null,
       order_index: index,
       is_required: control.value.is_required
     }));
