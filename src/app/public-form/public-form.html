@@ -83,9 +83,10 @@
 </div> -->
 
 
-<div class="min-h-screen bg-gray-50 p-6"
-     [style.--theme-colour]="questionnaire?.primary_colour || '#15803d'">
-  <div class="max-w-2xl mx-auto">
+<div class="min-h-screen p-6"
+     [style.--theme-colour]="questionnaire?.primary_colour || '#15803d'"
+     [style.background-color]="'color-mix(in oklch, var(--theme-colour) 12%, #f9fafb)'">
+  <div class="max-w-4xl mx-auto">
 
     <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
       Loading form...
@@ -119,9 +120,9 @@
           <h1 class="text-2xl font-bold mb-2" [style.color]="'var(--theme-colour)'">
             {{ questionnaire?.title }}
           </h1>
-          <p *ngIf="questionnaire?.description" class="text-gray-500 text-sm leading-relaxed">
+          <!-- <p *ngIf="questionnaire?.description" class="text-gray-500 text-sm leading-relaxed">
             {{ questionnaire?.description }}
-          </p>
+          </p> -->
         </div>
       </div>
 

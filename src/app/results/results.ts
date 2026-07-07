@@ -180,7 +180,7 @@ export class Results implements OnInit {
 
      const colors = q.type === 'radio'
   ? ['#eb0d0d', '#fae612', '#0619c9', '#017414']
-  : ['#eb0d0d', '#faf612', '#0619c9', '#017414', '#fef3c7'];
+  : ['#eb0d0d', '#faf612', '#0619c9', '#017414', '#fee0c7'];
 
         new Chart(canvas, {
            type: q.type === 'radio' ? 'doughnut' : 'bar',
