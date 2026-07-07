@@ -85,8 +85,8 @@
 
 <div class="min-h-screen p-6"
      [style.--theme-colour]="questionnaire?.primary_colour || '#15803d'"
-     [style.background-color]="'color-mix(in oklch, var(--theme-colour) 12%, #f9fafb)'">
-  <div class="max-w-4xl mx-auto">
+    [style.background-color]="hexToRgba(questionnaire?.primary_colour || '#15803d', 0.25)">
+  <div class="max-w-6xl mx-auto">
 
     <div *ngIf="isLoading" class="text-center py-20 text-gray-500">
       Loading form...

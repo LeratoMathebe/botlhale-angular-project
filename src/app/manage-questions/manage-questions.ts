@@ -218,7 +218,10 @@ if (this.adminForm.invalid || this.questions.length === 0) {
         .update({ 
           title: questionnaireTitle,
           description: this.adminForm.get('questionnaire_description')?.value,
-          updated_at: new Date().toISOString() 
+          updated_at: new Date().toISOString(),
+          primary_colour: this.adminForm.get('primary_colour')?.value,
+          logo_url: this.adminForm.get('logo_url')?.value
+
         })
         .eq('id', this.editingId);
       if (updateError) throw updateError;
@@ -235,7 +238,11 @@ if (this.adminForm.invalid || this.questions.length === 0) {
       // Create mode
       const { data: newQ, error: qError } = await this.supabase.supabase
         .from('questionnaires')
-        .insert([{ title: questionnaireTitle, owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id }])
+        .insert([{ title: questionnaireTitle, 
+          owner_id: (await this.supabase.supabase.auth.getUser()).data.user?.id,
+        primary_colour: this.adminForm.get('primary_colour')?.value,
+        logo_url: this.adminForm.get('logo_url')?.value
+      }])
         .select()
         .single();
       if (qError) throw qError;
