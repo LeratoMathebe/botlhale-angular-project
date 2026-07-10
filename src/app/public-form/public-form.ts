@@ -12,6 +12,7 @@ import { CustomValidators } from '../register/utils/custom-validators';
   styleUrl: './public-form.css',
 })
 export class PublicForm implements OnInit {
+  currentPage = 1;
   questionnaire: any = null;
   questions: any[] = [];
   patientForm!: FormGroup; //this the actual reactive form where answers are stored
@@ -29,6 +30,7 @@ export class PublicForm implements OnInit {
   ) {}
 
   ngOnInit() {
+
     // 1. If your router configuration uses ':slug' in the path but receives the ID string, read it here:
     const idOrSlug = this.route.snapshot.paramMap.get('slug'); 
     if (idOrSlug) {
@@ -48,6 +50,36 @@ export class PublicForm implements OnInit {
       this.notFound = true;
       this.isLoading = false;
     }
+
+  }
+
+  get totalPages(): number 
+  {
+    if (!this.questions.length) return 1;
+    return Math.max(...this.questions.map(q => q.page_number || 1));
+  }
+
+  get currentPageQuestions() 
+  {
+    return this.questions.filter(q=> (q.page_number || 1) === this.currentPage);
+  }
+
+  nextPage() 
+  {
+    if (this.currentPage < this.totalPages) 
+      {
+        this.currentPage++;
+        this.cdr.detectChanges();
+      }
+  }
+
+  prevPage() 
+  {
+    if (this.currentPage > 1) 
+      {
+        this.currentPage--;
+        this.cdr.detectChanges();
+      }
   }
 
   async loadForm(slug: string) {
@@ -115,8 +147,22 @@ export class PublicForm implements OnInit {
     }
   }
 
+  
   //All required fields must be filled in before submission
   async submitForm() {
+
+    if (this.patientForm.invalid) 
+      {
+        this.patientForm.markAllAsTouched();
+        const firstInvalid = this.questions.find(q => this.patientForm.get(q.key)?.invalid);
+
+        if (firstInvalid) 
+          {
+            this.currentPage = firstInvalid.page_number || 1;
+            this.cdr.detectChanges();
+          }
+          alert("Please fill in all the required fields on all pages");
+      }
 
     //Safety Net: Guard against forced submissions
     // if (this.isDuplicate) {
@@ -127,7 +173,6 @@ export class PublicForm implements OnInit {
 
     if (this.patientForm.invalid) {
        this.patientForm.markAllAsTouched();
-      alert("Please fill in all required fields.");
       return;
     }
 

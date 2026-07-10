@@ -531,8 +531,9 @@
 
 <div *ngIf="showPreview" 
      class="fixed inset-0 bg-[#4F3F2E]/30 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
-  <div class="bg-[#FAF7F2] rounded-[32px] border border-[#F2EAE0] shadow-[0_25px_60px_rgba(79,63,46,0.15)] w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
-       [style.--preview-colour]="adminForm.get('primary_colour')?.value || '#8B6A4F'">
+  <div class="bg-[#FAF7F2] rounded-[32px] shadow-[0_25px_60px_rgba(79,63,46,0.15)] w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border-2"
+     [style.--preview-colour]="adminForm.get('primary_colour')?.value || '#8B6A4F'"
+     [style.border-color]="hexToRgba(adminForm.get('primary_colour')?.value || '#8B6A4F', 0.9)">
     
     <div class="flex justify-between items-center px-8 py-6 border-b border-[#F2EAE0] bg-white sticky top-0 z-10">
       <div>
@@ -552,16 +553,22 @@
           <img [src]="adminForm.get('logo_url')?.value" alt="Clinic Logo" class="w-full h-full object-contain">
         </div>
         <div>
-          <h3 class="font-normal text-xl text-[#4F3F2E] mb-1" style="font-family: 'DM Serif Display', serif;">
-            {{ editingTitle || 'New Questionnaire Title' }}
-          </h3>
+         <h3 class="font-normal text-xl mb-1" style="font-family: 'DM Serif Display', serif;" [style.color]="'var(--preview-colour)'">
+  {{ editingTitle || 'New Questionnaire Title' }}
+</h3>
           <p *ngIf="adminForm.get('questionnaire_description')?.value" class="text-xs text-[#8A7966] leading-relaxed" style="font-family: 'Inter', sans-serif;">
             {{ adminForm.get('questionnaire_description')?.value }}
           </p>
         </div>
       </div>
 
-      <div *ngFor="let q of questions.controls" class="bg-white border border-[#F2EAE0] rounded-2xl p-6 shadow-[0_10px_30px_rgba(79,63,46,0.01)]" style="font-family: 'Inter', sans-serif;">
+     <div *ngIf="totalPreviewPages > 1" class="text-center text-sm font-semibold text-[#8A7966] mb-2">
+            Page {{ currentPreviewPage }} of {{ totalPreviewPages }}
+     </div>
+
+     
+
+<div *ngFor="let q of currentPreviewQuestions" class="bg-white border border-[#F2EAE0] rounded-2xl p-6 shadow-[0_10px_30px_rgba(79,63,46,0.01)]" style="font-family: 'Inter', sans-serif;">
         
         <label class="block text-xs font-bold text-[#A39280] uppercase tracking-wider mb-2.5">
           {{ q.get('label')?.value || 'Untitled Question' }}
@@ -584,10 +591,10 @@
 
         <div *ngIf="q.get('type')?.value === 'radio'" class="flex gap-6 py-1">
           <label class="flex items-center gap-2 text-xs font-semibold text-[#4F3F2E] cursor-not-allowed">
-            <input type="radio" disabled class="h-4 w-4 accent-[#8B6A4F]"> Yes
+          <input type="radio" disabled class="h-4 w-4" [style.accent-color]="'var(--preview-colour)'"> Yes
           </label>
           <label class="flex items-center gap-2 text-xs font-semibold text-[#4F3F2E] cursor-not-allowed">
-            <input type="radio" disabled class="h-4 w-4 accent-[#8B6A4F]"> No
+          <input type="radio" disabled class="h-4 w-4" [style.accent-color]="'var(--preview-colour)'"> No
           </label>
         </div>
 
@@ -604,7 +611,31 @@
         </div>
 
       </div>
+
+      <div *ngIf="totalPreviewPages > 1" class="flex gap-3 pt-2">
+        <button type="button"
+                *ngIf="currentPreviewPage > 1"
+                (click)="prevPreviewPage()"
+                class="flex-1 h-11 rounded-xl border-2 text-sm font-semibold transition"
+                [style.border-color]="'var(--preview-colour)'"
+                [style.color]="'var(--preview-colour)'">
+          Back
+        </button>
+
+        <button type="button"
+                *ngIf="currentPreviewPage < totalPreviewPages"
+                (click)="nextPreviewPage()"
+                class="flex-1 h-11 rounded-xl text-sm font-semibold text-white transition"
+                [style.background-color]="'var(--preview-colour)'">
+          Next
+        </button>
+      </div>
+
     </div>
+
+    <div class="p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
+
+
 
     <div class="p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
       <button (click)="togglePreview()" 

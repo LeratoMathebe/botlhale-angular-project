@@ -30,6 +30,7 @@ import { CustomValidators } from '../register/utils/custom-validators';
   templateUrl: './manage-questions.html',
 })
 export class ManageQuestions implements OnInit {
+  currentPreviewPage = 1;
   adminForm: FormGroup;
   editingId: string | null = null; // Holds the ID if we are in edit mode
   editingTitle: string = '';  //Holds the existing title if we are in edit mode
@@ -67,6 +68,28 @@ export class ManageQuestions implements OnInit {
   get questions() {
     return this.adminForm.get('questions') as FormArray;
   }
+
+  get totalPreviewPages(): number {
+  if (!this.questions.length) return 1;
+  const pages = this.questions.controls.map(c => c.value.page_number || 1);
+  return Math.max(...pages);
+}
+
+get currentPreviewQuestions() {
+  return this.questions.controls.filter(c => (c.value.page_number || 1) === this.currentPreviewPage);
+}
+
+nextPreviewPage() {
+  if (this.currentPreviewPage < this.totalPreviewPages) {
+    this.currentPreviewPage++;
+  }
+}
+
+prevPreviewPage() {
+  if (this.currentPreviewPage > 1) {
+    this.currentPreviewPage--;
+  }
+}
 
   /**
    * EDIT MODE: Loads existing questionnaire and populates the form
@@ -194,23 +217,6 @@ if (this.adminForm.invalid || this.questions.length === 0) {
   try {
     let questionnaireId = this.editingId;
 
-    // if (this.editingId) 
-    //   {
-    //     const {count, error: countError} = await this.supabase.supabase
-    //     .from('submissions')
-    //     .select('*', { count: 'exact', head: true })
-    //     .eq('questionnaire_id', this.editingId);
-
-    //     if (countError) throw countError;
-
-    //     if (count && count > 0) {
-    //       alert(
-    //         "This questionnaire already has submissions. To protect historical data, its questions can no longer be edited "
-    //       );
-    //       return;
-    //     }
-    //   }
-
     if (this.editingId) {
       // 1. Update Header
       const { error: updateError } = await this.supabase.supabase
@@ -255,14 +261,11 @@ if (this.adminForm.invalid || this.questions.length === 0) {
       label: control.value.label,
       key: control.value.key,
       type: control.value.type,
-     options:
-  control.value.type === 'radio'
-    ? ['Yes', 'No']
-    : control.value.type === 'dropdown'
-      ? control.value.options.split(',').map((o: string) => o.trim())
-      : null,
+     options: control.value.type === 'radio'? ['Yes', 'No']: control.value.type === 'dropdown'? control.value.options.split(',').map((o: string) => o.trim()) : null,
       order_index: index,
-      is_required: control.value.is_required
+      is_required: control.value.is_required,
+      page_number: control.value.page_number,
+      validation_type: control.value.validation_type
     }));
 
     const { error: insertError } = await this.supabase.supabase
@@ -283,5 +286,23 @@ if (this.adminForm.invalid || this.questions.length === 0) {
 
 togglePreview() {
   this.showPreview = !this.showPreview;
+  if (this.showPreview) 
+    {
+      this.currentPreviewPage = 1;
+    }
 }
+
+hexToRgba(hex: string, alpha: number): string 
+{
+  let h = hex.replace('#', '');
+  if (h.length === 3) 
+    {
+      h = h.split('').map(c => c + c).join('');
+    }
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 }

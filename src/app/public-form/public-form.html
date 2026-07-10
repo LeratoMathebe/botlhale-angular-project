@@ -126,9 +126,14 @@
         </div>
       </div>
 
-      <form [formGroup]="patientForm" (ngSubmit)="submitForm()" class="space-y-4">
-        <div *ngFor="let q of questions"
-             class="bg-white rounded-xl shadow p-6 border border-gray-100/50">
+<form [formGroup]="patientForm" (ngSubmit)="submitForm()" class="space-y-4">
+
+  <div *ngIf="totalPages > 1" class="text-center text-sm font-semibold text-gray-500 mb-2">
+    Page {{ currentPage }} of {{ totalPages }}
+  </div>
+
+  <div *ngFor="let q of currentPageQuestions"
+       class="bg-white rounded-xl shadow p-6 border border-gray-100/50">
 
           <label class="block text-sm font-semibold text-gray-700 mb-2">
             {{ q.label }}
@@ -185,12 +190,33 @@
           </div>
         </div>
 
-        <button type="submit"
-                [disabled]="patientForm.invalid"
-                class="w-full text-white py-4 rounded-xl font-bold shadow-lg hover:brightness-110 active:scale-[0.99] transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100 disabled:active:scale-100"
-                [style.background-color]="'var(--theme-colour)'">
-          Submit Form
-        </button>
+       <div class="flex gap-3">
+  <button type="button"
+          *ngIf="currentPage > 1"
+          (click)="prevPage()"
+          class="flex-1 py-4 rounded-xl font-bold border-2 transition"
+          [style.border-color]="'var(--theme-colour)'"
+          [style.color]="'var(--theme-colour)'">
+    Back
+  </button>
+
+  <button type="button"
+          *ngIf="currentPage < totalPages"
+          (click)="nextPage()"
+          class="flex-1 text-white py-4 rounded-xl font-bold shadow-lg hover:brightness-110 active:scale-[0.99] transition"
+          [style.background-color]="'var(--theme-colour)'">
+    Next
+  </button>
+
+  <button type="submit"
+        *ngIf="currentPage === totalPages"
+        [class.opacity-40]="patientForm.invalid"
+        [class.cursor-not-allowed]="patientForm.invalid"
+        class="flex-1 text-white py-4 rounded-xl font-bold shadow-lg hover:brightness-110 active:scale-[0.99] transition"
+        [style.background-color]="'var(--theme-colour)'">
+  Submit Form
+</button>
+</div>
       </form>
     </div>
   </div>
