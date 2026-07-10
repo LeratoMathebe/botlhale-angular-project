@@ -273,14 +273,21 @@
         <div class="flex items-center gap-3 self-end sm:self-auto w-full sm:w-auto">
           <div class="flex items-center gap-2 px-4 py-2.5 border border-[#EDE5D8] rounded-xl bg-[#FAF8F5] w-full sm:w-[320px] transition-all focus-within:border-[#B68C5A]">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B68C5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" placeholder="Search staff by name, email or role..."
+            <input type="text" 
+                   [(ngModel)]="searchTerm"
+                   placeholder="Search staff by name, email or role..."
                    class="text-[13px] text-[#5C4D3E] bg-transparent border-none outline-none w-full placeholder-[#C4B3A2]"/>
           </div>
-          <button class="flex items-center gap-2 px-4 py-2.5 border border-[#EDE5D8] rounded-xl bg-white text-[13px] font-semibold text-[#5C4D3E] cursor-pointer hover:border-[#B68C5A] hover:bg-[#FAF8F5] transition-colors whitespace-nowrap">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> 
-            Filter 
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#A3917F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </button>
+         <div class="relative">
+  <select [(ngModel)]="roleFilter"
+          class="appearance-none flex items-center gap-2 pl-10 pr-8 py-2.5 border border-[#EDE5D8] rounded-xl bg-white text-[13px] font-semibold text-[#5C4D3E] cursor-pointer hover:border-[#B68C5A] hover:bg-[#FAF8F5] transition-colors whitespace-nowrap outline-none">
+    <option value="all">All Roles</option>
+    <option value="admin">Administrator</option>
+    <option value="staff">Staff Member</option>
+  </select>
+  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#5C4D3E]"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#A3917F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</div>
         </div>
       </div>
 
@@ -296,7 +303,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-[#F5EFE8]">
-            <tr *ngFor="let member of staffMembers" class="hover:bg-[#FCFAF7]/60 transition-colors">
+            <tr *ngFor="let member of filteredStaff" class="hover:bg-[#FCFAF7]/60 transition-colors">
 
               <td class="px-8 py-5">
                 <div class="flex items-center gap-3.5">
@@ -359,9 +366,9 @@
         </table>
       </div>
 
-      <div *ngIf="staffMembers.length === 0" class="py-20 text-center text-[#A3917F] text-sm font-medium bg-white">
-        No records found matching directories.
-      </div>
+     <div *ngIf="filteredStaff.length === 0" class="py-20 text-center text-[#A3917F] text-sm font-medium bg-white">
+  {{ searchTerm ? 'No staff match your search.' : 'No records found matching directories.' }}
+     </div>
 
     </div>
   </div>

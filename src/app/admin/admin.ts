@@ -2,13 +2,13 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SupabaseService } from '../services/supabase';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { CustomValidators } from '../register/utils/custom-validators';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './admin.html',
   styleUrl: './admin.css',
 })
@@ -16,6 +16,8 @@ export class Admin implements OnInit {
   staffMembers: any[] = [];
   isLoading = true;
   currentUserId = '';
+  searchTerm: string = '';
+  roleFilter: string = 'all';
 
   //Modals visibility states
   showAddModal = false;
@@ -97,6 +99,25 @@ export class Admin implements OnInit {
 
   get adminCount(): number {
   return this.staffMembers.filter(m => m.role === 'admin').length;
+}
+
+  get filteredStaff(): any[] {
+  let result = this.staffMembers;
+
+  if (this.roleFilter !== 'all') {
+    result = result.filter(member => member.role === this.roleFilter);
+  }
+
+  if (this.searchTerm.trim()) {
+    const term = this.searchTerm.toLowerCase();
+    result = result.filter(member =>
+      member.full_name?.toLowerCase().includes(term) ||
+      member.email?.toLowerCase().includes(term) ||
+      member.role?.toLowerCase().includes(term)
+    );
+  }
+
+  return result;
 }
 
 
