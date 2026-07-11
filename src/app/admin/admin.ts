@@ -138,9 +138,9 @@ export class Admin implements OnInit {
         password: val.password,
         options: {
           data: {
-            full_name: val.fullName,
-            id_number: val.saIdNumber,
-            phone_number: val.phoneNumber
+            full_name: val.full_name,
+            id_number: val.sa_id_number,
+            phone_number: val.phone_number
           }
         }
       });
@@ -148,12 +148,16 @@ export class Admin implements OnInit {
       if (error) throw error;
       if (!data?.user) throw new Error("Could not generate account");
 
+      if (data.user.identities && data.user.identities.length === 0) {
+  throw new Error("This email is already registered. Please use a different email address.");
+}
+
       await this.supabase.supabase
       .from('user_roles')
       .update({ role: val.role })
       .eq('user_id', data.user.id);
         
-      alert(`Staff member "${val.fullName}" added successfully!`);
+      alert(`Staff member "${val.full_name}" added successfully!`);
       this.showAddModal = false;
       this.staffForm.reset({password: 'Welcome@Staff2026', role: 'staff'}); 
       this.loadStaff();
