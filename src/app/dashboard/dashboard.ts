@@ -33,9 +33,28 @@ export class Dashboard implements OnInit {
       console.error("Supabase Error:", error);
       return;
     }
+
+    //Fetch all roles so we can tag each questionnaire with its creator's role
+
+    const {data: roles, error: rolesError} = await this.supabase.supabase
+    .from('user_roles')
+    .select('*');
+
+    if (rolesError) 
+      {
+        console.error("Roles Fetch Error:", rolesError);
+      }
+
     //TS stores data in this.questionnaires
-    this.questionnaires = data || [];
-    this.cdr.detectChanges(); //refresh the page and display the updated results
+    this.questionnaires = (data || []).map(q => {
+    const ownerRole = (roles || []).find(r => r.user_id === q.owner_id);
+    return {
+      ...q,
+      creator_role: ownerRole?.role || 'staff'
+    };
+  });
+
+    this.cdr.detectChanges(); 
     console.log("Dashboard Data:", this.questionnaires);
   }
 

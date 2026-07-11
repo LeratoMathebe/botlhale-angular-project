@@ -242,6 +242,14 @@
                 {{ q.is_published ? 'Published' : 'Draft' }}
               </span>
               <span class="text-[#4F3F2E]">|</span>
+
+              <span [class]="q.creator_role === 'admin'
+      ? 'inline-block px-3 py-0.5 rounded-lg text-[11px] font-bold bg-[#FBF2E6] text-[#A8743B] border border-[#F5E4D0]'
+      : 'inline-block px-3 py-0.5 rounded-lg text-[11px] font-bold bg-[#F0F2F5] text-[#4A5568] border border-[#E2E8F0]'">
+             {{ q.creator_role === 'admin' ? 'Administrator' : 'Staff Member' }}
+             </span>
+             <span class="text-[#4F3F2E]">|</span>
+             
               <span class="inline-flex items-center gap-1">
                 📅 Created {{ q.created_at | date:'mediumDate' }}
               </span>
