@@ -245,6 +245,11 @@ if (this.adminForm.invalid || this.questions.length === 0) {
       if (deleteError) throw deleteError;
 
     } else {
+
+       console.log('FETCHING USER...');
+  const { data: userData, error: userError } = await this.supabase.supabase.auth.getUser();
+  console.log('USER FETCHED:', userData, userError);
+
       // Create mode
       const { data: newQ, error: qError } = await this.supabase.supabase
         .from('questionnaires')
@@ -277,6 +282,8 @@ if (this.adminForm.invalid || this.questions.length === 0) {
       .insert(questionsToInsert);
 
     if (insertError) throw insertError;
+
+    console.log('QUESTIONS INSERTED SUCCESSFULLY');
 
     alert("Saved successfully!");
     this.router.navigate(['/dashboard']);

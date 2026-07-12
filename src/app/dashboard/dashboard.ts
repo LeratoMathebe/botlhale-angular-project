@@ -59,6 +59,9 @@ export class Dashboard implements OnInit {
   }
 
   async deleteQuestionnaire(id: string, title: string) {
+
+    console.trace('DELETE CALLED FOR:', title, id);
+    
     const confirmed = confirm(`Are you sure you want to delete "${title}"?`);
     if (confirmed) {
 

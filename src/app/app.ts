@@ -40,7 +40,6 @@ export class App implements OnInit {
     // Check current session when app starts
     const { data: { session } } =
       await this.supabase.supabase.auth.getSession();
-      
 
     if (session && (this.router.url === '/' || this.router.url === '/login')) {
       this.router.navigate(['/home']);
@@ -49,45 +48,43 @@ export class App implements OnInit {
     // Load current user
     await this.loadUser(session);
 
-    // Listen for login/logout automatically
-    this.supabase.supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-
-        await this.loadUser(session);
-
-      }
-    );
+  
   }
 
   // Loads the logged-in user's information
   async loadUser(session: any) {
 
-  if (!session?.user) {
-    this.userName = '';
-    this.userInitial = '';
-    this.isAdmin = false;
-    return;
+    if (!session?.user) {
+      this.userName = '';
+      this.userInitial = '';
+      this.isAdmin = false;
+      return;
+    }
+
+    // Get profile
+    const { data: profile } = await this.supabase.supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', session.user.id)
+      .single();
+
+    // Get role
+    const { data: roleData } = await this.supabase.supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (profile) {
+      this.userName = profile.full_name;
+      this.userInitial = profile.full_name.charAt(0).toUpperCase();
+    } else {
+      this.userName = '';
+      this.userInitial = '';
+    }
+
+    this.isAdmin = roleData?.role === 'admin';
   }
-
-  const { data: profile } = await this.supabase.supabase
-    .from('profiles')
-    .select('full_name')
-    .eq('id', session.user.id)
-    .single();
-
-  const { data: roleData } = await this.supabase.supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', session.user.id)
-    .single();
-
-  if (profile) {
-    this.userName = profile.full_name;
-    this.userInitial = profile.full_name.charAt(0).toUpperCase();
-  }
-
-  this.isAdmin = roleData?.role === 'admin';
-}
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
@@ -117,5 +114,4 @@ export class App implements OnInit {
   }
 
 }
-
 
