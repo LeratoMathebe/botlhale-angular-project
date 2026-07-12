@@ -41,6 +41,11 @@ export class SupabaseService {
     return await this.supabase.auth.signInWithPassword({ email, password: pass });
   }
 
+  // Listen for login/logout
+onAuthStateChange(callback: (event: any, session: any) => void) {
+  return this.supabase.auth.onAuthStateChange(callback);
+}
+
   // Get the current logged-in user
   get user() {
     return this.supabase.auth.getUser();

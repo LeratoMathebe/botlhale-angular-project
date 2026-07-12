@@ -195,6 +195,8 @@ prevPreviewPage() {
    */
 
   async saveStructure() {
+
+    console.log('SAVE STARTED');
    
     if (this.isLocked) 
       {
@@ -213,6 +215,8 @@ if (this.adminForm.invalid || this.questions.length === 0) {
     if (!prompted?.trim()) return;
     questionnaireTitle = prompted;
   }
+
+    console.log('TITLE CONFIRMED:', questionnaireTitle);
 
   try {
     let questionnaireId = this.editingId;
