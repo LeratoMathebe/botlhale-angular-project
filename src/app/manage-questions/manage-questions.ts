@@ -46,6 +46,7 @@ export class ManageQuestions implements OnInit {
   ) {
     //creates a form (adminForm) that contains a list (array) of questions
     //  and right now that list starts empty.
+
     this.adminForm = this.fb.group({
       questionnaire_description: [''], //this is where you can add a description field for the questionnaire if you want
       questions: this.fb.array([]),
@@ -55,8 +56,10 @@ export class ManageQuestions implements OnInit {
   }
 
   ngOnInit() {
+
     //this code is listening to the URL and checking:
     //"Did the URL inlcude an id? if yes, load existing data for editing"
+
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
         this.editingId = params['id'];
@@ -180,6 +183,7 @@ prevPreviewPage() {
 
   //removes a question from the FormArray based on its position (index) in the list 
   //e.g 0 = first question, 1 = second question, etc
+
   removeQuestion(index: number) {
 
     if (this.isLocked) {
@@ -195,8 +199,6 @@ prevPreviewPage() {
    */
 
   async saveStructure() {
-
-    console.log('SAVE STARTED');
    
     if (this.isLocked) 
       {
@@ -216,12 +218,11 @@ if (this.adminForm.invalid || this.questions.length === 0) {
     questionnaireTitle = prompted;
   }
 
-    console.log('TITLE CONFIRMED:', questionnaireTitle);
-
   try {
     let questionnaireId = this.editingId;
 
     if (this.editingId) {
+
       // 1. Update Header
       const { error: updateError } = await this.supabase.supabase
         .from('questionnaires')
@@ -246,9 +247,8 @@ if (this.adminForm.invalid || this.questions.length === 0) {
 
     } else {
 
-       console.log('FETCHING USER...');
   const { data: userData, error: userError } = await this.supabase.supabase.auth.getUser();
-  console.log('USER FETCHED:', userData, userError);
+
 
       // Create mode
       const { data: newQ, error: qError } = await this.supabase.supabase
@@ -302,6 +302,7 @@ togglePreview() {
       this.currentPreviewPage = 1;
     }
 }
+
 
 hexToRgba(hex: string, alpha: number): string 
 {

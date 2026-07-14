@@ -50,7 +50,10 @@ export class Admin implements OnInit {
    */
   async loadStaff() {
     try {
-      // Get current user ID so we don't accidentally delete ourselves
+
+      // Get current user ID so we don't accidentally delete ourselves. E.g if you're an admin and there's a delete button and you
+    //accidently press delete, which would basically delete the account you're logged into
+
       const { data: { session } } = await this.supabase.supabase.auth.getSession();
       this.currentUserId = session?.user.id || '';
 
@@ -97,9 +100,13 @@ export class Admin implements OnInit {
     this.selectedMember = null;
   }
 
+  //shows how many admins currently exist in the Staff Directory
   get adminCount(): number {
   return this.staffMembers.filter(m => m.role === 'admin').length;
 }
+
+//checks whether the user has selected a specific role in the filter. 
+// If a role such as 'admin' or 'staff' has been selected instead of 'all', it filters the list so that only staff members with that role remain.
 
   get filteredStaff(): any[] {
   let result = this.staffMembers;
@@ -120,7 +127,6 @@ export class Admin implements OnInit {
   return result;
 }
 
-
   /**
    * ADD ACTION: Signs up a new user via Supabase Auth and hooks their profile configuration 
    */
@@ -132,7 +138,7 @@ export class Admin implements OnInit {
 
     const val = this.staffForm.value;
    try {
-      // Create user authentication record with metadata mapping to trigger handle_new_user() hook
+      
       const { data, error } = await this.supabase.supabase.auth.signUp({
         email: val.email,
         password: val.password,
@@ -152,6 +158,7 @@ export class Admin implements OnInit {
   throw new Error("This email is already registered. Please use a different email address.");
 }
 
+  //Assigns the user's role that was selected in the form of the account created
       await this.supabase.supabase
       .from('user_roles')
       .update({ role: val.role })

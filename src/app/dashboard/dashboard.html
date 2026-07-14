@@ -270,6 +270,12 @@
           <span *ngIf="!q.is_published" class="text-xs text-[#A39280] italic">
             Link inactive (Draft mode)
           </span>
+
+          <img *ngIf="q.is_published"
+       [src]="getQrCode(q.slug)"
+       alt="QR code for public form"
+       class="w-24 h-24 mt-2 rounded-lg border border-[#EADCC9] bg-white p-1.5 self-start" />
+       
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 lg:self-center" style="font-family: 'Inter', sans-serif;">

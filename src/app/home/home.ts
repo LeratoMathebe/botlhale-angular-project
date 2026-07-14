@@ -1,17 +1,3 @@
-// import { Component } from '@angular/core';
-// import { RouterModule } from '@angular/router';
-// import { RouterLink } from '@angular/router';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-home',
-//   standalone: true,
-//   imports: [RouterModule, RouterLink, CommonModule],
-//   templateUrl: './home.html',
-//   styleUrl: './home.css',
-// })
-// export class Home {}
-
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
@@ -27,7 +13,8 @@ import { SupabaseService } from '../services/supabase';
 })
 
 export class Home implements OnInit {
-  userName: string = 'Valued Member';
+  
+  userName: string = 'Honourable Member';
 
   constructor(private supabase: SupabaseService) {}
 
@@ -46,14 +33,14 @@ export class Home implements OnInit {
 
         if (profile?.full_name) {
           this.userName = profile.full_name;
-          return; // Success! Stop here.
+          return; 
         }
       }
     } catch (err) {
       console.error("Error fetching profile, falling back to local storage:", err);
     }
 
-    // 3. Fallback: Only if DB fetch failed/no profile found, check localStorage
+    // 3. Fallback: Only if DB fetch failed/no profile found, use default name instead
     if (typeof window !== 'undefined') {
       const storedName = localStorage.getItem('userName');
       this.userName = storedName ? storedName.trim() : 'Valued Member';

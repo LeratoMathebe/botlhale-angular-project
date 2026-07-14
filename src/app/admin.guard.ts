@@ -15,6 +15,7 @@ export const adminGuard: CanActivateFn = async (route, state) => {
 
   const { data: { session } } = await supabase.supabase.auth.getSession();
 
+  
   if (!session) {
     router.navigate(['/login']);
     return false;

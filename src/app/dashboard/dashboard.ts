@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
-  questionnaires: any[] = []; //created a variable to store all quetionnaires
+  questionnaires: any[] = []; //created a variable to store all questionnaires
 
   constructor(
     private supabase: SupabaseService,
@@ -45,7 +45,11 @@ export class Dashboard implements OnInit {
         console.error("Roles Fetch Error:", rolesError);
       }
 
-    //TS stores data in this.questionnaires
+   /**loops through every questionnaire, finds the role of the staff member who created it by matching the questionnaire's owner_id 
+    * with the corresponding user_id in the user_roles table
+    * 
+    */
+
     this.questionnaires = (data || []).map(q => {
     const ownerRole = (roles || []).find(r => r.user_id === q.owner_id);
     return {
@@ -59,8 +63,6 @@ export class Dashboard implements OnInit {
   }
 
   async deleteQuestionnaire(id: string, title: string) {
-
-    console.trace('DELETE CALLED FOR:', title, id);
     
     const confirmed = confirm(`Are you sure you want to delete "${title}"?`);
     if (confirmed) {
@@ -99,13 +101,21 @@ export class Dashboard implements OnInit {
 }
 
 /**
- * Builds the public form link using the cucrrent domain
- * Works on localhost during development and on the live Cloudfare URL once deployed
+ * Builds the public form link using the current domain
  */
+
+//takes the questionnaire's unique slug as a parameter, combines it with the application's current domain name,
+//  and returns the complete public link
 
   getPublicLink(slug: string): string 
   {
     return `${window.location.origin}/form/${slug}`;
+  }
+
+  getQrCode(slug: string): string 
+  {
+    const link = this.getPublicLink(slug);
+     return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
   }
 
   get publishedCount(): number 
