@@ -90,6 +90,13 @@ export class App implements OnInit {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
+  mobileMenuOpen = false;
+
+  toggleMobileMenu() 
+  {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
   // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {

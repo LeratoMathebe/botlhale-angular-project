@@ -103,20 +103,20 @@
   <div class="absolute top-[10%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-[#EADCC9]/20 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
   <div class="absolute bottom-[5%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#8B6A4F]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
 
-  <div class="relative z-10 max-w-[1440px] mx-auto px-12 pt-14">
+ <div class="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-8 lg:pt-14">
 
-    <div class="flex items-start justify-between mb-10">
-      <div>
-        <h1 class="text-[44px] font-normal text-[#4F3F2E] tracking-tight leading-tight mb-2"
-            style="font-family: 'DM Serif Display', serif;">Healthcare Questionnaires</h1>
-        <p class="text-[14px] text-[#8A7966] max-w-xl leading-relaxed" style="font-family: 'Inter', sans-serif;">
-          Design, publish and monitor custom patient registration, medical history intake, and real-time chronic condition monitoring forms.
-        </p>
-      </div>
+   <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5 mb-10">
+  <div>
+    <h1 class="text-[28px] sm:text-[36px] lg:text-[44px] font-normal text-[#4F3F2E] tracking-tight leading-tight mb-2"
+        style="font-family: 'DM Serif Display', serif;">Healthcare Questionnaires</h1>
+    <p class="text-[13px] sm:text-[14px] text-[#8A7966] max-w-xl leading-relaxed" style="font-family: 'Inter', sans-serif;">
+      Design, publish and monitor custom patient registration, medical history intake, and real-time chronic condition monitoring forms.
+    </p>
+  </div>
 
-      <button routerLink="/manage-questions"
-              class="h-13 px-7 rounded-2xl text-white font-semibold text-sm bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_15px_30px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center gap-2 cursor-pointer border-none whitespace-nowrap"
-              style="font-family: 'Inter', sans-serif;">
+  <button routerLink="/manage-questions"
+          class="h-13 px-7 rounded-2xl text-white font-semibold text-sm bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.2)] hover:-translate-y-0.5 hover:shadow-[0_15px_30px_rgba(142,113,87,0.3)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border-none whitespace-nowrap w-full lg:w-auto"
+          style="font-family: 'Inter', sans-serif;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
@@ -218,7 +218,7 @@
       <div *ngFor="let q of questionnaires" 
            class="bg-white/80 backdrop-blur-md border border-[#F2EAE0] rounded-3xl p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-[0_10px_30px_rgba(79,63,46,0.02)] transition-all duration-300 hover:bg-white">
         
-        <div class="flex items-start gap-5 max-w-xl">
+        <div class="flex items-start gap-4 sm:gap-5 w-full lg:max-w-xl">
           <div class="w-12 h-12 rounded-2xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center flex-shrink-0">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4F3F2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -257,7 +257,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col gap-1.5 min-w-[260px] lg:max-w-xs bg-[#FDFBF9] border border-[#EADCC9] rounded-2xl px-4 py-3" style="font-family: 'Inter', sans-serif;">
+        <div class="flex flex-col gap-1.5 w-full lg:min-w-[260px] lg:max-w-xs lg:w-auto bg-[#FDFBF9] border border-[#EADCC9] rounded-2xl px-4 py-3" style="font-family: 'Inter', sans-serif;">
           <span class="text-[10px] font-bold uppercase tracking-wider text-[#4F3F2E] inline-flex items-center gap-1">
             🔗 Public Access Link
           </span>
@@ -275,10 +275,10 @@
        [src]="getQrCode(q.slug)"
        alt="QR code for public form"
        class="w-24 h-24 mt-2 rounded-lg border border-[#EADCC9] bg-white p-1.5 self-start" />
-       
+
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5 lg:self-center" style="font-family: 'Inter', sans-serif;">
+       <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto lg:self-center" style="font-family: 'Inter', sans-serif;">
           
           <button (click)="viewResults(q.id)"
                   class="h-10 px-4 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm whitespace-nowrap inline-flex items-center gap-2">

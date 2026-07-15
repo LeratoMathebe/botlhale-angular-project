@@ -60,7 +60,7 @@
 
 
 <header *ngIf="!isAuthPage" class="w-full top-0 sticky bg-white/80 backdrop-blur-md border-b border-[#F5EFE8] z-50">
-  <div class="max-w-[1440px] mx-auto flex justify-between items-center px-12 py-4">
+  <div class="max-w-[1440px] mx-auto flex justify-between items-center px-6 sm:px-8 lg:px-12 py-4">
     
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-[#FDFBF9] border border-[#E5D9CB] shadow-sm">
@@ -76,7 +76,8 @@
       </div>
     </div>
 
-    <nav class="flex gap-8 items-center" style="font-family: 'Inter', sans-serif;">
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex gap-8 items-center" style="font-family: 'Inter', sans-serif;">
       <a routerLink="/home" 
          routerLinkActive="text-[#8B6A4F] font-semibold border-b-2 border-[#8B6A4F]" 
          [routerLinkActiveOptions]="{exact: true}" 
@@ -131,7 +132,58 @@
                   class="w-full flex items-center gap-3 text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50/50 transition-colors">
             <span>🚪</span> Sign Out
           </button>
-        </div> </div> </nav> </div> </header>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile: avatar + hamburger -->
+    <div class="flex md:hidden items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-[#8B6A4F] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+        {{ userInitial }}
+      </div>
+      <button (click)="toggleMobileMenu()" 
+              class="w-9 h-9 flex items-center justify-center text-[#4F3F2E] bg-transparent border-none cursor-pointer">
+        <svg *ngIf="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+        <svg *ngIf="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile dropdown panel -->
+  <div *ngIf="mobileMenuOpen" class="md:hidden border-t border-[#F5EFE8] bg-white px-6 py-4 flex flex-col gap-1" style="font-family: 'Inter', sans-serif;">
+    <a routerLink="/home" 
+       (click)="mobileMenuOpen = false"
+       routerLinkActive="text-[#8B6A4F] font-semibold" 
+       [routerLinkActiveOptions]="{exact: true}"
+       class="py-2.5 text-[#6E5C49] text-sm font-medium">Home</a>
+    <a routerLink="/manage-questions" 
+       (click)="mobileMenuOpen = false"
+       routerLinkActive="text-[#8B6A4F] font-semibold"
+       class="py-2.5 text-[#6E5C49] text-sm font-medium">Questionnaire</a>
+    <a routerLink="/dashboard" 
+       (click)="mobileMenuOpen = false"
+       routerLinkActive="text-[#8B6A4F] font-semibold"
+       class="py-2.5 text-[#6E5C49] text-sm font-medium">Dashboard</a>
+    <div class="border-t border-[#F5EFE8] my-1"></div>
+    <a routerLink="/profile" 
+       (click)="mobileMenuOpen = false"
+       class="py-2.5 text-[#6E5C49] text-sm font-medium">👤 My Profile</a>
+    <a *ngIf="isAdmin" 
+       routerLink="/admin" 
+       (click)="mobileMenuOpen = false"
+       class="py-2.5 text-[#8B6A4F] text-sm font-medium">⚙️ Admin Panel</a>
+    <button (click)="signOut(); mobileMenuOpen = false"
+            class="py-2.5 text-left text-red-500 text-sm font-medium bg-transparent border-none cursor-pointer">🚪 Sign Out</button>
+  </div>
+</header>
 
 <main class="min-h-[calc(min-h-screen-76px)] bg-[#FAF7F2]">
   <router-outlet></router-outlet>
