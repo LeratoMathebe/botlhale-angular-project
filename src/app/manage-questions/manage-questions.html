@@ -248,11 +248,11 @@
   <div class="absolute top-[10%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-[#EADCC9]/20 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
   <div class="absolute bottom-[5%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#8B6A4F]/5 to-transparent rounded-full blur-3xl pointer-events-none z-0"></div>
 
-  <div class="relative z-10 max-w-[1440px] mx-auto px-12 pt-14">
+  <div class="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-8 lg:pt-14">
 
     <div
   *ngIf="isLocked"
-  class="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-6 py-4 shadow-sm">
+  class="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-5 sm:px-6 py-4 shadow-sm">
   <div class="flex items-start gap-3">
     <span class="text-xl">🔒</span>
     <div>
@@ -268,22 +268,22 @@
   </div>
 </div>
     
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10">
       <div>
-        <h2 class="text-[44px] font-normal text-[#4F3F2E] tracking-tight leading-tight mb-2" style="font-family: 'DM Serif Display', serif;">
+        <h2 class="text-[26px] sm:text-[34px] lg:text-[44px] font-normal text-[#4F3F2E] tracking-tight leading-tight mb-2" style="font-family: 'DM Serif Display', serif;">
           Manage Questionnaire
         </h2>
         <div class="w-12 h-0.5 bg-[#EADCC9] rounded-full mt-1"></div>
-        <p class="text-[14px] text-[#8A7966] max-w-xl leading-relaxed mt-2" style="font-family: 'Inter', sans-serif;">
+        <p class="text-[13px] sm:text-[14px] text-[#8A7966] max-w-xl leading-relaxed mt-2" style="font-family: 'Inter', sans-serif;">
           Create and customise questionnaires to collect accurate patient insights.
         </p>
       </div>
 
-      <div class="flex items-center gap-3 self-end sm:self-center" style="font-family: 'Inter', sans-serif;">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto" style="font-family: 'Inter', sans-serif;">
         <button *ngIf="questions.length > 0" 
                 type="button"
                 (click)="togglePreview()" 
-                class="h-12 px-6 rounded-2xl text-[#8B6A4F] font-semibold text-xs bg-white border border-[#EBE3D9] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all duration-200 flex items-center gap-2 shadow-sm cursor-pointer">
+                class="h-12 px-6 rounded-2xl text-[#8B6A4F] font-semibold text-xs bg-white border border-[#EBE3D9] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
             <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z"/>
             <circle cx="12" cy="12" r="3"/>
@@ -295,7 +295,7 @@
                 (click)="addQuestion()" 
                 [disabled]="isLocked"
                 [class.opacity-50]="isLocked"
-                class="h-12 px-6 rounded-2xl text-white font-semibold text-xs bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 cursor-pointer border-none">
+                class="h-12 px-6 rounded-2xl text-white font-semibold text-xs bg-[#8B6A4F] bg-gradient-to-r from-[#8B6A4F] to-[#C8A37D] shadow-[0_10px_25px_rgba(142,113,87,0.15)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border-none">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -307,7 +307,7 @@
 
     <form [formGroup]="adminForm" (ngSubmit)="saveStructure()" class="space-y-8">
       
-      <div class="bg-white/80 backdrop-blur-md p-8 rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] space-y-6">
+      <div class="bg-white/80 backdrop-blur-md p-5 sm:p-8 rounded-[24px] sm:rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] space-y-6">
         
         <div class="flex gap-4">
           <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center flex-shrink-0">
@@ -319,7 +319,7 @@
               <line x1="10" y1="9" x2="8" y2="9"/>
             </svg>
           </div>
-          <div class="w-full">
+          <div class="w-full min-w-0">
             <label class="text-sm font-bold text-[#4F3F2E] block mb-1" style="font-family: 'Inter', sans-serif;">Questionnaire Context Description</label>
             <p class="text-xs text-[#6E5C49] mb-3" style="font-family: 'Inter', sans-serif;">Provide a summary or instructions for patients filling out this layout.</p>
             <textarea 
@@ -334,7 +334,7 @@
 
         <hr class="border-[#FDFBF9]" />
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2" style="font-family: 'Inter', sans-serif;">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 pt-2" style="font-family: 'Inter', sans-serif;">
           
           <div class="flex gap-4">
             <div class="w-11 h-11 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center flex-shrink-0">
@@ -342,11 +342,11 @@
                 <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19H4.85857C5.54512 19 6.15904 18.5714 6.39832 17.925C6.73031 17.0282 7.5857 16.4286 8.55243 16.4286H9.42857C10.8487 16.4286 12 15.2773 12 13.8571V13.1429C12 11.7227 10.8487 10.5714 9.42857 10.5714H7.71429C6.29416 10.5714 5.14286 9.42013 5.14286 8V7.5C5.14286 6.11929 6.26214 5 7.64286 5H8.57143C9.0446 5 9.42857 5.38397 9.42857 5.85714V5.85714C9.42857 6.33031 9.81254 6.71429 10.2857 6.71429H12.8571C13.8031 6.71429 14.5714 7.48257 14.5714 8.42857V9.28571C14.5714 9.75888 14.9554 10.1429 15.4286 10.1429H16.2857C17.7058 10.1429 18.8571 11.2942 18.8571 12.7143V13C18.8571 14.6569 17.5139 16 15.8571 16H15C13.8954 16 13 16.8954 13 18v1.14286C13 20.165 13.561 21.0565 14.4014 21.5034C13.626 21.8265 12.8336 22 12 22Z"/>
               </svg>
             </div>
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
               <label class="text-sm font-bold text-[#4F3F2E] block mb-1">Primary Brand Theme Colour</label>
               <p class="text-xs text-[#6E5C49] mb-3">Pick a palette color accents to update form actions, inputs, and layouts cleanly.</p>
               <div class="flex items-center gap-3">
-                <div class="relative w-14 h-11 rounded-xl overflow-hidden border border-[#EADCC9] bg-[#FDFBF9] flex items-center justify-center cursor-pointer">
+                <div class="relative w-14 h-11 rounded-xl overflow-hidden border border-[#EADCC9] bg-[#FDFBF9] flex items-center justify-center cursor-pointer flex-shrink-0">
                   <input type="color" 
                          formControlName="primary_colour" 
                          [disabled]="isLocked"
@@ -355,7 +355,7 @@
                 <input type="text" 
                        formControlName="primary_colour"
                        [disabled]="isLocked" 
-                       class="flex-1 h-11 border border-[#EADCC9] px-4 text-sm rounded-xl outline-none font-mono tracking-wider uppercase bg-[#FDFBF9] focus:bg-white text-[#4F3F2E] focus:border-[#8B6A4F]" 
+                       class="flex-1 min-w-0 h-11 border border-[#EADCC9] px-4 text-sm rounded-xl outline-none font-mono tracking-wider uppercase bg-[#FDFBF9] focus:bg-white text-[#4F3F2E] focus:border-[#8B6A4F]" 
                        placeholder="#8B6A4F">
               </div>
             </div>
@@ -369,7 +369,7 @@
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               </svg>
             </div>
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
               <label class="text-sm font-bold text-[#4F3F2E] block mb-1">Clinic Logo Web Link (Image URL)</label>
               <p class="text-xs text-[#6E5C49] mb-3">Provide a link address path pointing directly to a public web image repository.</p>
               <input type="text" 
@@ -386,15 +386,15 @@
 
       <div formArrayName="questions" class="space-y-6" style="font-family: 'Inter', sans-serif;">
         <div *ngFor="let q of questions.controls; let i=index" [formGroupName]="i" 
-             class="bg-white/80 backdrop-blur-md p-8 rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] relative group hover:bg-white transition-all duration-300">
+             class="bg-white/80 backdrop-blur-md p-5 sm:p-8 pl-8 rounded-[24px] sm:rounded-[32px] border border-[#F2EAE0] shadow-[0_10px_30px_rgba(79,63,46,0.02)] relative group hover:bg-white transition-all duration-300">
           
-          <div class="absolute -left-3 top-8 w-8 h-8 rounded-full bg-gradient-to-br from-[#EADCC9] to-[#C8A37D]/40 text-[#4F3F2E] text-xs font-bold flex items-center justify-center shadow-sm border border-white">
+          <div class="absolute -left-2 sm:-left-3 top-6 sm:top-8 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#EADCC9] to-[#C8A37D]/40 text-[#4F3F2E] text-xs font-bold flex items-center justify-center shadow-sm border border-white">
             {{ i + 1 | number:'2.0-0' }}
           </div>
 
-          <div class="grid grid-cols-2 gap-x-6 gap-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
             
-            <div class="col-span-2 sm:col-span-1">
+            <div class="col-span-1">
               <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider inline-flex items-center gap-2 mb-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -412,7 +412,7 @@
               </div>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
+            <div class="col-span-1">
               <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider inline-flex items-center gap-2 mb-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -424,7 +424,7 @@
                      class="w-full h-11 border border-[#EADCC9] px-4 rounded-xl text-sm font-mono text-[#4F3F2E] placeholder-[#CBB59A] bg-[#FDFBF9] focus:bg-white focus:border-[#8B6A4F] outline-none transition-all">
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
+            <div class="col-span-1">
               <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider inline-flex items-center gap-2 mb-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
                   <polygon points="5 3 19 12 5 21 5 3"/>
@@ -443,7 +443,7 @@
               </div>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
+            <div class="col-span-1">
               <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider inline-flex items-center gap-2 mb-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -472,7 +472,7 @@
               </label>
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
+            <div class="col-span-1">
               <label class="text-xs font-bold text-[#6E5C49] uppercase tracking-wider inline-flex items-center gap-2 mb-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -489,7 +489,7 @@
             </div>
 
             <div *ngIf="q.get('type')?.value === 'dropdown' || q.get('type')?.value === 'checkbox'" 
-                 class="col-span-2 mt-2 bg-[#FDFBF9] p-5 rounded-2xl border border-[#EADCC9] space-y-1.5">
+                 class="col-span-1 sm:col-span-2 mt-2 bg-[#FDFBF9] p-5 rounded-2xl border border-[#EADCC9] space-y-1.5">
               <label class="text-xs font-bold text-[#8B6A4F] uppercase tracking-wider block">Options (Separate with commas)</label>
               <input formControlName="options"  placeholder="e.g. Daily, Weekly, Monthly" 
                      class="w-full h-11 border border-[#EADCC9]/60 px-4 rounded-xl text-sm text-[#4F3F2E] placeholder-[#CBB59A] bg-white focus:border-[#8B6A4F] outline-none transition-all">
@@ -500,7 +500,7 @@
                  (click)="removeQuestion(i)" 
                  [disabled]="isLocked"
                  [class.opacity-50]="isLocked"
-                  class="absolute top-6 right-6 text-[#CBB59A] hover:text-rose-600 font-bold transition-colors cursor-pointer p-1.5 rounded-lg hover:bg-rose-50/50 flex items-center justify-center border-none bg-transparent gap-1">
+                  class="absolute top-4 right-4 sm:top-6 sm:right-6 text-[#CBB59A] hover:text-rose-600 font-bold transition-colors cursor-pointer p-1.5 rounded-lg hover:bg-rose-50/50 flex items-center justify-center border-none bg-transparent gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"></polyline>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -530,30 +530,30 @@
 </div>
 
 <div *ngIf="showPreview" 
-     class="fixed inset-0 bg-[#4F3F2E]/30 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-300">
-  <div class="bg-[#FAF7F2] rounded-[32px] shadow-[0_25px_60px_rgba(79,63,46,0.15)] w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border-2"
+     class="fixed inset-0 bg-[#4F3F2E]/30 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 transition-all duration-300">
+  <div class="bg-[#FAF7F2] rounded-[24px] sm:rounded-[32px] shadow-[0_25px_60px_rgba(79,63,46,0.15)] w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-hidden flex flex-col border-2"
      [style.--preview-colour]="adminForm.get('primary_colour')?.value || '#8B6A4F'"
      [style.border-color]="hexToRgba(adminForm.get('primary_colour')?.value || '#8B6A4F', 0.9)">
     
-    <div class="flex justify-between items-center px-8 py-6 border-b border-[#F2EAE0] bg-white sticky top-0 z-10">
+    <div class="flex justify-between items-center px-5 sm:px-8 py-4 sm:py-6 border-b border-[#F2EAE0] bg-white sticky top-0 z-10">
       <div>
-        <h2 class="text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Form Preview</h2>
+        <h2 class="text-lg sm:text-xl font-normal text-[#4F3F2E]" style="font-family: 'DM Serif Display', serif;">Form Preview</h2>
         <p class="text-xs text-[#A39280] mt-0.5 font-medium" style="font-family: 'Inter', sans-serif;">This is how patients will see your form live</p>
       </div>
       <button (click)="togglePreview()" 
-              class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-[#8A7966] font-bold text-sm transition-colors hover:bg-rose-50 hover:text-rose-600 shadow-sm cursor-pointer">
+              class="w-9 h-9 rounded-xl bg-[#FDFBF9] border border-[#F0E6DB] flex items-center justify-center text-[#8A7966] font-bold text-sm transition-colors hover:bg-rose-50 hover:text-rose-600 shadow-sm cursor-pointer flex-shrink-0">
         ✕
       </button>
     </div>
 
-    <div class="p-8 space-y-5 overflow-y-auto flex-1">
+    <div class="p-5 sm:p-8 space-y-5 overflow-y-auto flex-1">
       
-      <div class="bg-white border border-[#F2EAE0] rounded-3xl p-6 flex items-start gap-4 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
+      <div class="bg-white border border-[#F2EAE0] rounded-3xl p-5 sm:p-6 flex items-start gap-4 shadow-[0_10px_30px_rgba(79,63,46,0.01)]">
         <div *ngIf="adminForm.get('logo_url')?.value" class="flex-shrink-0 bg-[#FDFBF9] p-1.5 rounded-xl border border-[#F0E6DB] w-12 h-12 flex items-center justify-center">
           <img [src]="adminForm.get('logo_url')?.value" alt="Clinic Logo" class="w-full h-full object-contain">
         </div>
-        <div>
-         <h3 class="font-normal text-xl mb-1" style="font-family: 'DM Serif Display', serif;" [style.color]="'var(--preview-colour)'">
+        <div class="min-w-0">
+         <h3 class="font-normal text-lg sm:text-xl mb-1" style="font-family: 'DM Serif Display', serif;" [style.color]="'var(--preview-colour)'">
   {{ editingTitle || 'New Questionnaire Title' }}
 </h3>
           <p *ngIf="adminForm.get('questionnaire_description')?.value" class="text-xs text-[#8A7966] leading-relaxed" style="font-family: 'Inter', sans-serif;">
@@ -566,9 +566,7 @@
             Page {{ currentPreviewPage }} of {{ totalPreviewPages }}
      </div>
 
-     
-
-<div *ngFor="let q of currentPreviewQuestions" class="bg-white border border-[#F2EAE0] rounded-2xl p-6 shadow-[0_10px_30px_rgba(79,63,46,0.01)]" style="font-family: 'Inter', sans-serif;">
+<div *ngFor="let q of currentPreviewQuestions" class="bg-white border border-[#F2EAE0] rounded-2xl p-5 sm:p-6 shadow-[0_10px_30px_rgba(79,63,46,0.01)]" style="font-family: 'Inter', sans-serif;">
         
         <label class="block text-xs font-bold text-[#A39280] uppercase tracking-wider mb-2.5">
           {{ q.get('label')?.value || 'Untitled Question' }}
@@ -633,11 +631,7 @@
 
     </div>
 
-    <div class="p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
-
-
-
-    <div class="p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
+    <div class="p-5 sm:p-6 border-t border-[#F2EAE0] bg-white sticky bottom-0" style="font-family: 'Inter', sans-serif;">
       <button (click)="togglePreview()" 
               class="w-full h-12 rounded-xl border border-[#EBE3D9] bg-white text-xs font-semibold text-[#4F3F2E] hover:bg-[#FDFBF9] hover:border-[#CBB59A] transition-all cursor-pointer shadow-sm">
         Close Preview Canvas
