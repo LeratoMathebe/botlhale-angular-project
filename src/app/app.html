@@ -99,7 +99,7 @@
           </div>
           <div class="hidden md:flex flex-col text-left">
             <span class="text-xs font-bold text-[#4F3F2E] leading-tight">{{ userName }}</span>
-            <!-- <span class="text-[10px] text-[#A39280] font-medium leading-none">Administrator</span> -->
+            
           </div>
           <span class="text-[#A39280] text-[10px]">▼</span>
         </button>
@@ -117,21 +117,34 @@
           </div>
 
           <a routerLink="/profile" 
-             (click)="dropdownOpen = false"
-             class="flex items-center gap-3 px-4 py-3 text-sm text-[#6E5C49] hover:bg-[#FDFBF9] hover:text-[#4F3F2E] transition-colors">
-            <span>👤</span> My Profile
-          </a>
-          <a *ngIf="isAdmin" 
-             routerLink="/admin" 
-             (click)="dropdownOpen = false"
-             class="flex items-center gap-3 px-4 py-3 text-sm text-[#8B6A4F] font-medium hover:bg-[#FDFBF9] transition-colors">
-            <span>⚙️</span> Admin Panel
-          </a>
-          <div class="border-t border-[#F5EFE8] my-1"></div>
-          <button (click)="signOut()" 
-                  class="w-full flex items-center gap-3 text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50/50 transition-colors">
-            <span>🚪</span> Sign Out
-          </button>
+   (click)="dropdownOpen = false"
+   class="flex items-center gap-3 px-4 py-3 text-sm text-[#6E5C49] hover:bg-[#FDFBF9] hover:text-[#4F3F2E] transition-colors">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+  My Profile
+</a>
+<a *ngIf="isAdmin" 
+   routerLink="/admin" 
+   (click)="dropdownOpen = false"
+   class="flex items-center gap-3 px-4 py-3 text-sm text-[#8B6A4F] font-medium hover:bg-[#FDFBF9] transition-colors">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+  Admin Panel
+</a>
+<div class="border-t border-[#F5EFE8] my-1"></div>
+<button (click)="signOut()" 
+        class="w-full flex items-center gap-3 text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50/50 transition-colors">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+    <polyline points="16 17 21 12 16 7"></polyline>
+    <line x1="21" y1="12" x2="9" y2="12"></line>
+  </svg>
+  Sign Out
+</button>
         </div>
       </div>
     </nav>
@@ -173,15 +186,34 @@
        routerLinkActive="text-[#8B6A4F] font-semibold"
        class="py-2.5 text-[#6E5C49] text-sm font-medium">Dashboard</a>
     <div class="border-t border-[#F5EFE8] my-1"></div>
-    <a routerLink="/profile" 
-       (click)="mobileMenuOpen = false"
-       class="py-2.5 text-[#6E5C49] text-sm font-medium">👤 My Profile</a>
-    <a *ngIf="isAdmin" 
-       routerLink="/admin" 
-       (click)="mobileMenuOpen = false"
-       class="py-2.5 text-[#8B6A4F] text-sm font-medium">⚙️ Admin Panel</a>
-    <button (click)="signOut(); mobileMenuOpen = false"
-            class="py-2.5 text-left text-red-500 text-sm font-medium bg-transparent border-none cursor-pointer">🚪 Sign Out</button>
+   <a routerLink="/profile" 
+   (click)="mobileMenuOpen = false"
+   class="flex items-center gap-2.5 py-2.5 text-[#6E5C49] text-sm font-medium">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#8B6A4F]">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+  My Profile
+</a>
+<a *ngIf="isAdmin" 
+   routerLink="/admin" 
+   (click)="mobileMenuOpen = false"
+   class="flex items-center gap-2.5 py-2.5 text-[#8B6A4F] text-sm font-medium">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+  Admin Panel
+</a>
+<button (click)="signOut(); mobileMenuOpen = false"
+        class="flex items-center gap-2.5 py-2.5 text-left text-red-500 text-sm font-medium bg-transparent border-none cursor-pointer">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+    <polyline points="16 17 21 12 16 7"></polyline>
+    <line x1="21" y1="12" x2="9" y2="12"></line>
+  </svg>
+  Sign Out
+</button>
   </div>
 </header>
 
